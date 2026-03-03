@@ -27,6 +27,8 @@ import {
   UserCheck
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import dashboardPreviewImage from './assets/images/image-hero-2.gif';
+import clinicTeamImage from './assets/images/clinic-team.png';
 
 // --- Constants & Links ---
 const WHATSAPP_URL = "https://wa.me/5500000000000?text=Olá,%20quero%20saber%20mais%20sobre%20o%20Medainer";
@@ -303,10 +305,9 @@ export default function App() {
             >
               <div className="relative z-10 rounded-3xl overflow-hidden shadow-2xl border-8 border-white">
                 <img 
-                  src="https://picsum.photos/seed/medainer-dashboard/1200/800" 
+                  src={dashboardPreviewImage}
                   alt="Medainer Dashboard Preview" 
                   className="w-full h-auto"
-                  referrerPolicy="no-referrer"
                 />
               </div>
               {/* Floating UI elements for "premium" feel */}
@@ -458,10 +459,9 @@ export default function App() {
             <div className="lg:w-1/2 relative">
               <div className="absolute -inset-4 bg-brand-sand/50 rounded-[40px] -z-10 rotate-3" />
               <img 
-                src="https://picsum.photos/seed/medainer-team/800/1000" 
+                src={clinicTeamImage}
                 alt="Clínica Organizada" 
                 className="rounded-[40px] shadow-2xl w-full object-cover aspect-[4/5]"
-                referrerPolicy="no-referrer"
               />
               <div className="absolute bottom-10 -right-10 glass-card p-8 rounded-3xl shadow-xl max-w-xs hidden md:block">
                 <div className="flex gap-1 mb-4">
