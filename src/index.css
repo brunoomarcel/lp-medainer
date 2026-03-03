@@ -1,0 +1,32 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Playfair Display", serif;
+
+  --color-brand-offwhite: #FDFCFB;
+  --color-brand-graphite: #1A1C1E;
+  --color-brand-petroleum: #0A2E36;
+  --color-brand-green: #2D5A4C;
+  --color-brand-sand: #E5E1DA;
+  --color-brand-accent: #C5A059; /* Elegant gold/sand accent */
+}
+
+@layer base {
+  body {
+    @apply bg-brand-offwhite text-brand-graphite antialiased selection:bg-brand-petroleum selection:text-white;
+  }
+}
+
+.glass-card {
+  @apply bg-white/80 backdrop-blur-md border border-black/5 shadow-sm;
+}
+
+.text-balance {
+  text-wrap: balance;
+}
+
+.section-padding {
+  @apply py-20 md:py-32 px-6;
+}
