@@ -494,12 +494,12 @@ export default function App() {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
-              { icon: Calendar, title: "Agenda Inteligente", desc: "Gestão de horários, salas e profissionais com facilidade." },
               { icon: UserCheck, title: "Gestão de Pacientes", desc: "Cadastro completo, histórico e segmentação inteligente." },
-              { icon: ClipboardList, title: "Prontuário Digital", desc: "Histórico clínico seguro e fácil de consultar durante a consulta." },
+              { icon: Calendar, title: "Agenda Inteligente", desc: "Gestão de horários, salas e profissionais com facilidade." },
               { icon: Users, title: "Controle de Equipe", desc: "Gestão de permissões, comissões e produtividade." },
-              { icon: MessageCircle, title: "Apoio WhatsApp", desc: "Integração para facilitar a comunicação e lembretes." },
               { icon: TrendingUp, title: "Financeiro Completo", desc: "Fluxo de caixa, contas a pagar/receber e faturamento." },
+              { icon: ClipboardList, title: "Prontuário Digital", desc: "Histórico clínico seguro e fácil de consultar durante a consulta." },
+              { icon: MessageCircle, title: "Apoio WhatsApp", desc: "Integração para facilitar a comunicação e lembretes." },
               { icon: Zap, title: "Automações com IA", desc: "Sugestões inteligentes para otimizar sua rotina operacional." },
               { icon: ShieldCheck, title: "Segurança de Dados", desc: "Seus dados protegidos com criptografia de ponta." }
             ].map((feature, i) => (
@@ -537,8 +537,8 @@ export default function App() {
             <div className="absolute top-1/4 left-0 right-0 h-0.5 bg-white/10 hidden md:block" />
             
             {[
-              { step: "01", title: "Organize", desc: "Configure seus horários, salas e profissionais em minutos." },
-              { step: "02", title: "Centralize", desc: "Traga todos os seus pacientes e históricos para a plataforma." },
+              { step: "01", title: "Organize", desc: "Configure seus horários e profissionais em minutos." },
+              { step: "02", title: "Centralize", desc: "Traga todos os seus pacientes para a plataforma." },
               { step: "03", title: "Opere", desc: "Sua recepção e equipe começam a usar o fluxo otimizado." },
               { step: "04", title: "Controle", desc: "Acompanhe o crescimento e a eficiência em tempo real." }
             ].map((item, i) => (
@@ -639,6 +639,7 @@ export default function App() {
                   "Inteligência Artificial",
                   "Até 8 usuários",
                   "Até 6 profissionais",
+                  "Treinamento básico para equipe",
                   "Suporte Prioritário"
                 ].map((item, i) => (
                   <li key={i} className="flex items-start gap-3 text-sm text-white/80">
