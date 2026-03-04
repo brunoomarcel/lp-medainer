@@ -268,14 +268,11 @@ export default function App() {
                 <ShieldCheck className="w-4 h-4" />
                 Sistema de gestão para clínicas e consultórios
               </div>
-              <p className="text-sm sm:text-base text-brand-graphite/60 mb-4 max-w-2xl">
-                Para clínicas médicas, odontológicas, de estética, psicologia e fisioterapia.
-              </p>
               <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-serif font-medium leading-[1.1] text-brand-graphite mb-6 md:mb-8 text-balance">
-                Organize sua clínica com mais <span className="text-brand-green italic">controle, agilidade e previsibilidade.</span>
+                Centralize agenda, pacientes, prontuário e financeiro para sua clínica operar com <span className="text-brand-green italic">menos retrabalho e mais controle.</span>
               </h1>
               <p className="text-base sm:text-lg md:text-xl text-brand-graphite/70 mb-8 md:mb-10 max-w-xl leading-relaxed">
-                O Medainer centraliza agenda, pacientes, prontuário, equipe e financeiro em um só sistema, facilitando a rotina da recepção, dos profissionais e da gestão.
+                Menos informações espalhadas. Mais agilidade para a equipe e mais controle para a gestão.
               </p>
               
               <div className="flex flex-col sm:flex-row gap-4 mb-10 md:mb-12">
@@ -290,9 +287,9 @@ export default function App() {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
                 {[
-                  { icon: Calendar, text: "Agenda estruturada, sem ruído operacional" },
-                  { icon: Users, text: "Equipe alinhada em um mesmo padrão" },
-                  { icon: ClipboardList, text: "Dados clínicos e operacionais centralizados" },
+                  { icon: Calendar, text: "Agenda clara para reduzir conflitos, faltas e retrabalho" },
+                  { icon: Users, text: "Equipe trabalhando no mesmo fluxo, sem informação desencontrada" },
+                  { icon: ClipboardList, text: "Paciente, prontuário e operação centralizados no mesmo sistema" },
                 ].map((item, i) => (
                   <div key={i} className="flex items-center gap-3 text-sm font-medium text-brand-graphite/60">
                     <div className="w-8 h-8 rounded-full bg-white shadow-sm flex items-center justify-center text-brand-green">
@@ -353,10 +350,10 @@ export default function App() {
 
           <div className="mt-10 md:mt-14 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
             {[
-              { label: "Agenda", value: "Confirmações, encaixes e faltas sob uma leitura clara" },
-              { label: "Pacientes", value: "Cadastro, histórico e relacionamento em um único fluxo" },
-              { label: "Equipe", value: "Permissões, rotina e produtividade com mais consistência" },
-              { label: "Financeiro", value: "Receita e operação conectadas à visão gerencial" },
+              { label: "Agenda", value: "Confirmações, encaixes, faltas e ocupação em uma leitura rápida" },
+              { label: "Pacientes", value: "Cadastro, histórico e informações essenciais em um único lugar" },
+              { label: "Equipe", value: "Permissões e rotina organizadas para cada profissional trabalhar com padrão" },
+              { label: "Financeiro", value: "Recebimentos e operação conectados para acompanhar a clínica com mais clareza" },
             ].map((item, i) => (
               <div key={i} className="rounded-3xl border border-brand-graphite/8 bg-white/80 p-5 sm:p-6 shadow-sm">
                 <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-brand-green mb-3">{item.label}</p>
@@ -372,7 +369,7 @@ export default function App() {
         <div className="container mx-auto px-4 sm:px-6">
           <SectionHeading 
             subtitle="O Desafio da Rotina"
-            title="Sem um sistema de gestão, a rotina da clínica fica mais lenta, confusa e difícil de controlar."
+            title="Quando a operação depende de planilhas, memória e mensagens soltas, a clínica perde tempo e controle."
             centered={true}
             dark={true}
           />
@@ -381,27 +378,27 @@ export default function App() {
             {[
               { 
                 title: "Agenda Desorganizada", 
-                desc: "Horários se chocam, encaixes viram confusão e a recepção perde tempo tentando apagar incêndio." 
+                desc: "Horários se chocam, encaixes viram confusão e a recepção passa o dia tentando corrigir falhas na agenda." 
               },
               { 
                 title: "Excesso de Mensagens", 
-                desc: "O atendimento vira uma fila invisível. Mensagens se perdem, pacientes esfriam e oportunidades ficam no caminho." 
+                desc: "O atendimento vira uma fila invisível. Mensagens se perdem, pacientes esfriam e a equipe responde sem contexto." 
               },
               { 
                 title: "Retrabalho Constante", 
-                desc: "A mesma informação é digitada várias vezes em planilhas, papéis e conversas soltas, multiplicando erros." 
+                desc: "A mesma informação é digitada várias vezes em planilhas, papéis e conversas soltas, aumentando erro e desgaste." 
               },
               { 
                 title: "Falta de Controle", 
-                desc: "Você sente que a clínica trabalha muito, mas não enxerga com clareza produtividade, faltas e resultado." 
+                desc: "A clínica trabalha muito, mas fica difícil enxergar produtividade, faltas, ocupação e resultado com clareza." 
               },
               { 
                 title: "Dados Espalhados", 
-                desc: "Histórico clínico, dados cadastrais e observações ficam espalhados e a consulta perde contexto." 
+                desc: "Histórico clínico, dados cadastrais e observações ficam espalhados, e cada atendimento começa com menos contexto." 
               },
               { 
                 title: "Crescimento Travado", 
-                desc: "Sem processo, cada novo profissional aumenta a desorganização em vez de ampliar capacidade." 
+                desc: "Sem processo e padrão, cada novo profissional aumenta a complexidade em vez de ampliar a capacidade da clínica." 
               }
             ].map((item, i) => (
               <motion.div 
@@ -430,30 +427,30 @@ export default function App() {
             <div className="w-full lg:w-1/2">
               <SectionHeading 
                 subtitle="A Transformação"
-                title="Com o Medainer, sua clínica ganha organização e clareza na operação."
+                title="Com o Medainer, sua clínica reduz a desorganização da rotina e ganha mais controle da operação."
                 centered={false}
               />
               
               <div className="space-y-8">
                 {[
                   { 
-                    title: "Agenda com Clareza Total", 
-                    desc: "Enxergue disponibilidade, encaixes, faltas e ocupação em uma visão prática para tomar decisão rápido.",
+                    title: "Agenda organizada para recepção e profissionais", 
+                    desc: "Visualize disponibilidade, encaixes, faltas e ocupação com rapidez para reduzir conflito e reagendamento desnecessário.",
                     icon: Calendar
                   },
                   { 
-                    title: "Atendimento Ágil e Humano", 
-                    desc: "A recepção responde melhor, confirma mais rápido e não depende de memória ou anotações espalhadas.",
+                    title: "Recepção mais rápida e menos dependente de memória", 
+                    desc: "A equipe atende com mais contexto, confirma com mais agilidade e deixa de depender de anotações espalhadas.",
                     icon: HeartPulse
                   },
                   { 
-                    title: "Gestão na Palma da Mão", 
-                    desc: "Tenha leitura gerencial da operação sem depender de planilhas manuais ou fechamento tardio.",
+                    title: "Mais visão da operação no dia a dia", 
+                    desc: "Acompanhe rotina, ocupação e financeiro com mais rapidez, sem depender de controles paralelos ou fechamento tardio.",
                     icon: LayoutDashboard
                   },
                   { 
-                    title: "Base Sólida para Crescer", 
-                    desc: "Crie um padrão operacional que suporta mais pacientes, mais equipe e mais unidade sem perder controle.",
+                    title: "Base operacional para crescer com padrão", 
+                    desc: "Estruture um fluxo que suporta mais pacientes, mais equipe e mais volume sem perder organização.",
                     icon: TrendingUp
                   }
                 ].map((benefit, i) => (
@@ -489,13 +486,13 @@ export default function App() {
                   {[1,2,3,4,5].map(i => <Star key={i} className="w-4 h-4 fill-brand-accent text-brand-accent" />)}
                 </div>
                 <p className="text-brand-graphite font-medium italic mb-4">
-                  "Antes a operação dependia de mensagens e memória. Hoje a equipe trabalha com processo."
+                  "Antes a rotina ficava espalhada entre mensagens, agenda e anotações. Hoje a equipe trabalha em um fluxo mais claro."
                 </p>
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-full bg-brand-sand" />
                   <div>
-                    <p className="text-sm font-bold">Equipe Medainer</p>
-                    <p className="text-xs text-brand-graphite/50">Operação clínica estruturada</p>
+                    <p className="text-sm font-bold">Implantação Medainer</p>
+                    <p className="text-xs text-brand-graphite/50">Organização operacional desde o início</p>
                   </div>
                 </div>
               </div>
@@ -509,7 +506,7 @@ export default function App() {
         <div className="container mx-auto px-4 sm:px-6">
           <SectionHeading
             subtitle="Sistema Em Ação"
-            title="Veja como o Medainer funciona na prática."
+            title="Veja como o Medainer organiza a rotina da clínica na prática."
             centered={true}
           />
 
@@ -527,7 +524,7 @@ export default function App() {
                 </div>
               </div>
               <div className="mb-4 rounded-2xl border border-white/10 bg-white/5 p-4 text-sm text-white/75">
-                Visão consolidada da operação, com indicadores, ocupação e leitura rápida do que exige atenção.
+                Acompanhe indicadores, ocupação e pontos de atenção da operação sem depender de planilhas ou conferências manuais.
               </div>
               <div className="overflow-hidden rounded-[24px] border border-white/10 xl:h-[540px]">
                 <img
@@ -542,12 +539,12 @@ export default function App() {
               {[
                 {
                   title: "Agenda e recepção",
-                  text: "Sua recepção atende com mais velocidade porque tudo o que importa está organizado em um único fluxo.",
+                  text: "A recepção trabalha com mais velocidade porque agenda, paciente e contexto de atendimento ficam no mesmo fluxo.",
                   image: agendaImage,
                 },
                 {
                   title: "Pacientes e cadastro",
-                  text: "Com os dados centralizados, a equipe encontra pacientes, histórico e informações essenciais sem perder tempo.",
+                  text: "A equipe encontra pacientes, histórico e dados essenciais sem perder tempo procurando informação em lugares diferentes.",
                   image: pacientesImage,
                 },
               ].map((item, i) => (
@@ -583,13 +580,13 @@ export default function App() {
               {
                 label: "Print 4",
                 title: "Prontuário digital",
-                text: "No atendimento, o profissional encontra contexto clínico com rapidez e segurança.",
+                text: "No atendimento, o profissional acessa o contexto clínico com mais rapidez e menos risco de informação perdida.",
                 image: prontuarioImage,
               },
               {
                 label: "Print 5",
                 title: "Financeiro e recebimentos",
-                text: "O financeiro deixa de ficar separado da operação e passa a ser acompanhado com clareza todos os dias.",
+                text: "O financeiro deixa de rodar separado da operação e passa a ser acompanhado com mais clareza no dia a dia.",
                 image: financeiroImage,
               },
             ].map((item) => (
@@ -619,20 +616,20 @@ export default function App() {
         <div className="container mx-auto px-4 sm:px-6">
           <SectionHeading 
             subtitle="O que entregamos"
-            title="Tudo o que sua clínica precisa para organizar a rotina e ganhar eficiência."
+            title="Recursos para organizar a rotina da clínica sem depender de controles paralelos."
             centered={true}
           />
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
-              { icon: UserCheck, title: "Gestão de Pacientes", desc: "Cadastro completo, histórico consolidado e visão rápida de cada paciente." },
-              { icon: Calendar, title: "Agenda Inteligente", desc: "Horários, salas e profissionais organizados sem conflito de operação." },
-              { icon: Users, title: "Controle de Equipe", desc: "Permissões, responsáveis e produtividade sob um padrão único." },
-              { icon: TrendingUp, title: "Financeiro Completo", desc: "Receitas, cobranças e leitura de resultado sem planilha paralela." },
-              { icon: ClipboardList, title: "Prontuário Digital", desc: "Registro clínico estruturado para consultar durante o atendimento." },
-              { icon: MessageCircle, title: "Apoio WhatsApp", desc: "Mais contexto para responder, confirmar e lembrar pacientes." },
-              { icon: Zap, title: "Automações com IA", desc: "Atalhos e inteligência para reduzir tarefas repetitivas da equipe." },
-              { icon: ShieldCheck, title: "Segurança de Dados", desc: "Base segura para operar com mais confiança e previsibilidade." }
+              { icon: UserCheck, title: "Gestão de Pacientes", desc: "Cadastro completo, histórico consolidado e informações rápidas para cada atendimento." },
+              { icon: Calendar, title: "Agenda da Clínica", desc: "Horários, salas e profissionais organizados para reduzir conflito e retrabalho." },
+              { icon: Users, title: "Controle de Equipe", desc: "Permissões e rotina definidas para cada pessoa trabalhar com mais padrão." },
+              { icon: TrendingUp, title: "Financeiro Integrado", desc: "Receitas, cobranças e visão de resultado no mesmo sistema da operação." },
+              { icon: ClipboardList, title: "Prontuário Digital", desc: "Registro clínico estruturado para consultar durante o atendimento sem perder contexto." },
+              { icon: MessageCircle, title: "Rotina com WhatsApp", desc: "Mais contexto para responder pacientes, confirmar horários e acompanhar o atendimento." },
+              { icon: Zap, title: "Recursos para Ganhar Agilidade", desc: "Ferramentas para reduzir tarefas repetitivas e acelerar a rotina da equipe." },
+              { icon: ShieldCheck, title: "Informações Mais Protegidas", desc: "Dados centralizados com mais controle para a clínica operar com segurança." }
             ].map((feature, i) => (
               <motion.div 
                 key={i}
@@ -658,7 +655,7 @@ export default function App() {
         <div className="container mx-auto px-4 sm:px-6">
           <SectionHeading 
             subtitle="Passo a Passo"
-            title="Como o Medainer ajuda sua clínica a sair do improviso."
+            title="Como o Medainer organiza a rotina da sua clínica."
             centered={true}
             dark={true}
           />
@@ -668,10 +665,10 @@ export default function App() {
             <div className="absolute top-1/4 left-0 right-0 h-0.5 bg-white/10 hidden xl:block" />
             
             {[
-              { step: "01", title: "Estruture", desc: "Organize profissionais, agenda, serviços e permissões com lógica operacional." },
-              { step: "02", title: "Centralize", desc: "Reúna pacientes, histórico, atendimento e rotina da recepção em um só lugar." },
-              { step: "03", title: "Padronize", desc: "A equipe passa a trabalhar com um fluxo claro e mais organizado." },
-              { step: "04", title: "Acompanhe", desc: "Tenha mais visibilidade para tomar decisões e melhorar a operação." }
+              { step: "01", title: "Cadastre", desc: "Organize profissionais, serviços, agenda e permissões com uma base operacional clara." },
+              { step: "02", title: "Centralize", desc: "Reúna pacientes, histórico, atendimento e recepção no mesmo sistema." },
+              { step: "03", title: "Atenda", desc: "Faça a equipe trabalhar no mesmo fluxo, com menos retrabalho e menos informação solta." },
+              { step: "04", title: "Acompanhe", desc: "Tenha mais visibilidade da rotina para decidir com mais rapidez e mais controle." }
             ].map((item, i) => (
               <motion.div 
                 key={i}
@@ -708,7 +705,7 @@ export default function App() {
           />
 
           <p className="text-center max-w-3xl mx-auto -mt-4 mb-10 text-base md:text-lg text-brand-graphite/60 leading-relaxed">
-            Cada plano atende um nível diferente de operação, desde clínicas em organização até operações maiores.
+            Cada plano atende um nível de estrutura e volume, desde clínicas em fase de organização até operações maiores.
           </p>
 
           <div className="grid lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
@@ -722,17 +719,17 @@ export default function App() {
               <div className="mb-8">
                 <p className="text-[11px] uppercase tracking-[0.22em] text-brand-green font-bold mb-4">Base operacional</p>
                 <h3 className="text-2xl font-serif font-medium text-brand-graphite mb-2">Starter</h3>
-                <p className="text-brand-graphite/50 text-sm">Para clínicas que estão começando a organizar a operação com mais controle.</p>
+                <p className="text-brand-graphite/50 text-sm">Para clínicas que querem sair do improviso e estruturar a rotina com mais clareza.</p>
               </div>
               <div className="mb-8">
                 <span className="text-4xl font-serif font-bold text-brand-petroleum">R$ 297</span>
                 <span className="text-brand-graphite/50 ml-2">/mês</span>
               </div>
               <p className="text-sm text-brand-graphite/65 leading-relaxed mb-8">
-                O essencial para estruturar a rotina e sair do improviso.
+                O essencial para organizar atendimento, agenda e gestão no mesmo sistema.
               </p>
               <div className="mb-8 rounded-2xl bg-white p-4 text-sm text-brand-graphite/70 border border-brand-graphite/6">
-                Ideal para: clínicas menores ou em fase inicial de organização.
+                Ideal para: clínicas menores ou em fase inicial que ainda operam com muitos controles soltos.
               </div>
               <ul className="space-y-4 mb-10 flex-grow">
                 {[
@@ -769,23 +766,23 @@ export default function App() {
               <div className="mb-8">
                 <p className="text-[11px] uppercase tracking-[0.22em] text-brand-accent font-bold mb-4">Alta performance</p>
                 <h3 className="text-2xl font-serif font-medium mb-2">Pro</h3>
-                <p className="text-white/50 text-sm">Para clínicas que precisam de mais velocidade, automação e visão gerencial.</p>
+                <p className="text-white/50 text-sm">Para clínicas que precisam ganhar velocidade, padronizar a equipe e ter mais visão da operação.</p>
               </div>
               <div className="mb-8">
                 <span className="text-4xl font-serif font-bold text-brand-accent">R$ 497</span>
                 <span className="text-white/50 ml-2">/mês</span>
               </div>
               <p className="text-sm text-white/70 leading-relaxed mb-8">
-                O plano mais completo para profissionalizar a gestão e crescer com mais segurança.
+                Um plano para profissionalizar a rotina e crescer com mais padrão, acompanhamento e agilidade.
               </p>
               <div className="mb-8 rounded-2xl bg-white/8 p-4 text-sm text-white/75 border border-white/10">
-                Ideal para: clínicas em crescimento que precisam de mais controle e produtividade.
+                Ideal para: clínicas em crescimento que já sentem o impacto de retrabalho, volume maior e necessidade de padronização.
               </div>
               <ul className="space-y-4 mb-10 flex-grow">
                 {[
                   "Tudo do Starter",
-                  "Automações com WhatsApp",
-                  "Recursos com inteligência artificial",
+                  "Recursos para agilizar o atendimento",
+                  "Mais automação na rotina da equipe",
                   "Até 8 usuários",
                   "Até 6 profissionais",
                   "Treinamento da equipe",
@@ -814,17 +811,17 @@ export default function App() {
               <div className="mb-8">
                 <p className="text-[11px] uppercase tracking-[0.22em] text-brand-green font-bold mb-4">Expansão com controle</p>
                 <h3 className="text-2xl font-serif font-medium text-brand-graphite mb-2">Scale</h3>
-                <p className="text-brand-graphite/50 text-sm">Para clínicas maiores que precisam escalar sem perder controle da operação.</p>
+                <p className="text-brand-graphite/50 text-sm">Para clínicas com operação mais robusta, mais equipe e maior necessidade de acompanhamento.</p>
               </div>
               <div className="mb-8">
                 <span className="text-4xl font-serif font-bold text-brand-petroleum">R$ 897</span>
                 <span className="text-brand-graphite/50 ml-2">/mês</span>
               </div>
               <p className="text-sm text-brand-graphite/65 leading-relaxed mb-8">
-                Mais estrutura, mais suporte e mais capacidade para operações maiores.
+                Mais estrutura, mais capacidade e mais acompanhamento para operações maiores.
               </p>
               <div className="mb-8 rounded-2xl bg-white p-4 text-sm text-brand-graphite/70 border border-brand-graphite/6">
-                Ideal para: clínicas com mais profissionais, mais volume e operação mais complexa.
+                Ideal para: clínicas com mais profissionais, mais volume de atendimento e uma rotina mais complexa.
               </div>
               <ul className="space-y-4 mb-10 flex-grow">
                 {[
@@ -860,18 +857,18 @@ export default function App() {
           <div className="max-w-4xl mx-auto">
             <SectionHeading 
               subtitle="Confiança"
-              title="Feito para clínicas que precisam de mais organização, controle e suporte."
+              title="Implantação guiada, suporte próximo e mais clareza para a equipe usar o sistema no dia a dia."
               centered={true}
             />
             <p className="text-lg md:text-xl text-brand-graphite/60 mb-10 md:mb-12 leading-relaxed">
-              O Medainer combina tecnologia, organização operacional e visão gerencial para ajudar sua clínica a trabalhar melhor no dia a dia.
+              O Medainer foi pensado para ajudar clínicas a implantar um fluxo mais organizado sem complicar a rotina da recepção, dos profissionais e da gestão.
             </p>
             
             <div className="grid md:grid-cols-3 gap-8 md:gap-12">
               {[
-                { label: "Implantação Prática", desc: "Entrada guiada para colocar a clínica em operação com mais rapidez." },
-                { label: "Mais Controle", desc: "Mais clareza para acompanhar agenda, equipe, pacientes e rotina." },
-                { label: "Suporte Humano", desc: "Acompanhamento próximo para ajudar sua equipe a usar melhor o sistema." }
+                { label: "Implantação Guiada", desc: "Entrada acompanhada para colocar a clínica em operação com mais segurança." },
+                { label: "Rotina Mais Clara", desc: "Mais visibilidade sobre agenda, pacientes, equipe e operação." },
+                { label: "Suporte Humano", desc: "Acompanhamento próximo para a equipe usar o sistema com confiança." }
               ].map((item, i) => (
                 <div key={i}>
                   <h4 className="text-lg font-bold text-brand-petroleum mb-2">{item.label}</h4>
@@ -897,27 +894,27 @@ export default function App() {
               {[
                 { 
                   q: "O Medainer serve para qual tipo de clínica?", 
-                  a: "O Medainer atende clínicas médicas, odontológicas, de psicologia, estética e outras operações de saúde que precisam organizar agenda, pacientes, equipe e gestão em um só sistema." 
+                  a: "O Medainer atende clínicas médicas, odontológicas, de psicologia, estética, fisioterapia e outras operações de saúde que precisam organizar agenda, pacientes, prontuário, equipe e financeiro em um só sistema." 
                 },
                 { 
                   q: "É difícil começar a usar?", 
-                  a: "Não. A implantação foi pensada para ser simples, com apoio próximo e uma experiência fácil para a equipe começar a usar." 
+                  a: "Não. A implantação foi pensada para ser simples e guiada, para a clínica começar a usar o sistema sem travar a rotina." 
                 },
                 { 
                   q: "Minha equipe vai conseguir usar?", 
-                  a: "Sim. O sistema foi pensado para recepção, profissionais e gestão trabalharem no mesmo fluxo, sem complexidade desnecessária." 
+                  a: "Sim. O sistema foi pensado para recepção, profissionais e gestão trabalharem no mesmo fluxo, com uma navegação prática e sem complexidade desnecessária." 
                 },
                 { 
-                  q: "Posso contratar direto ou preciso falar com alguém?", 
-                  a: "Você pode contratar direto ou falar com nosso time no WhatsApp para entender qual plano faz mais sentido para sua clínica." 
+                  q: "Como sei qual plano faz mais sentido para minha clínica?", 
+                  a: "Você pode comparar os planos pela estrutura da sua operação ou falar com nosso time no WhatsApp para entender qual opção combina melhor com seu momento." 
                 },
                 { 
                   q: "Existe suporte?", 
                   a: "Sim. O suporte é humano e acompanha sua equipe para garantir melhor uso do sistema no dia a dia." 
                 },
                 { 
-                  q: "O sistema ajuda na organização da agenda?", 
-                  a: "Sim. A agenda ajuda a reduzir conflitos, agiliza reagendamentos e melhora a visão da ocupação da clínica." 
+                  q: "O sistema ajuda mesmo a organizar a agenda da clínica?", 
+                  a: "Sim. A agenda ajuda a reduzir conflitos, agilizar reagendamentos, organizar encaixes e melhorar a visão da ocupação da clínica." 
                 }
               ].map((item, i) => (
                 <FAQItem key={i} question={item.q} answer={item.a} />
@@ -934,10 +931,10 @@ export default function App() {
         
         <div className="container mx-auto px-4 sm:px-6 text-center relative z-10">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif font-medium mb-6 md:mb-8 max-w-3xl mx-auto leading-tight">
-            Sua clínica pode continuar no improviso ou ganhar uma rotina mais organizada e profissional.
+            Pare de depender de planilhas, memória e conversas soltas para tocar a operação da sua clínica.
           </h2>
           <p className="text-lg md:text-xl text-white/60 mb-10 md:mb-12 max-w-2xl mx-auto">
-            Se você quer mais controle, mais agilidade e uma operação mais previsível, o Medainer é o próximo passo.
+            Se você quer mais clareza na agenda, mais contexto no atendimento e mais controle sobre a rotina, o Medainer é o próximo passo.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-6 justify-center">
