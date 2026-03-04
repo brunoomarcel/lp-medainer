@@ -14,7 +14,6 @@ import {
   TrendingUp, 
   Clock, 
   ShieldCheck, 
-  Menu,
   X,
   Star,
   Zap,
@@ -37,13 +36,6 @@ const WHATSAPP_URL = "https://wa.me/5579999805993?text=Ol%C3%A1%2C%20quero%20sab
 const STRIPE_STARTER_URL = "#"; // Replace with real Stripe link
 const STRIPE_PRO_URL = "#"; // Replace with real Stripe link
 const STRIPE_SCALE_URL = "#"; // Replace with real Stripe link
-
-const NAV_LINKS = [
-  { name: 'Benefícios', href: '#beneficios' },
-  { name: 'Funcionalidades', href: '#funcionalidades' },
-  { name: 'Planos', href: '#planos' },
-  { name: 'FAQ', href: '#faq' },
-];
 
 // --- Components ---
 
@@ -122,7 +114,7 @@ const SectionHeading = ({
   </div>
 );
 
-const FAQItem = ({ question, answer }: { question: string; answer: string }) => {
+const FAQItem = ({ key, question, answer }: { key:any, question: string; answer: string }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -159,7 +151,6 @@ const FAQItem = ({ question, answer }: { question: string; answer: string }) => 
 
 export default function App() {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
@@ -174,7 +165,7 @@ export default function App() {
       <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
         isScrolled ? 'bg-white/90 backdrop-blur-lg py-4 shadow-sm' : 'bg-transparent py-6'
       }`}>
-        <div className="container mx-auto px-4 sm:px-6 flex items-center justify-between gap-4">
+        <div className="container mx-auto px-4 sm:px-6 flex items-center justify-start gap-4">
           <div className="flex items-center gap-2">
             <img
               src={symbolMedainerImage}
@@ -184,7 +175,7 @@ export default function App() {
             <span className="text-xl sm:text-2xl font-serif font-bold tracking-tight text-brand-petroleum">Medainer</span>
           </div>
 
-          {/* Desktop Nav */}
+          {/* Desktop Nav
           <nav className="hidden md:flex items-center gap-8">
             {NAV_LINKS.map(link => (
               <a 
@@ -196,27 +187,12 @@ export default function App() {
               </a>
             ))}
           </nav>
+          */}
 
-          <div className="hidden md:flex items-center gap-4">
-            <Button variant="ghost" href={WHATSAPP_URL} className="text-sm">
-              <MessageCircle className="w-4 h-4 mr-2" />
-              Falar no WhatsApp
-            </Button>
-            <Button variant="primary" href="#planos" className="text-sm px-8">
-              Ver Planos
-            </Button>
-          </div>
-
-          {/* Mobile Menu Toggle */}
-          <button 
-            className="md:hidden p-2 text-brand-petroleum"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          >
-            {mobileMenuOpen ? <X /> : <Menu />}
-          </button>
+          {/* Header CTAs and mobile toggle removed to keep the landing focused on the hero */}
         </div>
 
-        {/* Mobile Menu */}
+        {/* Mobile Menu
         <AnimatePresence>
           {mobileMenuOpen && (
             <motion.div 
@@ -249,10 +225,11 @@ export default function App() {
             </motion.div>
           )}
         </AnimatePresence>
+        */}
       </header>
 
       {/* --- Hero Section --- */}
-      <section className="relative overflow-hidden pt-32 pb-16 sm:pt-36 md:pt-44 lg:pt-56 md:pb-24 lg:pb-32">
+      <section className="relative overflow-hidden pt-28 pb-16 sm:pt-32 md:pt-36 lg:pt-40 md:pb-24 lg:pb-32">
         {/* Background Elements */}
         <div className="absolute top-0 right-0 -z-10 w-1/2 h-full bg-brand-sand/30 rounded-l-[100px] hidden lg:block" />
         <div className="absolute top-1/4 left-4 sm:left-10 -z-10 w-48 h-48 sm:w-64 sm:h-64 bg-brand-green/5 blur-3xl rounded-full" />
