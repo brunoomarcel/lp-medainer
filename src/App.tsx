@@ -14,15 +14,11 @@ import {
   TrendingUp, 
   Clock, 
   ShieldCheck, 
-  ArrowRight,
   Menu,
   X,
-  Plus,
-  Minus,
   Star,
   Zap,
   LayoutDashboard,
-  Stethoscope,
   HeartPulse,
   UserCheck
 } from 'lucide-react';
@@ -265,30 +261,30 @@ export default function App() {
             >
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-green/10 text-brand-green text-[11px] sm:text-xs font-bold tracking-wider uppercase mb-6 md:mb-8">
                 <ShieldCheck className="w-4 h-4" />
-                Gestão Premium para Clínicas
+                Mais controle. Menos caos operacional.
               </div>
               <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-serif font-medium leading-[1.1] text-brand-graphite mb-6 md:mb-8 text-balance">
-                Organize sua clínica e tenha o <span className="text-brand-green italic">controle total</span> da sua operação.
+                Pare de perder pacientes, horários e dinheiro por falta de <span className="text-brand-green italic">processo.</span>
               </h1>
               <p className="text-base sm:text-lg md:text-xl text-brand-graphite/70 mb-8 md:mb-10 max-w-xl leading-relaxed">
-                Menos improviso na rotina, mais eficiência no atendimento. Agenda, pacientes e equipe em um só lugar, pensado para a realidade do seu consultório.
+                O Medainer centraliza agenda, equipe, pacientes, financeiro e atendimento em um fluxo claro. Sua clínica opera com padrão, velocidade e visão de gestão desde o primeiro dia.
               </p>
               
               <div className="flex flex-col sm:flex-row gap-4 mb-10 md:mb-12">
                 <Button variant="primary" href="#planos" className="px-8 sm:px-10 py-4 text-base sm:text-lg">
-                  Ver Planos e Assinar
+                  Quero organizar minha clínica
                 </Button>
                 <Button variant="outline" href={WHATSAPP_URL} className="px-8 sm:px-10 py-4 text-base sm:text-lg">
                   <MessageCircle className="w-5 h-5 mr-2" />
-                  Falar com Especialista
+                  Falar com um especialista
                 </Button>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
                 {[
-                  { icon: Calendar, text: "Agenda Inteligente" },
-                  { icon: Users, text: "Gestão de Equipe" },
-                  { icon: ClipboardList, text: "Prontuário Digital" },
+                  { icon: Calendar, text: "Agenda sem conflitos e sem improviso" },
+                  { icon: Users, text: "Equipe operando no mesmo padrão" },
+                  { icon: ClipboardList, text: "Informação clínica centralizada" },
                 ].map((item, i) => (
                   <div key={i} className="flex items-center gap-3 text-sm font-medium text-brand-graphite/60">
                     <div className="w-8 h-8 rounded-full bg-white shadow-sm flex items-center justify-center text-brand-green">
@@ -324,8 +320,8 @@ export default function App() {
                     <TrendingUp className="w-6 h-6" />
                   </div>
                   <div>
-                    <p className="text-xs text-brand-graphite/50 font-bold uppercase tracking-wider">Eficiência</p>
-                    <p className="text-xl font-serif font-bold text-brand-petroleum">+45%</p>
+                    <p className="text-xs text-brand-graphite/50 font-bold uppercase tracking-wider">Visão de gestão</p>
+                    <p className="text-xl font-serif font-bold text-brand-petroleum">Tempo real</p>
                   </div>
                 </div>
               </motion.div>
@@ -339,12 +335,26 @@ export default function App() {
                     <Clock className="w-6 h-6" />
                   </div>
                   <div>
-                    <p className="text-xs text-brand-graphite/50 font-bold uppercase tracking-wider">Tempo Salvo</p>
-                    <p className="text-xl font-serif font-bold text-brand-petroleum">12h/semana</p>
+                    <p className="text-xs text-brand-graphite/50 font-bold uppercase tracking-wider">Recepção mais rápida</p>
+                    <p className="text-xl font-serif font-bold text-brand-petroleum">Menos retrabalho</p>
                   </div>
                 </div>
               </motion.div>
             </motion.div>
+          </div>
+
+          <div className="mt-10 md:mt-14 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+            {[
+              { label: "Agenda", value: "Confirmações, encaixes e faltas sob controle" },
+              { label: "Pacientes", value: "Histórico, cadastro e follow-up em um único fluxo" },
+              { label: "Equipe", value: "Permissões, rotina e operação sem ruído" },
+              { label: "Financeiro", value: "Faturamento e visão gerencial sem planilhas paralelas" },
+            ].map((item, i) => (
+              <div key={i} className="rounded-3xl border border-brand-graphite/8 bg-white/80 p-5 sm:p-6 shadow-sm">
+                <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-brand-green mb-3">{item.label}</p>
+                <p className="text-sm sm:text-base text-brand-graphite/70 leading-relaxed">{item.value}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -354,7 +364,7 @@ export default function App() {
         <div className="container mx-auto px-4 sm:px-6">
           <SectionHeading 
             subtitle="O Desafio da Rotina"
-            title="Sua clínica sofre com o improviso do dia a dia?"
+            title="Se a operação depende de memória e WhatsApp, sua clínica está vazando receita."
             centered={true}
             dark={true}
           />
@@ -363,27 +373,27 @@ export default function App() {
             {[
               { 
                 title: "Agenda Desorganizada", 
-                desc: "Horários sobrepostos, furos constantes e dificuldade para visualizar a disponibilidade real dos profissionais." 
+                desc: "Horários se chocam, encaixes viram confusão e a recepção perde tempo tentando apagar incêndio." 
               },
               { 
                 title: "Excesso de Mensagens", 
-                desc: "Sua recepção fica sobrecarregada com centenas de mensagens no WhatsApp sem um fluxo claro de atendimento." 
+                desc: "O atendimento vira uma fila invisível. Mensagens se perdem, pacientes esfriam e oportunidades ficam no caminho." 
               },
               { 
                 title: "Retrabalho Constante", 
-                desc: "Informações repetidas em papéis, planilhas e sistemas que não se conversam, gerando erros e perda de tempo." 
+                desc: "A mesma informação é digitada várias vezes em planilhas, papéis e conversas soltas, multiplicando erros." 
               },
               { 
                 title: "Falta de Controle", 
-                desc: "Dificuldade em saber quem foi atendido, quem faltou e como está a saúde financeira da operação." 
+                desc: "Você sente que a clínica trabalha muito, mas não enxerga com clareza produtividade, faltas e resultado." 
               },
               { 
                 title: "Dados Espalhados", 
-                desc: "Históricos de pacientes perdidos em pastas físicas ou arquivos digitais desorganizados." 
+                desc: "Histórico clínico, dados cadastrais e observações ficam espalhados e a consulta perde contexto." 
               },
               { 
                 title: "Crescimento Travado", 
-                desc: "Você quer crescer, mas a operação atual não suporta mais volume sem gerar um caos administrativo." 
+                desc: "Sem processo, cada novo profissional aumenta a desorganização em vez de ampliar capacidade." 
               }
             ].map((item, i) => (
               <motion.div 
@@ -412,7 +422,7 @@ export default function App() {
             <div className="w-full lg:w-1/2">
               <SectionHeading 
                 subtitle="A Transformação"
-                title="Troque o caos pela organização absoluta."
+                title="Sua clínica ganha ritmo, previsibilidade e padrão de atendimento."
                 centered={false}
               />
               
@@ -420,22 +430,22 @@ export default function App() {
                 {[
                   { 
                     title: "Agenda com Clareza Total", 
-                    desc: "Visualize sua rotina e da sua equipe de forma intuitiva, evitando conflitos e otimizando cada minuto do dia.",
+                    desc: "Enxergue disponibilidade, encaixes, faltas e ocupação em uma visão prática para tomar decisão rápido.",
                     icon: Calendar
                   },
                   { 
                     title: "Atendimento Ágil e Humano", 
-                    desc: "Sua recepção ganha ferramentas para responder mais rápido e com mais qualidade, encantando o paciente.",
+                    desc: "A recepção responde melhor, confirma mais rápido e não depende de memória ou anotações espalhadas.",
                     icon: HeartPulse
                   },
                   { 
                     title: "Gestão na Palma da Mão", 
-                    desc: "Acompanhe indicadores, financeiro e produtividade de onde estiver, com dados reais e seguros.",
+                    desc: "Tenha leitura gerencial da operação sem depender de planilhas manuais ou fechamento tardio.",
                     icon: LayoutDashboard
                   },
                   { 
                     title: "Base Sólida para Crescer", 
-                    desc: "Prepare sua clínica para novos profissionais e unidades com um sistema que escala junto com você.",
+                    desc: "Crie um padrão operacional que suporta mais pacientes, mais equipe e mais unidade sem perder controle.",
                     icon: TrendingUp
                   }
                 ].map((benefit, i) => (
@@ -471,17 +481,108 @@ export default function App() {
                   {[1,2,3,4,5].map(i => <Star key={i} className="w-4 h-4 fill-brand-accent text-brand-accent" />)}
                 </div>
                 <p className="text-brand-graphite font-medium italic mb-4">
-                  "O Medainer mudou a forma como nossa recepção trabalha. Hoje temos paz e controle."
+                  "Antes a operação dependia de mensagens e memória. Hoje a equipe trabalha com processo."
                 </p>
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-full bg-brand-sand" />
                   <div>
-                    <p className="text-sm font-bold">Dra. Mariana Silva</p>
-                    <p className="text-xs text-brand-graphite/50">Clínica Odontológica</p>
+                    <p className="text-sm font-bold">Equipe Medainer</p>
+                    <p className="text-xs text-brand-graphite/50">Operação clínica estruturada</p>
                   </div>
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* --- Product Showcase --- */}
+      <section className="section-padding bg-brand-sand/20">
+        <div className="container mx-auto px-4 sm:px-6">
+          <SectionHeading
+            subtitle="Sistema Em Ação"
+            title="Mais espaço para mostrar o produto e vender pela interface."
+            centered={true}
+          />
+
+          <div className="grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="rounded-[32px] bg-brand-petroleum p-4 sm:p-6 shadow-2xl shadow-brand-petroleum/10"
+            >
+              <div className="mb-4 flex items-center justify-between gap-4">
+                <div>
+                  <p className="text-[11px] uppercase tracking-[0.22em] text-brand-accent font-bold">Tela principal</p>
+                  <h3 className="mt-2 text-2xl sm:text-3xl font-serif text-white">Dashboard de operação e gestão</h3>
+                </div>
+                <div className="hidden sm:flex items-center gap-2 text-white/60 text-sm">
+                  <span className="h-2.5 w-2.5 rounded-full bg-white/30" />
+                  Substitua por print real do sistema
+                </div>
+              </div>
+              <div className="overflow-hidden rounded-[24px] border border-white/10">
+                <img
+                  src={dashboardPreviewImage}
+                  alt="Preview do dashboard Medainer"
+                  className="h-full w-full object-cover"
+                />
+              </div>
+            </motion.div>
+
+            <div className="grid gap-6">
+              {[
+                {
+                  title: "Agenda e recepção",
+                  desc: "Use aqui uma tela de agenda com confirmações, encaixes e status de atendimento.",
+                  image: dashboardPreviewImage,
+                },
+                {
+                  title: "Prontuário e paciente",
+                  desc: "Use aqui uma tela de ficha do paciente, histórico clínico ou acompanhamento.",
+                  image: clinicTeamImage,
+                },
+              ].map((item, i) => (
+                <motion.div
+                  key={item.title}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.08 }}
+                  className="rounded-[32px] border border-brand-graphite/8 bg-white p-4 sm:p-5 shadow-sm"
+                >
+                  <div className="mb-4">
+                    <p className="text-[11px] uppercase tracking-[0.22em] text-brand-green font-bold">Espaço visual {i + 2}</p>
+                    <h3 className="mt-2 text-2xl font-serif text-brand-graphite">{item.title}</h3>
+                    <p className="mt-2 text-sm text-brand-graphite/60">{item.desc}</p>
+                  </div>
+                  <div className="overflow-hidden rounded-[22px] border border-brand-graphite/8 bg-brand-offwhite">
+                    <img
+                      src={item.image}
+                      alt={item.title}
+                      className="h-64 w-full object-cover"
+                    />
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+
+          <div className="mt-6 grid gap-6 md:grid-cols-3">
+            {[
+              "Tela do financeiro e recebimentos",
+              "Tela de comissões e produtividade",
+              "Tela mobile da equipe ou do gestor",
+            ].map((label, i) => (
+              <div key={label} className="rounded-[28px] border border-dashed border-brand-green/30 bg-white/70 p-6">
+                <p className="text-[11px] uppercase tracking-[0.22em] text-brand-green font-bold">Slot extra {i + 4}</p>
+                <p className="mt-3 text-base font-medium text-brand-graphite">{label}</p>
+                <p className="mt-2 text-sm text-brand-graphite/55">
+                  Espaço pronto para adicionar outra imagem do sistema sem quebrar o layout.
+                </p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -491,20 +592,20 @@ export default function App() {
         <div className="container mx-auto px-4 sm:px-6">
           <SectionHeading 
             subtitle="O que entregamos"
-            title="Tudo o que sua clínica precisa em um só lugar."
+            title="O sistema foi desenhado para reduzir atrito na rotina e aumentar controle."
             centered={true}
           />
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
-              { icon: UserCheck, title: "Gestão de Pacientes", desc: "Cadastro completo, histórico e segmentação inteligente." },
-              { icon: Calendar, title: "Agenda Inteligente", desc: "Gestão de horários, salas e profissionais com facilidade." },
-              { icon: Users, title: "Controle de Equipe", desc: "Gestão de permissões, comissões e produtividade." },
-              { icon: TrendingUp, title: "Financeiro Completo", desc: "Fluxo de caixa, contas a pagar/receber e faturamento." },
-              { icon: ClipboardList, title: "Prontuário Digital", desc: "Histórico clínico seguro e fácil de consultar durante a consulta." },
-              { icon: MessageCircle, title: "Apoio WhatsApp", desc: "Integração para facilitar a comunicação e lembretes." },
-              { icon: Zap, title: "Automações com IA", desc: "Sugestões inteligentes para otimizar sua rotina operacional." },
-              { icon: ShieldCheck, title: "Segurança de Dados", desc: "Seus dados protegidos com criptografia de ponta." }
+              { icon: UserCheck, title: "Gestão de Pacientes", desc: "Cadastro completo, histórico consolidado e visão rápida de cada paciente." },
+              { icon: Calendar, title: "Agenda Inteligente", desc: "Horários, salas e profissionais organizados sem conflito de operação." },
+              { icon: Users, title: "Controle de Equipe", desc: "Permissões, responsáveis e produtividade sob um padrão único." },
+              { icon: TrendingUp, title: "Financeiro Completo", desc: "Receitas, cobranças e leitura de resultado sem planilha paralela." },
+              { icon: ClipboardList, title: "Prontuário Digital", desc: "Registro clínico estruturado para consultar durante o atendimento." },
+              { icon: MessageCircle, title: "Apoio WhatsApp", desc: "Mais contexto para responder, confirmar e lembrar pacientes." },
+              { icon: Zap, title: "Automações com IA", desc: "Atalhos e inteligência para reduzir tarefas repetitivas da equipe." },
+              { icon: ShieldCheck, title: "Segurança de Dados", desc: "Base segura para operar com mais confiança e previsibilidade." }
             ].map((feature, i) => (
               <motion.div 
                 key={i}
@@ -530,7 +631,7 @@ export default function App() {
         <div className="container mx-auto px-4 sm:px-6">
           <SectionHeading 
             subtitle="Passo a Passo"
-            title="Como o Medainer transforma sua clínica na prática."
+            title="Você não compra só um sistema. Você instala um novo padrão operacional."
             centered={true}
             dark={true}
           />
@@ -540,10 +641,10 @@ export default function App() {
             <div className="absolute top-1/4 left-0 right-0 h-0.5 bg-white/10 hidden xl:block" />
             
             {[
-              { step: "01", title: "Organize", desc: "Configure seus horários e profissionais em minutos." },
-              { step: "02", title: "Centralize", desc: "Traga todos os seus pacientes para a plataforma." },
-              { step: "03", title: "Opere", desc: "Sua recepção e equipe começam a usar o fluxo otimizado." },
-              { step: "04", title: "Controle", desc: "Acompanhe o crescimento e a eficiência em tempo real." }
+              { step: "01", title: "Estruture", desc: "Organize profissionais, agenda, serviços e permissões com lógica operacional." },
+              { step: "02", title: "Centralize", desc: "Concentre pacientes, histórico, atendimento e rotina da recepção em um lugar só." },
+              { step: "03", title: "Padronize", desc: "A equipe passa a trabalhar em fluxo claro, sem depender de memória e improviso." },
+              { step: "04", title: "Escale", desc: "Ganhe visibilidade para crescer com mais segurança, previsibilidade e margem." }
             ].map((item, i) => (
               <motion.div 
                 key={i}
@@ -564,7 +665,7 @@ export default function App() {
 
           <div className="mt-14 md:mt-20 text-center">
             <Button variant="secondary" href="#planos" className="px-10 md:px-12 py-4 text-base sm:text-lg">
-              Começar Agora
+              Ver planos e começar
             </Button>
           </div>
         </div>
@@ -575,7 +676,7 @@ export default function App() {
         <div className="container mx-auto px-4 sm:px-6">
           <SectionHeading 
             subtitle="Investimento"
-            title="Escolha o plano ideal para o momento da sua clínica."
+            title="Escolha o nível de estrutura que faz sentido para sua operação agora."
             centered={true}
           />
 
@@ -589,7 +690,7 @@ export default function App() {
             >
               <div className="mb-8">
                 <h3 className="text-2xl font-serif font-medium text-brand-graphite mb-2">Starter</h3>
-                <p className="text-brand-graphite/50 text-sm">Para clínicas iniciando a organização digital.</p>
+                <p className="text-brand-graphite/50 text-sm">Para sair do improviso e montar a base operacional da clínica.</p>
               </div>
               <div className="mb-8">
                 <span className="text-4xl font-serif font-bold text-brand-petroleum">R$ 297</span>
@@ -629,7 +730,7 @@ export default function App() {
               </div>
               <div className="mb-8">
                 <h3 className="text-2xl font-serif font-medium mb-2">Pro</h3>
-                <p className="text-white/50 text-sm">Para clínicas em pleno crescimento operacional.</p>
+                <p className="text-white/50 text-sm">Para clínicas que já precisam de velocidade, padrão e visão gerencial.</p>
               </div>
               <div className="mb-8">
                 <span className="text-4xl font-serif font-bold text-brand-accent">R$ 497</span>
@@ -667,7 +768,7 @@ export default function App() {
             >
               <div className="mb-8">
                 <h3 className="text-2xl font-serif font-medium text-brand-graphite mb-2">Scale</h3>
-                <p className="text-brand-graphite/50 text-sm">Para grandes operações e redes de clínicas.</p>
+                <p className="text-brand-graphite/50 text-sm">Para operações maiores que não podem perder controle ao crescer.</p>
               </div>
               <div className="mb-8">
                 <span className="text-4xl font-serif font-bold text-brand-petroleum">R$ 897</span>
@@ -707,18 +808,18 @@ export default function App() {
           <div className="max-w-4xl mx-auto">
             <SectionHeading 
               subtitle="Confiança"
-              title="Pensado para a rotina real de quem vive a saúde."
+              title="Projetado para clínicas que querem crescer sem virar reféns da própria operação."
               centered={true}
             />
             <p className="text-lg md:text-xl text-brand-graphite/60 mb-10 md:mb-12 leading-relaxed">
-              O Medainer não é apenas um software. É uma metodologia de organização clínica que une tecnologia moderna com a necessidade de controle e agilidade que o seu dia a dia exige.
+              O Medainer combina tecnologia, rotina operacional e visibilidade gerencial para transformar uma clínica ocupada em uma clínica organizada, previsível e pronta para escalar.
             </p>
             
             <div className="grid md:grid-cols-3 gap-8 md:gap-12">
               {[
-                { label: "Implantação Prática", desc: "Sem processos longos ou complexos. Você começa a usar em dias." },
-                { label: "Foco em Resultados", desc: "Menos tempo em telas, mais tempo cuidando dos seus pacientes." },
-                { label: "Suporte Humano", desc: "Especialistas prontos para ajudar sua equipe a extrair o máximo do sistema." }
+                { label: "Implantação Prática", desc: "Entrada rápida para colocar a equipe em fluxo e não em treinamento infinito." },
+                { label: "Foco em Resultado", desc: "Menos ruído operacional, mais capacidade de atendimento e leitura da operação." },
+                { label: "Suporte Humano", desc: "Apoio próximo para extrair valor real da plataforma no dia a dia." }
               ].map((item, i) => (
                 <div key={i}>
                   <h4 className="text-lg font-bold text-brand-petroleum mb-2">{item.label}</h4>
@@ -736,7 +837,7 @@ export default function App() {
           <div className="max-w-3xl mx-auto">
             <SectionHeading 
               subtitle="Dúvidas Frequentes"
-              title="Perguntas comuns sobre o Medainer."
+              title="O que normalmente perguntam antes de organizar a clínica com o Medainer."
               centered={true}
             />
             
@@ -744,27 +845,27 @@ export default function App() {
               {[
                 { 
                   q: "O Medainer serve para qual tipo de clínica?", 
-                  a: "O Medainer foi desenhado para clínicas médicas, odontológicas, de psicologia, estética e qualquer profissional da saúde que precise gerenciar agenda, pacientes e equipe com profissionalismo." 
+                  a: "Sim. O Medainer atende clínicas médicas, odontológicas, de psicologia, estética e outras operações de saúde que precisam de agenda, pacientes, equipe e gestão centralizados." 
                 },
                 { 
                   q: "É difícil começar a usar?", 
-                  a: "De forma alguma. Nossa interface é intuitiva e moderna. Além disso, oferecemos materiais de apoio e suporte para que você e sua equipe dominem a ferramenta rapidamente." 
+                  a: "Não. A proposta é justamente reduzir atrito. A implantação foi pensada para colocar a equipe em operação rápido, com apoio e uma interface objetiva." 
                 },
                 { 
                   q: "Minha equipe vai conseguir usar?", 
-                  a: "Sim! Focamos muito na experiência da recepção e dos profissionais. O sistema é limpo, direto ao ponto e evita termos técnicos desnecessários." 
+                  a: "Vai. O sistema foi desenhado para recepção, profissionais e gestão trabalharem no mesmo fluxo, sem complexidade desnecessária." 
                 },
                 { 
                   q: "Posso contratar direto ou preciso falar com alguém?", 
-                  a: "Você pode escolher seu plano e assinar agora mesmo via Stripe. Mas, se preferir tirar dúvidas antes, nosso time comercial está disponível no WhatsApp." 
+                  a: "Você pode contratar direto ou falar com o time no WhatsApp para validar o plano ideal para o momento da sua clínica." 
                 },
                 { 
                   q: "Existe suporte?", 
-                  a: "Sim, oferecemos suporte humano e qualificado. Dependendo do seu plano, o suporte pode ser prioritário ou até mesmo incluir acompanhamento mensal." 
+                  a: "Sim. Há suporte humano e, nos planos mais robustos, acompanhamento mais próximo para garantir evolução operacional." 
                 },
                 { 
                   q: "O sistema ajuda na organização da agenda?", 
-                  a: "Essa é uma das nossas maiores forças. Nossa agenda inteligente evita conflitos, facilita reagendamentos e dá uma visão clara da produtividade da clínica." 
+                  a: "Sim. A agenda é um dos pilares do sistema: ajuda a evitar conflito, acelera reagendamentos e melhora a leitura da ocupação da clínica." 
                 }
               ].map((item, i) => (
                 <FAQItem key={i} question={item.q} answer={item.a} />
@@ -781,15 +882,15 @@ export default function App() {
         
         <div className="container mx-auto px-4 sm:px-6 text-center relative z-10">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif font-medium mb-6 md:mb-8 max-w-3xl mx-auto leading-tight">
-            Pronto para levar sua clínica ao próximo nível de organização?
+            Sua clínica pode continuar apagando incêndio ou começar a operar com método.
           </h2>
           <p className="text-lg md:text-xl text-white/60 mb-10 md:mb-12 max-w-2xl mx-auto">
-            Se a sua clínica precisa de mais controle, menos retrabalho e um atendimento de excelência, o Medainer é o seu próximo passo.
+            Se o objetivo é ganhar controle, velocidade e padrão sem aumentar o caos administrativo, o próximo passo é estruturar a operação com o Medainer.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-6 justify-center">
             <Button variant="secondary" href="#planos" className="px-10 md:px-12 py-4 text-base sm:text-lg">
-              Escolher meu Plano
+              Escolher meu plano
             </Button>
             <Button variant="outline" href={WHATSAPP_URL} className="px-10 md:px-12 py-4 text-base sm:text-lg border-white text-white hover:bg-white hover:text-brand-graphite">
               <MessageCircle className="w-5 h-5 mr-2" />
@@ -804,9 +905,11 @@ export default function App() {
         <div className="container mx-auto px-4 sm:px-6">
           <div className="flex flex-col md:flex-row justify-between items-center gap-8">
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-brand-petroleum rounded-lg flex items-center justify-center">
-                <span className="text-white font-serif font-bold text-sm">M</span>
-              </div>
+              <img
+                src={symbolMedainerImage}
+                alt="Símbolo Medainer"
+                className="w-8 h-8 rounded-lg object-contain"
+              />
               <span className="text-xl font-serif font-bold tracking-tight text-brand-petroleum">Medainer</span>
             </div>
             
