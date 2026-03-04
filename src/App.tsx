@@ -29,9 +29,10 @@ import {
 import { motion, AnimatePresence } from 'motion/react';
 import dashboardPreviewImage from './assets/images/image-hero-2.gif';
 import clinicTeamImage from './assets/images/clinic-team.png';
+import symbolMedainerImage from './assets/images/symbol-medainer.png';
 
 // --- Constants & Links ---
-const WHATSAPP_URL = "https://wa.me/5500000000000?text=Olá,%20quero%20saber%20mais%20sobre%20o%20Medainer";
+const WHATSAPP_URL = "https://wa.me/5579999805993?text=Ol%C3%A1%2C%20quero%20saber%20mais%20sobre%20o%20Medainer";
 const STRIPE_STARTER_URL = "#"; // Replace with real Stripe link
 const STRIPE_PRO_URL = "#"; // Replace with real Stripe link
 const STRIPE_SCALE_URL = "#"; // Replace with real Stripe link
@@ -58,7 +59,7 @@ const Button = ({
   href?: string;
   onClick?: () => void;
 }) => {
-  const baseStyles = "inline-flex items-center justify-center px-6 py-3 rounded-full font-medium transition-all duration-300 active:scale-95 cursor-pointer";
+  const baseStyles = "inline-flex w-full sm:w-auto items-center justify-center px-6 py-3 rounded-full font-medium text-center transition-all duration-300 active:scale-95 cursor-pointer";
   const variants = {
     primary: "bg-brand-petroleum text-white hover:bg-brand-petroleum/90 shadow-lg shadow-brand-petroleum/20",
     secondary: "bg-brand-accent text-white hover:bg-brand-accent/90 shadow-lg shadow-brand-accent/20",
@@ -99,12 +100,12 @@ const SectionHeading = ({
   centered?: boolean;
   dark?: boolean;
 }) => (
-  <div className={`mb-16 ${centered ? 'text-center' : 'text-left'} max-w-3xl ${centered ? 'mx-auto' : ''}`}>
+  <div className={`mb-12 md:mb-16 ${centered ? 'text-center' : 'text-left'} max-w-3xl ${centered ? 'mx-auto' : ''}`}>
     <motion.span 
       initial={{ opacity: 0, y: 10 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      className={`inline-block text-xs font-bold tracking-[0.2em] uppercase mb-4 ${dark ? 'text-brand-accent' : 'text-brand-green'}`}
+      className={`inline-block text-[11px] md:text-xs font-bold tracking-[0.2em] uppercase mb-4 ${dark ? 'text-brand-accent' : 'text-brand-green'}`}
     >
       {subtitle}
     </motion.span>
@@ -113,7 +114,7 @@ const SectionHeading = ({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ delay: 0.1 }}
-      className={`text-3xl md:text-5xl font-serif font-medium leading-tight ${dark ? 'text-white' : 'text-brand-graphite'}`}
+      className={`text-3xl sm:text-4xl md:text-5xl font-serif font-medium leading-tight ${dark ? 'text-white' : 'text-brand-graphite'}`}
     >
       {title}
     </motion.h2>
@@ -172,12 +173,14 @@ export default function App() {
       <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
         isScrolled ? 'bg-white/90 backdrop-blur-lg py-4 shadow-sm' : 'bg-transparent py-6'
       }`}>
-        <div className="container mx-auto px-6 flex items-center justify-between">
+        <div className="container mx-auto px-4 sm:px-6 flex items-center justify-between gap-4">
           <div className="flex items-center gap-2">
-            <div className="w-10 h-10 bg-brand-petroleum rounded-xl flex items-center justify-center">
-              <span className="text-white font-serif font-bold text-xl">M</span>
-            </div>
-            <span className="text-2xl font-serif font-bold tracking-tight text-brand-petroleum">Medainer</span>
+            <img
+              src={symbolMedainerImage}
+              alt="Símbolo Medainer"
+              className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl object-contain"
+            />
+            <span className="text-xl sm:text-2xl font-serif font-bold tracking-tight text-brand-petroleum">Medainer</span>
           </div>
 
           {/* Desktop Nav */}
@@ -221,7 +224,7 @@ export default function App() {
               exit={{ opacity: 0, height: 0 }}
               className="md:hidden bg-white border-t border-brand-graphite/5 overflow-hidden"
             >
-              <div className="flex flex-col p-6 gap-4">
+              <div className="flex flex-col p-4 sm:p-6 gap-4">
                 {NAV_LINKS.map(link => (
                   <a 
                     key={link.name} 
@@ -248,40 +251,40 @@ export default function App() {
       </header>
 
       {/* --- Hero Section --- */}
-      <section className="relative pt-40 pb-20 md:pt-56 md:pb-32 overflow-hidden">
+      <section className="relative overflow-hidden pt-32 pb-16 sm:pt-36 md:pt-44 lg:pt-56 md:pb-24 lg:pb-32">
         {/* Background Elements */}
         <div className="absolute top-0 right-0 -z-10 w-1/2 h-full bg-brand-sand/30 rounded-l-[100px] hidden lg:block" />
-        <div className="absolute top-1/4 left-10 -z-10 w-64 h-64 bg-brand-green/5 blur-3xl rounded-full" />
+        <div className="absolute top-1/4 left-4 sm:left-10 -z-10 w-48 h-48 sm:w-64 sm:h-64 bg-brand-green/5 blur-3xl rounded-full" />
         
-        <div className="container mx-auto px-6">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
+        <div className="container mx-auto px-4 sm:px-6">
+          <div className="grid lg:grid-cols-2 gap-10 md:gap-14 lg:gap-16 items-center">
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8 }}
             >
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-green/10 text-brand-green text-xs font-bold tracking-wider uppercase mb-8">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-green/10 text-brand-green text-[11px] sm:text-xs font-bold tracking-wider uppercase mb-6 md:mb-8">
                 <ShieldCheck className="w-4 h-4" />
                 Gestão Premium para Clínicas
               </div>
-              <h1 className="text-4xl md:text-6xl lg:text-7xl font-serif font-medium leading-[1.1] text-brand-graphite mb-8 text-balance">
+              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-serif font-medium leading-[1.1] text-brand-graphite mb-6 md:mb-8 text-balance">
                 Organize sua clínica e tenha o <span className="text-brand-green italic">controle total</span> da sua operação.
               </h1>
-              <p className="text-lg md:text-xl text-brand-graphite/70 mb-10 max-w-xl leading-relaxed">
+              <p className="text-base sm:text-lg md:text-xl text-brand-graphite/70 mb-8 md:mb-10 max-w-xl leading-relaxed">
                 Menos improviso na rotina, mais eficiência no atendimento. Agenda, pacientes e equipe em um só lugar, pensado para a realidade do seu consultório.
               </p>
               
-              <div className="flex flex-col sm:flex-row gap-4 mb-12">
-                <Button variant="primary" href="#planos" className="px-10 py-4 text-lg">
+              <div className="flex flex-col sm:flex-row gap-4 mb-10 md:mb-12">
+                <Button variant="primary" href="#planos" className="px-8 sm:px-10 py-4 text-base sm:text-lg">
                   Ver Planos e Assinar
                 </Button>
-                <Button variant="outline" href={WHATSAPP_URL} className="px-10 py-4 text-lg">
+                <Button variant="outline" href={WHATSAPP_URL} className="px-8 sm:px-10 py-4 text-base sm:text-lg">
                   <MessageCircle className="w-5 h-5 mr-2" />
                   Falar com Especialista
                 </Button>
               </div>
 
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
                 {[
                   { icon: Calendar, text: "Agenda Inteligente" },
                   { icon: Users, text: "Gestão de Equipe" },
@@ -301,9 +304,9 @@ export default function App() {
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 1, delay: 0.2 }}
-              className="relative"
+              className="relative mx-auto w-full max-w-xl lg:max-w-none"
             >
-              <div className="relative z-10 rounded-3xl overflow-hidden shadow-2xl border-8 border-white">
+              <div className="relative z-10 rounded-[28px] overflow-hidden shadow-2xl border-4 sm:border-8 border-white">
                 <img 
                   src={dashboardPreviewImage}
                   alt="Medainer Dashboard Preview" 
@@ -314,7 +317,7 @@ export default function App() {
               <motion.div 
                 animate={{ y: [0, -10, 0] }}
                 transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute -top-10 -right-10 z-20 glass-card p-6 rounded-2xl hidden md:block"
+                className="absolute -top-6 right-4 lg:-top-10 lg:-right-10 z-20 glass-card p-4 sm:p-6 rounded-2xl hidden md:block"
               >
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 bg-brand-green/20 rounded-full flex items-center justify-center text-brand-green">
@@ -329,7 +332,7 @@ export default function App() {
               <motion.div 
                 animate={{ y: [0, 10, 0] }}
                 transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-                className="absolute -bottom-10 -left-10 z-20 glass-card p-6 rounded-2xl hidden md:block"
+                className="absolute -bottom-6 left-4 lg:-bottom-10 lg:-left-10 z-20 glass-card p-4 sm:p-6 rounded-2xl hidden md:block"
               >
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 bg-brand-accent/20 rounded-full flex items-center justify-center text-brand-accent">
@@ -348,7 +351,7 @@ export default function App() {
 
       {/* --- Pain Points Section --- */}
       <section className="section-padding bg-brand-graphite text-white overflow-hidden">
-        <div className="container mx-auto px-6">
+        <div className="container mx-auto px-4 sm:px-6">
           <SectionHeading 
             subtitle="O Desafio da Rotina"
             title="Sua clínica sofre com o improviso do dia a dia?"
@@ -389,7 +392,7 @@ export default function App() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                className="p-8 rounded-3xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all duration-300 group"
+                className="p-6 sm:p-8 rounded-3xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all duration-300 group"
               >
                 <div className="w-12 h-12 rounded-2xl bg-brand-accent/20 flex items-center justify-center text-brand-accent mb-6 group-hover:scale-110 transition-transform">
                   <X className="w-6 h-6" />
@@ -404,9 +407,9 @@ export default function App() {
 
       {/* --- Benefits Section --- */}
       <section id="beneficios" className="section-padding bg-white">
-        <div className="container mx-auto px-6">
-          <div className="flex flex-col lg:flex-row gap-20 items-center">
-            <div className="lg:w-1/2">
+        <div className="container mx-auto px-4 sm:px-6">
+          <div className="flex flex-col lg:flex-row gap-12 md:gap-16 lg:gap-20 items-center">
+            <div className="w-full lg:w-1/2">
               <SectionHeading 
                 subtitle="A Transformação"
                 title="Troque o caos pela organização absoluta."
@@ -442,9 +445,9 @@ export default function App() {
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: i * 0.1 }}
-                    className="flex gap-6"
+                    className="flex gap-4 sm:gap-6"
                   >
-                    <div className="flex-shrink-0 w-14 h-14 rounded-2xl bg-brand-green/10 flex items-center justify-center text-brand-green">
+                    <div className="flex-shrink-0 w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-brand-green/10 flex items-center justify-center text-brand-green">
                       <benefit.icon className="w-7 h-7" />
                     </div>
                     <div>
@@ -456,14 +459,14 @@ export default function App() {
               </div>
             </div>
 
-            <div className="lg:w-1/2 relative">
-              <div className="absolute -inset-4 bg-brand-sand/50 rounded-[40px] -z-10 rotate-3" />
+            <div className="w-full lg:w-1/2 relative max-w-xl lg:max-w-none">
+              <div className="absolute -inset-3 sm:-inset-4 bg-brand-sand/50 rounded-[32px] sm:rounded-[40px] -z-10 rotate-3" />
               <img 
                 src={clinicTeamImage}
                 alt="Clínica Organizada" 
-                className="rounded-[40px] shadow-2xl w-full object-cover aspect-[4/5]"
+                className="rounded-[32px] sm:rounded-[40px] shadow-2xl w-full object-cover aspect-[4/5]"
               />
-              <div className="absolute bottom-10 -right-10 glass-card p-8 rounded-3xl shadow-xl max-w-xs hidden md:block">
+              <div className="absolute bottom-4 right-4 lg:bottom-10 lg:-right-10 glass-card p-5 sm:p-8 rounded-3xl shadow-xl max-w-[240px] sm:max-w-xs hidden md:block">
                 <div className="flex gap-1 mb-4">
                   {[1,2,3,4,5].map(i => <Star key={i} className="w-4 h-4 fill-brand-accent text-brand-accent" />)}
                 </div>
@@ -485,7 +488,7 @@ export default function App() {
 
       {/* --- Features Section --- */}
       <section id="funcionalidades" className="section-padding bg-brand-offwhite">
-        <div className="container mx-auto px-6">
+        <div className="container mx-auto px-4 sm:px-6">
           <SectionHeading 
             subtitle="O que entregamos"
             title="Tudo o que sua clínica precisa em um só lugar."
@@ -509,7 +512,7 @@ export default function App() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.05 }}
-                className="p-8 rounded-3xl bg-white border border-brand-graphite/5 hover:shadow-xl hover:shadow-brand-petroleum/5 transition-all duration-500"
+                className="p-6 sm:p-8 rounded-3xl bg-white border border-brand-graphite/5 hover:shadow-xl hover:shadow-brand-petroleum/5 transition-all duration-500"
               >
                   <div className="w-12 h-12 rounded-2xl bg-brand-petroleum/5 flex items-center justify-center text-brand-petroleum mb-6">
                     <feature.icon className="w-6 h-6" />
@@ -524,7 +527,7 @@ export default function App() {
 
       {/* --- How It Works --- */}
       <section className="section-padding bg-brand-petroleum text-white">
-        <div className="container mx-auto px-6">
+        <div className="container mx-auto px-4 sm:px-6">
           <SectionHeading 
             subtitle="Passo a Passo"
             title="Como o Medainer transforma sua clínica na prática."
@@ -532,9 +535,9 @@ export default function App() {
             dark={true}
           />
 
-          <div className="grid md:grid-cols-4 gap-12 relative">
+          <div className="grid sm:grid-cols-2 xl:grid-cols-4 gap-8 md:gap-12 relative">
             {/* Connecting line for desktop */}
-            <div className="absolute top-1/4 left-0 right-0 h-0.5 bg-white/10 hidden md:block" />
+            <div className="absolute top-1/4 left-0 right-0 h-0.5 bg-white/10 hidden xl:block" />
             
             {[
               { step: "01", title: "Organize", desc: "Configure seus horários e profissionais em minutos." },
@@ -559,8 +562,8 @@ export default function App() {
             ))}
           </div>
 
-          <div className="mt-20 text-center">
-            <Button variant="secondary" href="#planos" className="px-12 py-4 text-lg">
+          <div className="mt-14 md:mt-20 text-center">
+            <Button variant="secondary" href="#planos" className="px-10 md:px-12 py-4 text-base sm:text-lg">
               Começar Agora
             </Button>
           </div>
@@ -569,7 +572,7 @@ export default function App() {
 
       {/* --- Pricing Plans --- */}
       <section id="planos" className="section-padding bg-white">
-        <div className="container mx-auto px-6">
+        <div className="container mx-auto px-4 sm:px-6">
           <SectionHeading 
             subtitle="Investimento"
             title="Escolha o plano ideal para o momento da sua clínica."
@@ -582,7 +585,7 @@ export default function App() {
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="p-10 rounded-[40px] bg-brand-offwhite border border-brand-graphite/5 flex flex-col"
+              className="p-8 sm:p-10 rounded-[32px] sm:rounded-[40px] bg-brand-offwhite border border-brand-graphite/5 flex flex-col"
             >
               <div className="mb-8">
                 <h3 className="text-2xl font-serif font-medium text-brand-graphite mb-2">Starter</h3>
@@ -619,7 +622,7 @@ export default function App() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.1 }}
-              className="p-10 rounded-[40px] bg-brand-petroleum text-white flex flex-col relative scale-105 shadow-2xl shadow-brand-petroleum/20 z-10"
+              className="p-8 sm:p-10 rounded-[32px] sm:rounded-[40px] bg-brand-petroleum text-white flex flex-col relative lg:scale-105 shadow-2xl shadow-brand-petroleum/20 z-10"
             >
               <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-brand-accent text-brand-petroleum px-4 py-1 rounded-full text-xs font-bold uppercase tracking-widest">
                 Mais Escolhido
@@ -660,7 +663,7 @@ export default function App() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.2 }}
-              className="p-10 rounded-[40px] bg-brand-offwhite border border-brand-graphite/5 flex flex-col"
+              className="p-8 sm:p-10 rounded-[32px] sm:rounded-[40px] bg-brand-offwhite border border-brand-graphite/5 flex flex-col"
             >
               <div className="mb-8">
                 <h3 className="text-2xl font-serif font-medium text-brand-graphite mb-2">Scale</h3>
@@ -700,18 +703,18 @@ export default function App() {
 
       {/* --- Credibility --- */}
       <section className="section-padding bg-brand-sand/20">
-        <div className="container mx-auto px-6 text-center">
+        <div className="container mx-auto px-4 sm:px-6 text-center">
           <div className="max-w-4xl mx-auto">
             <SectionHeading 
               subtitle="Confiança"
               title="Pensado para a rotina real de quem vive a saúde."
               centered={true}
             />
-            <p className="text-xl text-brand-graphite/60 mb-12 leading-relaxed">
+            <p className="text-lg md:text-xl text-brand-graphite/60 mb-10 md:mb-12 leading-relaxed">
               O Medainer não é apenas um software. É uma metodologia de organização clínica que une tecnologia moderna com a necessidade de controle e agilidade que o seu dia a dia exige.
             </p>
             
-            <div className="grid md:grid-cols-3 gap-12">
+            <div className="grid md:grid-cols-3 gap-8 md:gap-12">
               {[
                 { label: "Implantação Prática", desc: "Sem processos longos ou complexos. Você começa a usar em dias." },
                 { label: "Foco em Resultados", desc: "Menos tempo em telas, mais tempo cuidando dos seus pacientes." },
@@ -729,7 +732,7 @@ export default function App() {
 
       {/* --- FAQ --- */}
       <section id="faq" className="section-padding bg-white">
-        <div className="container mx-auto px-6">
+        <div className="container mx-auto px-4 sm:px-6">
           <div className="max-w-3xl mx-auto">
             <SectionHeading 
               subtitle="Dúvidas Frequentes"
@@ -776,19 +779,19 @@ export default function App() {
         <div className="absolute top-0 right-0 w-64 h-64 bg-brand-accent/10 blur-[100px] rounded-full" />
         <div className="absolute bottom-0 left-0 w-96 h-96 bg-brand-green/10 blur-[120px] rounded-full" />
         
-        <div className="container mx-auto px-6 text-center relative z-10">
-          <h2 className="text-3xl md:text-5xl font-serif font-medium mb-8 max-w-3xl mx-auto leading-tight">
+        <div className="container mx-auto px-4 sm:px-6 text-center relative z-10">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif font-medium mb-6 md:mb-8 max-w-3xl mx-auto leading-tight">
             Pronto para levar sua clínica ao próximo nível de organização?
           </h2>
-          <p className="text-xl text-white/60 mb-12 max-w-2xl mx-auto">
+          <p className="text-lg md:text-xl text-white/60 mb-10 md:mb-12 max-w-2xl mx-auto">
             Se a sua clínica precisa de mais controle, menos retrabalho e um atendimento de excelência, o Medainer é o seu próximo passo.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-6 justify-center">
-            <Button variant="secondary" href="#planos" className="px-12 py-4 text-lg">
+            <Button variant="secondary" href="#planos" className="px-10 md:px-12 py-4 text-base sm:text-lg">
               Escolher meu Plano
             </Button>
-            <Button variant="outline" href={WHATSAPP_URL} className="px-12 py-4 text-lg border-white text-white hover:bg-white hover:text-brand-graphite">
+            <Button variant="outline" href={WHATSAPP_URL} className="px-10 md:px-12 py-4 text-base sm:text-lg border-white text-white hover:bg-white hover:text-brand-graphite">
               <MessageCircle className="w-5 h-5 mr-2" />
               Tirar dúvidas no WhatsApp
             </Button>
@@ -798,7 +801,7 @@ export default function App() {
 
       {/* --- Footer --- */}
       <footer className="py-12 bg-white border-t border-brand-graphite/5">
-        <div className="container mx-auto px-6">
+        <div className="container mx-auto px-4 sm:px-6">
           <div className="flex flex-col md:flex-row justify-between items-center gap-8">
             <div className="flex items-center gap-2">
               <div className="w-8 h-8 bg-brand-petroleum rounded-lg flex items-center justify-center">
@@ -807,7 +810,7 @@ export default function App() {
               <span className="text-xl font-serif font-bold tracking-tight text-brand-petroleum">Medainer</span>
             </div>
             
-            <div className="flex gap-8 text-sm text-brand-graphite/50">
+            <div className="flex flex-wrap justify-center gap-x-6 gap-y-3 text-sm text-brand-graphite/50">
               <a href="#" className="hover:text-brand-petroleum transition-colors">Termos de Uso</a>
               <a href="#" className="hover:text-brand-petroleum transition-colors">Privacidade</a>
               <a href="#" className="hover:text-brand-petroleum transition-colors">Cookies</a>
@@ -826,10 +829,10 @@ export default function App() {
         initial={{ scale: 0, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         whileHover={{ scale: 1.1 }}
-        className="fixed bottom-8 right-8 z-50 w-16 h-16 bg-[#25D366] text-white rounded-full flex items-center justify-center shadow-2xl shadow-[#25D366]/40 group"
+        className="fixed bottom-5 right-4 sm:bottom-8 sm:right-8 z-50 w-14 h-14 sm:w-16 sm:h-16 bg-[#25D366] text-white rounded-full flex items-center justify-center shadow-2xl shadow-[#25D366]/40 group"
       >
-        <MessageCircle className="w-8 h-8" />
-        <span className="absolute right-full mr-4 bg-white text-brand-graphite px-4 py-2 rounded-xl text-sm font-bold shadow-xl opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none border border-brand-graphite/5">
+        <MessageCircle className="w-7 h-7 sm:w-8 sm:h-8" />
+        <span className="absolute right-full mr-4 bg-white text-brand-graphite px-4 py-2 rounded-xl text-sm font-bold shadow-xl opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none border border-brand-graphite/5 hidden sm:block">
           Falar com Especialista
         </span>
       </motion.a>
