@@ -719,17 +719,11 @@ export default function App() {
               <div className="mb-8">
                 <p className="text-[11px] uppercase tracking-[0.22em] text-brand-green font-bold mb-4">Base operacional</p>
                 <h3 className="text-2xl font-serif font-medium text-brand-graphite mb-2">Starter</h3>
-                <p className="text-brand-graphite/50 text-sm">Para clínicas que querem sair do improviso e estruturar a rotina com mais clareza.</p>
+                <p className="text-brand-graphite/50 text-sm">Ideal para clínicas menores ou em fase inicial de organização.</p>
               </div>
               <div className="mb-8">
                 <span className="text-4xl font-serif font-bold text-brand-petroleum">R$ 297</span>
                 <span className="text-brand-graphite/50 ml-2">/mês</span>
-              </div>
-              <p className="text-sm text-brand-graphite/65 leading-relaxed mb-8">
-                O essencial para organizar atendimento, agenda e gestão no mesmo sistema.
-              </p>
-              <div className="mb-8 rounded-2xl bg-white p-4 text-sm text-brand-graphite/70 border border-brand-graphite/6">
-                Ideal para: clínicas menores ou em fase inicial que ainda operam com muitos controles soltos.
               </div>
               <ul className="space-y-4 mb-10 flex-grow">
                 {[
@@ -766,17 +760,11 @@ export default function App() {
               <div className="mb-8">
                 <p className="text-[11px] uppercase tracking-[0.22em] text-brand-accent font-bold mb-4">Alta performance</p>
                 <h3 className="text-2xl font-serif font-medium mb-2">Pro</h3>
-                <p className="text-white/50 text-sm">Para clínicas que precisam ganhar velocidade, padronizar a equipe e ter mais visão da operação.</p>
+                <p className="text-white/50 text-sm">Ideal para clínicas em crescimento que precisam de mais padrão e produtividade.</p>
               </div>
               <div className="mb-8">
                 <span className="text-4xl font-serif font-bold text-brand-accent">R$ 497</span>
                 <span className="text-white/50 ml-2">/mês</span>
-              </div>
-              <p className="text-sm text-white/70 leading-relaxed mb-8">
-                Um plano para profissionalizar a rotina e crescer com mais padrão, acompanhamento e agilidade.
-              </p>
-              <div className="mb-8 rounded-2xl bg-white/8 p-4 text-sm text-white/75 border border-white/10">
-                Ideal para: clínicas em crescimento que já sentem o impacto de retrabalho, volume maior e necessidade de padronização.
               </div>
               <ul className="space-y-4 mb-10 flex-grow">
                 {[
@@ -811,17 +799,11 @@ export default function App() {
               <div className="mb-8">
                 <p className="text-[11px] uppercase tracking-[0.22em] text-brand-green font-bold mb-4">Expansão com controle</p>
                 <h3 className="text-2xl font-serif font-medium text-brand-graphite mb-2">Scale</h3>
-                <p className="text-brand-graphite/50 text-sm">Para clínicas com operação mais robusta, mais equipe e maior necessidade de acompanhamento.</p>
+                <p className="text-brand-graphite/50 text-sm">Ideal para clínicas com mais profissionais, mais volume e operação mais complexa.</p>
               </div>
               <div className="mb-8">
                 <span className="text-4xl font-serif font-bold text-brand-petroleum">R$ 897</span>
                 <span className="text-brand-graphite/50 ml-2">/mês</span>
-              </div>
-              <p className="text-sm text-brand-graphite/65 leading-relaxed mb-8">
-                Mais estrutura, mais capacidade e mais acompanhamento para operações maiores.
-              </p>
-              <div className="mb-8 rounded-2xl bg-white p-4 text-sm text-brand-graphite/70 border border-brand-graphite/6">
-                Ideal para: clínicas com mais profissionais, mais volume de atendimento e uma rotina mais complexa.
               </div>
               <ul className="space-y-4 mb-10 flex-grow">
                 {[
