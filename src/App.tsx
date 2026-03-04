@@ -3,25 +3,24 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState, useEffect } from 'react';
-import { 
-  Check, 
-  ChevronDown, 
-  MessageCircle, 
-  Calendar, 
-  Users, 
-  ClipboardList, 
-  TrendingUp, 
-  Clock, 
-  ShieldCheck, 
-  X,
-  Star,
-  Zap,
-  LayoutDashboard,
+import React, { useEffect, useState } from 'react';
+import {
+  Calendar,
+  Check,
+  ChevronDown,
+  ClipboardList,
+  Clock,
   HeartPulse,
-  UserCheck
+  LayoutDashboard,
+  MessageCircle,
+  ShieldCheck,
+  Star,
+  TrendingUp,
+  UserCheck,
+  Users,
+  X
 } from 'lucide-react';
-import { motion, AnimatePresence } from 'motion/react';
+import { AnimatePresence, motion } from 'motion/react';
 import dashboardPreviewImage from './assets/images/image-hero-2.gif';
 import clinicTeamImage from './assets/images/clinic-team.png';
 import symbolMedainerImage from './assets/images/symbol-medainer.png';
@@ -31,70 +30,94 @@ import pacientesImage from './assets/images/pacientes.jpg';
 import prontuarioImage from './assets/images/prontuario.jpg';
 import financeiroImage from './assets/images/financeiro.jpg';
 
-// --- Constants & Links ---
-const WHATSAPP_URL = "https://wa.me/5579999805993?text=Ol%C3%A1%2C%20quero%20saber%20mais%20sobre%20o%20Medainer";
-const STRIPE_STARTER_URL = "#"; // Replace with real Stripe link
-const STRIPE_PRO_URL = "#"; // Replace with real Stripe link
-const STRIPE_SCALE_URL = "#"; // Replace with real Stripe link
+declare global {
+  interface Window {
+    dataLayer?: Array<Record<string, unknown>>;
+    gtag?: (...args: unknown[]) => void;
+  }
+}
 
-// --- Components ---
+const WHATSAPP_URL =
+  'https://wa.me/5579999805993?text=Ol%C3%A1%2C%20quero%20agendar%20uma%20demonstra%C3%A7%C3%A3o%20do%20Medainer';
+const STRIPE_STARTER_URL = (import.meta.env.VITE_STRIPE_STARTER_URL as string | undefined)?.trim() || WHATSAPP_URL;
+const STRIPE_PRO_URL = (import.meta.env.VITE_STRIPE_PRO_URL as string | undefined)?.trim() || WHATSAPP_URL;
+const STRIPE_SCALE_URL = (import.meta.env.VITE_STRIPE_SCALE_URL as string | undefined)?.trim() || WHATSAPP_URL;
+const TERMS_URL = (import.meta.env.VITE_TERMS_URL as string | undefined)?.trim() || '/termos';
+const PRIVACY_URL = (import.meta.env.VITE_PRIVACY_URL as string | undefined)?.trim() || '/privacidade';
+const LGPD_URL = (import.meta.env.VITE_LGPD_URL as string | undefined)?.trim() || '/lgpd';
 
-const Button = ({ 
-  children, 
-  variant = 'primary', 
-  className = '', 
-  href, 
-  onClick 
-}: { 
-  children: React.ReactNode; 
-  variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'whatsapp'; 
+function trackEvent(eventName: string, payload: Record<string, unknown> = {}) {
+  if (typeof window === 'undefined') return;
+
+  window.dataLayer?.push({ event: eventName, ...payload });
+
+  if (typeof window.gtag === 'function') {
+    window.gtag('event', eventName, payload);
+  }
+}
+
+const Button = ({
+  children,
+  variant = 'primary',
+  className = '',
+  href,
+  onClick,
+  trackEventName,
+  trackPayload
+}: {
+  children: React.ReactNode;
+  variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'whatsapp';
   className?: string;
   href?: string;
   onClick?: () => void;
+  trackEventName?: string;
+  trackPayload?: Record<string, unknown>;
 }) => {
-  const baseStyles = "inline-flex w-full sm:w-auto items-center justify-center px-6 py-3 rounded-full font-medium text-center transition-all duration-300 active:scale-95 cursor-pointer";
+  const baseStyles =
+    'inline-flex w-full sm:w-auto items-center justify-center px-6 py-3 rounded-full font-medium text-center transition-all duration-300 active:scale-95 cursor-pointer';
   const variants = {
-    primary: "bg-brand-petroleum text-white hover:bg-brand-petroleum/90 shadow-lg shadow-brand-petroleum/20",
-    secondary: "bg-brand-accent text-white hover:bg-brand-accent/90 shadow-lg shadow-brand-accent/20",
-    outline: "border-2 border-brand-petroleum text-brand-petroleum hover:bg-brand-petroleum hover:text-white",
-    ghost: "text-brand-petroleum hover:bg-brand-petroleum/5",
-    whatsapp: "bg-[#25D366] text-white hover:bg-[#20ba5a] shadow-lg shadow-[#25D366]/20",
+    primary: 'bg-brand-petroleum text-white hover:bg-brand-petroleum/90 shadow-lg shadow-brand-petroleum/20',
+    secondary: 'bg-brand-accent text-white hover:bg-brand-accent/90 shadow-lg shadow-brand-accent/20',
+    outline: 'border-2 border-brand-petroleum text-brand-petroleum hover:bg-brand-petroleum hover:text-white',
+    ghost: 'text-brand-petroleum hover:bg-brand-petroleum/5',
+    whatsapp: 'bg-[#25D366] text-white hover:bg-[#20ba5a] shadow-lg shadow-[#25D366]/20'
   };
 
-  const content = (
-    <>
-      {children}
-    </>
-  );
+  const handleClick = () => {
+    if (trackEventName) {
+      trackEvent(trackEventName, trackPayload);
+    }
+    onClick?.();
+  };
 
   if (href) {
     return (
-      <a href={href} className={`${baseStyles} ${variants[variant]} ${className}`}>
-        {content}
+      <a href={href} onClick={handleClick} className={`${baseStyles} ${variants[variant]} ${className}`}>
+        {children}
       </a>
     );
   }
 
   return (
-    <button onClick={onClick} className={`${baseStyles} ${variants[variant]} ${className}`}>
-      {content}
+    <button onClick={handleClick} className={`${baseStyles} ${variants[variant]} ${className}`}>
+      {children}
     </button>
   );
 };
 
-const SectionHeading = ({ 
-  title, 
-  subtitle, 
+const SectionHeading = ({
+  title,
+  subtitle,
   centered = true,
-  dark = false 
-}: { 
-  title: string; 
-  subtitle?: string; 
+  dark = false
+}: {
+  title: string;
+  subtitle?: string;
   centered?: boolean;
   dark?: boolean;
 }) => (
   <div className={`mb-12 md:mb-16 ${centered ? 'text-center' : 'text-left'} max-w-3xl ${centered ? 'mx-auto' : ''}`}>
-    <motion.span 
+    <motion.span
       initial={{ opacity: 0, y: 10 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
@@ -102,7 +125,7 @@ const SectionHeading = ({
     >
       {subtitle}
     </motion.span>
-    <motion.h2 
+    <motion.h2
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
@@ -114,18 +137,13 @@ const SectionHeading = ({
   </div>
 );
 
-const FAQItem = ({ key, question, answer }: { key:any, question: string; answer: string }) => {
+const FAQItem = ({ question, answer }: { question: string; answer: string }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
     <div className="border-b border-brand-graphite/10 py-6">
-      <button 
-        onClick={() => setIsOpen(!isOpen)}
-        className="flex w-full items-center justify-between text-left group"
-      >
-        <span className="text-lg font-medium text-brand-graphite group-hover:text-brand-petroleum transition-colors">
-          {question}
-        </span>
+      <button onClick={() => setIsOpen(!isOpen)} className="flex w-full items-center justify-between text-left group">
+        <span className="text-lg font-medium text-brand-graphite group-hover:text-brand-petroleum transition-colors">{question}</span>
         <div className={`transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}>
           <ChevronDown className="w-5 h-5 text-brand-green" />
         </div>
@@ -139,9 +157,7 @@ const FAQItem = ({ key, question, answer }: { key:any, question: string; answer:
             transition={{ duration: 0.3 }}
             className="overflow-hidden"
           >
-            <p className="pt-4 text-brand-graphite/70 leading-relaxed">
-              {answer}
-            </p>
+            <p className="pt-4 text-brand-graphite/70 leading-relaxed">{answer}</p>
           </motion.div>
         )}
       </AnimatePresence>
@@ -160,113 +176,77 @@ export default function App() {
 
   return (
     <div className="min-h-screen font-sans selection:bg-brand-petroleum selection:text-white">
-      
-      {/* --- Header --- */}
-      <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        isScrolled ? 'bg-white/90 backdrop-blur-lg py-4 shadow-sm' : 'bg-transparent py-6'
-      }`}>
-        <div className="container mx-auto px-4 sm:px-6 flex items-center justify-start gap-4">
+      <header
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+          isScrolled ? 'bg-white/90 backdrop-blur-lg py-4 shadow-sm' : 'bg-transparent py-6'
+        }`}
+      >
+        <div className="container mx-auto px-4 sm:px-6 flex items-center justify-between gap-4">
           <div className="flex items-center gap-2">
-            <img
-              src={symbolMedainerImage}
-              alt="Símbolo Medainer"
-              className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl object-contain"
-            />
+            <img src={symbolMedainerImage} alt="Símbolo Medainer" className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl object-contain" />
             <span className="text-xl sm:text-2xl font-serif font-bold tracking-tight text-brand-petroleum">Medainer</span>
           </div>
 
-          {/* Desktop Nav
-          <nav className="hidden md:flex items-center gap-8">
-            {NAV_LINKS.map(link => (
-              <a 
-                key={link.name} 
-                href={link.href} 
-                className="text-sm font-medium text-brand-graphite/70 hover:text-brand-petroleum transition-colors"
-              >
-                {link.name}
-              </a>
-            ))}
-          </nav>
-          */}
-
-          {/* Header CTAs and mobile toggle removed to keep the landing focused on the hero */}
-        </div>
-
-        {/* Mobile Menu
-        <AnimatePresence>
-          {mobileMenuOpen && (
-            <motion.div 
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              className="md:hidden bg-white border-t border-brand-graphite/5 overflow-hidden"
+          <div className="hidden sm:flex">
+            <Button
+              variant="whatsapp"
+              href={WHATSAPP_URL}
+              className="px-6 py-2.5"
+              trackEventName="click_whatsapp"
+              trackPayload={{ source: 'header' }}
             >
-              <div className="flex flex-col p-4 sm:p-6 gap-4">
-                {NAV_LINKS.map(link => (
-                  <a 
-                    key={link.name} 
-                    href={link.href} 
-                    onClick={() => setMobileMenuOpen(false)}
-                    className="text-lg font-medium text-brand-graphite"
-                  >
-                    {link.name}
-                  </a>
-                ))}
-                <div className="flex flex-col gap-3 pt-4">
-                  <Button variant="whatsapp" href={WHATSAPP_URL}>
-                    <MessageCircle className="w-5 h-5 mr-2" />
-                    Falar no WhatsApp
-                  </Button>
-                  <Button variant="primary" href="#planos">
-                    Ver Planos
-                  </Button>
-                </div>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-        */}
+              <MessageCircle className="w-5 h-5 mr-2" />
+              Agendar demonstração
+            </Button>
+          </div>
+        </div>
       </header>
 
-      {/* --- Hero Section --- */}
       <section className="relative overflow-hidden pt-28 pb-16 sm:pt-32 md:pt-36 lg:pt-40 md:pb-24 lg:pb-32">
-        {/* Background Elements */}
         <div className="absolute top-0 right-0 -z-10 w-1/2 h-full bg-brand-sand/30 rounded-l-[100px] hidden lg:block" />
         <div className="absolute top-1/4 left-4 sm:left-10 -z-10 w-48 h-48 sm:w-64 sm:h-64 bg-brand-green/5 blur-3xl rounded-full" />
-        
+
         <div className="container mx-auto px-4 sm:px-6">
           <div className="grid lg:grid-cols-2 gap-10 md:gap-14 lg:gap-16 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-            >
+            <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8 }}>
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-green/10 text-brand-green text-[11px] sm:text-xs font-bold tracking-wider uppercase mb-6 md:mb-8">
                 <ShieldCheck className="w-4 h-4" />
-                Sistema de gestão para clínicas e consultórios
+                SaaS para clínicas e consultórios
               </div>
               <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-serif font-medium leading-[1.1] text-brand-graphite mb-6 md:mb-8 text-balance">
-                Centralize agenda, pacientes, prontuário e financeiro para sua clínica operar com <span className="text-brand-green italic">menos retrabalho e mais controle.</span>
+                Reduza faltas e retrabalho em até 30 dias com uma operação <span className="text-brand-green italic">mais organizada.</span>
               </h1>
               <p className="text-base sm:text-lg md:text-xl text-brand-graphite/70 mb-8 md:mb-10 max-w-xl leading-relaxed">
-                Menos informações espalhadas. Mais agilidade para a equipe e mais controle para a gestão.
+                Agenda, pacientes, prontuário, financeiro e WhatsApp no mesmo fluxo para recepção, profissionais e gestão.
               </p>
-              
+
               <div className="flex flex-col sm:flex-row gap-4 mb-10 md:mb-12">
-                <Button variant="primary" href="#planos" className="px-8 sm:px-10 py-4 text-base sm:text-lg">
-                  Ver planos
-                </Button>
-                <Button variant="outline" href={WHATSAPP_URL} className="px-8 sm:px-10 py-4 text-base sm:text-lg">
+                <Button
+                  variant="primary"
+                  href={WHATSAPP_URL}
+                  className="px-8 sm:px-10 py-4 text-base sm:text-lg"
+                  trackEventName="click_whatsapp"
+                  trackPayload={{ source: 'hero_primary' }}
+                >
                   <MessageCircle className="w-5 h-5 mr-2" />
-                  Falar com especialista
+                  Agendar demonstração de 20 min
+                </Button>
+                <Button
+                  variant="outline"
+                  href="#planos"
+                  className="px-8 sm:px-10 py-4 text-base sm:text-lg"
+                  trackEventName="view_pricing"
+                  trackPayload={{ source: 'hero_secondary' }}
+                >
+                  Ver planos
                 </Button>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
                 {[
-                  { icon: Calendar, text: "Agenda clara para reduzir conflitos, faltas e retrabalho" },
-                  { icon: Users, text: "Equipe trabalhando no mesmo fluxo, sem informação desencontrada" },
-                  { icon: ClipboardList, text: "Paciente, prontuário e operação centralizados no mesmo sistema" },
+                  { icon: Calendar, text: 'Implantação guiada em até 14 dias' },
+                  { icon: Users, text: 'Planos para 3, 8 ou 20 usuários' },
+                  { icon: ClipboardList, text: 'Suporte humano conforme o plano' }
                 ].map((item, i) => (
                   <div key={i} className="flex items-center gap-3 text-sm font-medium text-brand-graphite/60">
                     <div className="w-8 h-8 rounded-full bg-white shadow-sm flex items-center justify-center text-brand-green">
@@ -285,16 +265,11 @@ export default function App() {
               className="relative mx-auto w-full max-w-xl lg:max-w-none"
             >
               <div className="relative z-10 rounded-[28px] overflow-hidden shadow-2xl border-4 sm:border-8 border-white">
-                <img 
-                  src={dashboardPreviewImage}
-                  alt="Medainer Dashboard Preview" 
-                  className="w-full h-auto"
-                />
+                <img src={dashboardPreviewImage} alt="Dashboard do Medainer" className="w-full h-auto" />
               </div>
-              {/* Floating UI elements for "premium" feel */}
-              <motion.div 
+              <motion.div
                 animate={{ y: [0, -10, 0] }}
-                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
                 className="absolute -top-6 right-4 lg:-top-10 lg:-right-10 z-20 glass-card p-4 sm:p-6 rounded-2xl hidden md:block"
               >
                 <div className="flex items-center gap-4">
@@ -302,14 +277,14 @@ export default function App() {
                     <TrendingUp className="w-6 h-6" />
                   </div>
                   <div>
-                    <p className="text-xs text-brand-graphite/50 font-bold uppercase tracking-wider">Visão de gestão</p>
-                    <p className="text-xl font-serif font-bold text-brand-petroleum">Tempo real</p>
+                    <p className="text-xs text-brand-graphite/50 font-bold uppercase tracking-wider">Visão operacional</p>
+                    <p className="text-xl font-serif font-bold text-brand-petroleum">em tempo real</p>
                   </div>
                 </div>
               </motion.div>
-              <motion.div 
+              <motion.div
                 animate={{ y: [0, 10, 0] }}
-                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+                transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
                 className="absolute -bottom-6 left-4 lg:-bottom-10 lg:-left-10 z-20 glass-card p-4 sm:p-6 rounded-2xl hidden md:block"
               >
                 <div className="flex items-center gap-4">
@@ -317,68 +292,53 @@ export default function App() {
                     <Clock className="w-6 h-6" />
                   </div>
                   <div>
-                    <p className="text-xs text-brand-graphite/50 font-bold uppercase tracking-wider">Recepção mais rápida</p>
-                    <p className="text-xl font-serif font-bold text-brand-petroleum">Menos retrabalho</p>
+                    <p className="text-xs text-brand-graphite/50 font-bold uppercase tracking-wider">Atendimento</p>
+                    <p className="text-xl font-serif font-bold text-brand-petroleum">mais rápido</p>
                   </div>
                 </div>
               </motion.div>
             </motion.div>
           </div>
-
-          <div className="mt-10 md:mt-14 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-            {[
-              { label: "Agenda", value: "Confirmações, encaixes, faltas e ocupação em uma leitura rápida" },
-              { label: "Pacientes", value: "Cadastro, histórico e informações essenciais em um único lugar" },
-              { label: "Equipe", value: "Permissões e rotina organizadas para cada profissional trabalhar com padrão" },
-              { label: "Financeiro", value: "Recebimentos e operação conectados para acompanhar a clínica com mais clareza" },
-            ].map((item, i) => (
-              <div key={i} className="rounded-3xl border border-brand-graphite/8 bg-white/80 p-5 sm:p-6 shadow-sm">
-                <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-brand-green mb-3">{item.label}</p>
-                <p className="text-sm sm:text-base text-brand-graphite/70 leading-relaxed">{item.value}</p>
-              </div>
-            ))}
-          </div>
         </div>
       </section>
 
-      {/* --- Pain Points Section --- */}
       <section className="section-padding bg-brand-graphite text-white overflow-hidden">
         <div className="container mx-auto px-4 sm:px-6">
-          <SectionHeading 
+          <SectionHeading
             subtitle="O Desafio da Rotina"
-            title="Quando a operação depende de planilhas, memória e mensagens soltas, a clínica perde tempo e controle."
+            title="Quando a clínica depende de planilhas, memória e mensagens soltas, perde tempo, contexto e margem."
             centered={true}
             dark={true}
           />
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[
-              { 
-                title: "Agenda Desorganizada", 
-                desc: "Horários se chocam, encaixes viram confusão e a recepção passa o dia tentando corrigir falhas na agenda." 
+              {
+                title: 'Agenda desorganizada',
+                desc: 'Horários se chocam, encaixes viram confusão e o time passa o dia apagando incêndio.'
               },
-              { 
-                title: "Excesso de Mensagens", 
-                desc: "O atendimento vira uma fila invisível. Mensagens se perdem, pacientes esfriam e a equipe responde sem contexto." 
+              {
+                title: 'Excesso de mensagens',
+                desc: 'Mensagens se perdem, pacientes ficam sem retorno e o atendimento perde ritmo.'
               },
-              { 
-                title: "Retrabalho Constante", 
-                desc: "A mesma informação é digitada várias vezes em planilhas, papéis e conversas soltas, aumentando erro e desgaste." 
+              {
+                title: 'Retrabalho constante',
+                desc: 'A mesma informação aparece em planilha, papel e conversa de WhatsApp.'
               },
-              { 
-                title: "Falta de Controle", 
-                desc: "A clínica trabalha muito, mas fica difícil enxergar produtividade, faltas, ocupação e resultado com clareza." 
+              {
+                title: 'Falta de previsibilidade',
+                desc: 'Sem visão de ocupação, faltas e financeiro, fica difícil planejar crescimento.'
               },
-              { 
-                title: "Dados Espalhados", 
-                desc: "Histórico clínico, dados cadastrais e observações ficam espalhados, e cada atendimento começa com menos contexto." 
+              {
+                title: 'Dados espalhados',
+                desc: 'Recepção, profissionais e gestão trabalham com versões diferentes da mesma informação.'
               },
-              { 
-                title: "Crescimento Travado", 
-                desc: "Sem processo e padrão, cada novo profissional aumenta a complexidade em vez de ampliar a capacidade da clínica." 
+              {
+                title: 'Crescimento travado',
+                desc: 'Cada novo profissional aumenta a complexidade em vez de aumentar produtividade.'
               }
             ].map((item, i) => (
-              <motion.div 
+              <motion.div
                 key={i}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -397,42 +357,130 @@ export default function App() {
         </div>
       </section>
 
-      {/* --- Benefits Section --- */}
+      <section className="section-padding bg-white">
+        <div className="container mx-auto px-4 sm:px-6">
+          <SectionHeading
+            subtitle="Fit Ideal"
+            title="Para quem o Medainer é indicado e quando não faz sentido."
+            centered={true}
+          />
+
+          <div className="grid lg:grid-cols-2 gap-6 max-w-5xl mx-auto">
+            <div className="rounded-3xl border border-brand-green/20 bg-brand-green/5 p-7">
+              <h3 className="text-2xl font-serif text-brand-graphite mb-4">É para sua clínica se você:</h3>
+              <ul className="space-y-3 text-brand-graphite/80">
+                {[
+                  'Quer centralizar agenda, pacientes, prontuário e financeiro em um sistema único.',
+                  'Tem equipe de recepção e profissionais que precisam trabalhar no mesmo fluxo.',
+                  'Quer reduzir faltas, reagendamentos e ruído operacional.',
+                  'Precisa de implantação guiada e suporte próximo na entrada.'
+                ].map((item) => (
+                  <li key={item} className="flex items-start gap-3">
+                    <Check className="w-5 h-5 text-brand-green shrink-0 mt-0.5" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="rounded-3xl border border-brand-graphite/10 bg-brand-offwhite p-7">
+              <h3 className="text-2xl font-serif text-brand-graphite mb-4">Não é ideal se você:</h3>
+              <ul className="space-y-3 text-brand-graphite/80">
+                {[
+                  'Busca apenas agenda básica sem rotina de equipe e operação.',
+                  'Não quer padronizar processos de recepção e atendimento.',
+                  'Prefere manter dados em múltiplos sistemas desconectados.',
+                  'Não tem disponibilidade mínima para onboarding inicial.'
+                ].map((item) => (
+                  <li key={item} className="flex items-start gap-3">
+                    <X className="w-5 h-5 text-brand-petroleum shrink-0 mt-0.5" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="section-padding bg-brand-petroleum text-white">
+        <div className="container mx-auto px-4 sm:px-6">
+          <SectionHeading subtitle="Implantação" title="Como sua clínica entra em operação em 14 dias." centered={true} dark={true} />
+
+          <div className="grid sm:grid-cols-2 xl:grid-cols-4 gap-8 md:gap-12 relative">
+            <div className="absolute top-1/4 left-0 right-0 h-0.5 bg-white/10 hidden xl:block" />
+
+            {[
+              { step: '01', title: 'Diagnóstico', desc: 'Mapeamos agenda, equipe, serviços e rotina da recepção.' },
+              { step: '02', title: 'Configuração', desc: 'Parametrizamos perfis, especialidades, serviços e horários.' },
+              { step: '03', title: 'Onboarding', desc: 'Treinamos o time com fluxo guiado por função.' },
+              { step: '04', title: 'Acompanhamento', desc: 'Ajustamos operação e medimos ganhos nas primeiras semanas.' }
+            ].map((item, i) => (
+              <motion.div
+                key={item.step}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
+                className="relative z-10 text-center"
+              >
+                <div className="w-16 h-16 rounded-full bg-brand-accent text-brand-petroleum flex items-center justify-center text-2xl font-serif font-bold mx-auto mb-8 shadow-lg shadow-brand-accent/20">
+                  {item.step}
+                </div>
+                <h3 className="text-xl font-serif font-medium mb-4">{item.title}</h3>
+                <p className="text-white/70 leading-relaxed">{item.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+
+          <div className="mt-14 md:mt-20 text-center">
+            <Button
+              variant="secondary"
+              href={WHATSAPP_URL}
+              className="px-10 md:px-12 py-4 text-base sm:text-lg"
+              trackEventName="click_whatsapp"
+              trackPayload={{ source: 'implementation_section' }}
+            >
+              Agendar demonstração
+            </Button>
+          </div>
+        </div>
+      </section>
+
       <section id="beneficios" className="section-padding bg-white">
         <div className="container mx-auto px-4 sm:px-6">
           <div className="flex flex-col lg:flex-row gap-12 md:gap-16 lg:gap-20 items-center">
             <div className="w-full lg:w-1/2">
-              <SectionHeading 
-                subtitle="A Transformação"
-                title="Com o Medainer, sua clínica reduz a desorganização da rotina e ganha mais controle da operação."
+              <SectionHeading
+                subtitle="Resultados Operacionais"
+                title="Com o Medainer, recepção e profissionais trabalham no mesmo ritmo."
                 centered={false}
               />
-              
+
               <div className="space-y-8">
                 {[
-                  { 
-                    title: "Agenda organizada para recepção e profissionais", 
-                    desc: "Visualize disponibilidade, encaixes, faltas e ocupação com rapidez para reduzir conflito e reagendamento desnecessário.",
+                  {
+                    title: 'Agenda organizada com menos choque de horários',
+                    desc: 'Visualize disponibilidade, encaixes e ocupação com rapidez para reduzir reagendamentos desnecessários.',
                     icon: Calendar
                   },
-                  { 
-                    title: "Recepção mais rápida e menos dependente de memória", 
-                    desc: "A equipe atende com mais contexto, confirma com mais agilidade e deixa de depender de anotações espalhadas.",
+                  {
+                    title: 'Recepção com mais contexto no atendimento',
+                    desc: 'Paciente, histórico e próximos passos no mesmo fluxo, sem depender de memória.',
                     icon: HeartPulse
                   },
-                  { 
-                    title: "Mais visão da operação no dia a dia", 
-                    desc: "Acompanhe rotina, ocupação e financeiro com mais rapidez, sem depender de controles paralelos ou fechamento tardio.",
+                  {
+                    title: 'Visão da operação e financeiro no mesmo painel',
+                    desc: 'Acompanhe evolução da rotina sem depender de conferência manual no fim do mês.',
                     icon: LayoutDashboard
                   },
-                  { 
-                    title: "Base operacional para crescer com padrão", 
-                    desc: "Estruture um fluxo que suporta mais pacientes, mais equipe e mais volume sem perder organização.",
+                  {
+                    title: 'Base para crescer com padrão',
+                    desc: 'Amplie equipe e volume mantendo processo e previsibilidade operacional.',
                     icon: TrendingUp
                   }
                 ].map((benefit, i) => (
-                  <motion.div 
-                    key={i}
+                  <motion.div
+                    key={benefit.title}
                     initial={{ opacity: 0, x: -20 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
@@ -453,23 +501,21 @@ export default function App() {
 
             <div className="w-full lg:w-1/2 relative max-w-xl lg:max-w-none">
               <div className="absolute -inset-3 sm:-inset-4 bg-brand-sand/50 rounded-[32px] sm:rounded-[40px] -z-10 rotate-3" />
-              <img 
-                src={clinicTeamImage}
-                alt="Clínica Organizada" 
-                className="rounded-[32px] sm:rounded-[40px] shadow-2xl w-full object-cover aspect-[4/5]"
-              />
+              <img src={clinicTeamImage} alt="Equipe clínica usando o Medainer" className="rounded-[32px] sm:rounded-[40px] shadow-2xl w-full object-cover aspect-[4/5]" />
               <div className="absolute bottom-4 right-4 lg:bottom-10 lg:-right-10 glass-card p-5 sm:p-8 rounded-3xl shadow-xl max-w-[240px] sm:max-w-xs hidden md:block">
                 <div className="flex gap-1 mb-4">
-                  {[1,2,3,4,5].map(i => <Star key={i} className="w-4 h-4 fill-brand-accent text-brand-accent" />)}
+                  {[1, 2, 3, 4, 5].map((i) => (
+                    <Star key={i} className="w-4 h-4 fill-brand-accent text-brand-accent" />
+                  ))}
                 </div>
                 <p className="text-brand-graphite font-medium italic mb-4">
-                  "Antes a rotina ficava espalhada entre mensagens, agenda e anotações. Hoje a equipe trabalha em um fluxo mais claro."
+                  "A equipe saiu de uma rotina reativa para um fluxo mais previsível em poucas semanas."
                 </p>
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-full bg-brand-sand" />
                   <div>
-                    <p className="text-sm font-bold">Implantação Medainer</p>
-                    <p className="text-xs text-brand-graphite/50">Organização operacional desde o início</p>
+                    <p className="text-sm font-bold">Clínica piloto</p>
+                    <p className="text-xs text-brand-graphite/50">Implantação guiada</p>
                   </div>
                 </div>
               </div>
@@ -478,14 +524,9 @@ export default function App() {
         </div>
       </section>
 
-      {/* --- Product Showcase --- */}
       <section className="section-padding bg-brand-sand/20">
         <div className="container mx-auto px-4 sm:px-6">
-          <SectionHeading
-            subtitle="Sistema Em Ação"
-            title="Veja como o Medainer organiza a rotina da clínica na prática."
-            centered={true}
-          />
+          <SectionHeading subtitle="Sistema em Ação" title="Visão real da operação em um único ambiente." centered={true} />
 
           <div className="grid gap-6 xl:grid-cols-12 xl:items-stretch">
             <motion.div
@@ -495,35 +536,29 @@ export default function App() {
               className="rounded-[32px] bg-brand-petroleum p-4 sm:p-6 shadow-2xl shadow-brand-petroleum/10 xl:col-span-7"
             >
               <div className="mb-4">
-                <div>
-                  <p className="text-[11px] uppercase tracking-[0.22em] text-brand-accent font-bold">Print 1</p>
-                  <h3 className="mt-2 text-2xl sm:text-3xl font-serif text-white">Dashboard geral da clínica</h3>
-                </div>
+                <p className="text-[11px] uppercase tracking-[0.22em] text-brand-accent font-bold">Visão de gestão</p>
+                <h3 className="mt-2 text-2xl sm:text-3xl font-serif text-white">Dashboard geral da clínica</h3>
               </div>
               <div className="mb-4 rounded-2xl border border-white/10 bg-white/5 p-4 text-sm text-white/75">
-                Acompanhe indicadores, ocupação e pontos de atenção da operação sem depender de planilhas ou conferências manuais.
+                Indicadores de ocupação, pendências e operação para decidir com mais velocidade.
               </div>
               <div className="overflow-hidden rounded-[24px] border border-white/10 xl:h-[540px]">
-                <img
-                  src={dashboardGeralImage}
-                  alt="Dashboard geral do Medainer"
-                  className="h-full w-full object-cover object-top"
-                />
+                <img src={dashboardGeralImage} alt="Dashboard geral do Medainer" className="h-full w-full object-cover object-top" />
               </div>
             </motion.div>
 
             <div className="grid gap-6 xl:col-span-5 xl:grid-rows-2">
               {[
                 {
-                  title: "Agenda e recepção",
-                  text: "A recepção trabalha com mais velocidade porque agenda, paciente e contexto de atendimento ficam no mesmo fluxo.",
-                  image: agendaImage,
+                  title: 'Agenda e recepção',
+                  text: 'Confirmações, reagendamentos e encaixes com mais clareza para o time.',
+                  image: agendaImage
                 },
                 {
-                  title: "Pacientes e cadastro",
-                  text: "A equipe encontra pacientes, histórico e dados essenciais sem perder tempo procurando informação em lugares diferentes.",
-                  image: pacientesImage,
-                },
+                  title: 'Pacientes e cadastro',
+                  text: 'Dados essenciais e histórico acessíveis sem depender de controles paralelos.',
+                  image: pacientesImage
+                }
               ].map((item, i) => (
                 <motion.div
                   key={item.title}
@@ -534,18 +569,11 @@ export default function App() {
                   className="rounded-[32px] border border-brand-graphite/8 bg-white p-4 sm:p-5 shadow-sm xl:flex xl:flex-col"
                 >
                   <div className="mb-4">
-                    <p className="text-[11px] uppercase tracking-[0.22em] text-brand-green font-bold">Print {i + 2}</p>
                     <h3 className="mt-2 text-2xl font-serif text-brand-graphite">{item.title}</h3>
                   </div>
-                  <div className="mb-4 rounded-2xl bg-brand-offwhite p-4 text-sm text-brand-graphite/70">
-                    {item.text}
-                  </div>
+                  <div className="mb-4 rounded-2xl bg-brand-offwhite p-4 text-sm text-brand-graphite/70">{item.text}</div>
                   <div className="overflow-hidden rounded-[22px] border border-brand-graphite/8 bg-brand-offwhite xl:mt-auto xl:h-[220px]">
-                    <img
-                      src={item.image}
-                      alt={item.title}
-                      className="h-full w-full object-cover object-top"
-                    />
+                    <img src={item.image} alt={item.title} className="h-full w-full object-cover object-top" />
                   </div>
                 </motion.div>
               ))}
@@ -555,70 +583,90 @@ export default function App() {
           <div className="mt-6 grid gap-6 lg:grid-cols-2">
             {[
               {
-                label: "Print 4",
-                title: "Prontuário digital",
-                text: "No atendimento, o profissional acessa o contexto clínico com mais rapidez e menos risco de informação perdida.",
-                image: prontuarioImage,
+                title: 'Prontuário digital',
+                text: 'No atendimento, o profissional acessa o contexto clínico sem perda de informação.',
+                image: prontuarioImage
               },
               {
-                label: "Print 5",
-                title: "Financeiro e recebimentos",
-                text: "O financeiro deixa de rodar separado da operação e passa a ser acompanhado com mais clareza no dia a dia.",
-                image: financeiroImage,
-              },
+                title: 'Financeiro integrado',
+                text: 'Receitas e despesas conectadas com a operação para visão de resultado real.',
+                image: financeiroImage
+              }
             ].map((item) => (
-              <div key={item.label} className="rounded-[28px] border border-brand-graphite/8 bg-white p-5 sm:p-6 shadow-sm">
-                <p className="text-[11px] uppercase tracking-[0.22em] text-brand-green font-bold">{item.label}</p>
+              <div key={item.title} className="rounded-[28px] border border-brand-graphite/8 bg-white p-5 sm:p-6 shadow-sm">
                 <p className="mt-3 text-xl font-serif text-brand-graphite">{item.title}</p>
-                <p className="mt-4 text-sm text-brand-graphite/70">
-                  {item.text}
-                </p>
-                {item.image && (
-                  <div className="mt-4 overflow-hidden rounded-[22px] border border-brand-graphite/8 bg-brand-offwhite lg:h-[300px]">
-                    <img
-                      src={item.image}
-                      alt={item.title}
-                      className="h-full w-full object-cover object-top"
-                    />
-                  </div>
-                )}
+                <p className="mt-4 text-sm text-brand-graphite/70">{item.text}</p>
+                <div className="mt-4 overflow-hidden rounded-[22px] border border-brand-graphite/8 bg-brand-offwhite lg:h-[300px]">
+                  <img src={item.image} alt={item.title} className="h-full w-full object-cover object-top" />
+                </div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* --- Features Section --- */}
       <section id="funcionalidades" className="section-padding bg-brand-offwhite">
         <div className="container mx-auto px-4 sm:px-6">
-          <SectionHeading 
-            subtitle="O que entregamos"
-            title="Recursos para organizar a rotina da clínica sem depender de controles paralelos."
+          <SectionHeading
+            subtitle="Diferenciais"
+            title="Recursos para escalar operação clínica com mais previsibilidade."
             centered={true}
           />
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
-              { icon: UserCheck, title: "Gestão de Pacientes", desc: "Cadastro completo, histórico consolidado e informações rápidas para cada atendimento." },
-              { icon: Calendar, title: "Agenda da Clínica", desc: "Horários, salas e profissionais organizados para reduzir conflito e retrabalho." },
-              { icon: Users, title: "Controle de Equipe", desc: "Permissões e rotina definidas para cada pessoa trabalhar com mais padrão." },
-              { icon: TrendingUp, title: "Financeiro Integrado", desc: "Receitas, cobranças e visão de resultado no mesmo sistema da operação." },
-              { icon: ClipboardList, title: "Prontuário Digital", desc: "Registro clínico estruturado para consultar durante o atendimento sem perder contexto." },
-              { icon: MessageCircle, title: "Rotina com WhatsApp", desc: "Mais contexto para responder pacientes, confirmar horários e acompanhar o atendimento." },
-              { icon: Zap, title: "Recursos para Ganhar Agilidade", desc: "Ferramentas para reduzir tarefas repetitivas e acelerar a rotina da equipe." },
-              { icon: ShieldCheck, title: "Informações Mais Protegidas", desc: "Dados centralizados com mais controle para a clínica operar com segurança." }
+              {
+                icon: UserCheck,
+                title: 'Gestão de pacientes',
+                desc: 'Cadastro, histórico e dados de atendimento acessíveis pela equipe.'
+              },
+              {
+                icon: Calendar,
+                title: 'Agenda da clínica',
+                desc: 'Horários, profissionais e disponibilidade em uma visão operacional única.'
+              },
+              {
+                icon: Users,
+                title: 'Permissões por função',
+                desc: 'Perfis por papel para administração, recepção e corpo clínico.'
+              },
+              {
+                icon: TrendingUp,
+                title: 'Financeiro integrado',
+                desc: 'Receitas e despesas no mesmo sistema da operação diária.'
+              },
+              {
+                icon: ClipboardList,
+                title: 'Prontuário digital',
+                desc: 'Registro clínico estruturado para atendimento com mais contexto.'
+              },
+              {
+                icon: MessageCircle,
+                title: 'WhatsApp com contexto',
+                desc: 'Conversa e acompanhamento de atendimento no fluxo operacional.'
+              },
+              {
+                icon: LayoutDashboard,
+                title: 'Painel de operação',
+                desc: 'Leitura rápida de ocupação, pendências e andamento da clínica.'
+              },
+              {
+                icon: ShieldCheck,
+                title: 'Segurança e controle',
+                desc: 'Isolamento por clínica (multi-tenant) e controle de acesso por perfil.'
+              }
             ].map((feature, i) => (
-              <motion.div 
-                key={i}
+              <motion.div
+                key={feature.title}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.05 }}
                 className="p-6 sm:p-8 rounded-3xl bg-white border border-brand-graphite/5 hover:shadow-xl hover:shadow-brand-petroleum/5 transition-all duration-500"
               >
-                  <div className="w-12 h-12 rounded-2xl bg-brand-petroleum/5 flex items-center justify-center text-brand-petroleum mb-6">
-                    <feature.icon className="w-6 h-6" />
-                  </div>
+                <div className="w-12 h-12 rounded-2xl bg-brand-petroleum/5 flex items-center justify-center text-brand-petroleum mb-6">
+                  <feature.icon className="w-6 h-6" />
+                </div>
                 <h3 className="text-lg font-bold text-brand-graphite mb-3">{feature.title}</h3>
                 <p className="text-sm text-brand-graphite/60 leading-relaxed">{feature.desc}</p>
               </motion.div>
@@ -627,209 +675,179 @@ export default function App() {
         </div>
       </section>
 
-      {/* --- How It Works --- */}
-      <section className="section-padding bg-brand-petroleum text-white">
+      <section id="planos" className="section-padding bg-white">
         <div className="container mx-auto px-4 sm:px-6">
-          <SectionHeading 
-            subtitle="Passo a Passo"
-            title="Como o Medainer organiza a rotina da sua clínica."
-            centered={true}
-            dark={true}
-          />
+          <SectionHeading subtitle="Investimento" title="Escolha o plano ideal para o estágio da sua clínica." centered={true} />
 
-          <div className="grid sm:grid-cols-2 xl:grid-cols-4 gap-8 md:gap-12 relative">
-            {/* Connecting line for desktop */}
-            <div className="absolute top-1/4 left-0 right-0 h-0.5 bg-white/10 hidden xl:block" />
-            
+          <p className="text-center max-w-3xl mx-auto -mt-4 mb-10 text-base md:text-lg text-brand-graphite/60 leading-relaxed">
+            Pagamento seguro via Stripe. Valores podem variar conforme escopo de implantação e necessidades da clínica.
+          </p>
+
+          <div className="grid lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
             {[
-              { step: "01", title: "Cadastre", desc: "Organize profissionais, serviços, agenda e permissões com uma base operacional clara." },
-              { step: "02", title: "Centralize", desc: "Reúna pacientes, histórico, atendimento e recepção no mesmo sistema." },
-              { step: "03", title: "Atenda", desc: "Faça a equipe trabalhar no mesmo fluxo, com menos retrabalho e menos informação solta." },
-              { step: "04", title: "Acompanhe", desc: "Tenha mais visibilidade da rotina para decidir com mais rapidez e mais controle." }
-            ].map((item, i) => (
-              <motion.div 
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
+              {
+                name: 'Starter',
+                price: 'R$ 297',
+                subtitle: 'Base operacional',
+                text: 'Para clínicas em fase inicial de organização.',
+                features: [
+                  'Agenda e gestão de pacientes',
+                  'Prontuário digital',
+                  'Financeiro essencial',
+                  'Até 3 usuários',
+                  'Até 2 profissionais',
+                  'Suporte em horário comercial'
+                ],
+                cta: 'Assinar Starter',
+                href: STRIPE_STARTER_URL,
+                featured: false
+              },
+              {
+                name: 'Pro',
+                price: 'R$ 497',
+                subtitle: 'Mais escolhido',
+                text: 'Para clínicas em crescimento que precisam de padrão e velocidade.',
+                features: [
+                  'Tudo do Starter',
+                  'Mais automação na rotina',
+                  'WhatsApp com contexto',
+                  'Até 8 usuários',
+                  'Até 6 profissionais',
+                  'Suporte prioritário'
+                ],
+                cta: 'Assinar Pro',
+                href: STRIPE_PRO_URL,
+                featured: true
+              },
+              {
+                name: 'Scale',
+                price: 'R$ 897',
+                subtitle: 'Expansão com controle',
+                text: 'Para operações maiores com mais equipe e volume.',
+                features: [
+                  'Tudo do Pro',
+                  'Até 20 usuários',
+                  'Até 15 profissionais',
+                  'Acompanhamento mensal',
+                  'Treinamento avançado',
+                  'Suporte dedicado'
+                ],
+                cta: 'Assinar Scale',
+                href: STRIPE_SCALE_URL,
+                featured: false
+              }
+            ].map((plan, index) => (
+              <motion.div
+                key={plan.name}
+                initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                className="relative z-10 text-center"
+                transition={{ delay: index * 0.1 }}
+                className={`p-8 sm:p-10 rounded-[32px] sm:rounded-[40px] flex flex-col ${
+                  plan.featured
+                    ? 'bg-brand-petroleum text-white lg:scale-105 shadow-2xl shadow-brand-petroleum/20 z-10'
+                    : 'bg-brand-offwhite border border-brand-graphite/5'
+                }`}
               >
-                <div className="w-16 h-16 rounded-full bg-brand-accent text-brand-petroleum flex items-center justify-center text-2xl font-serif font-bold mx-auto mb-8 shadow-lg shadow-brand-accent/20">
-                  {item.step}
+                <div className="mb-8">
+                  <p
+                    className={`text-[11px] uppercase tracking-[0.22em] font-bold mb-4 ${
+                      plan.featured ? 'text-brand-accent' : 'text-brand-green'
+                    }`}
+                  >
+                    {plan.subtitle}
+                  </p>
+                  <h3 className="text-2xl font-serif font-medium mb-2">{plan.name}</h3>
+                  <p className={plan.featured ? 'text-white/60 text-sm' : 'text-brand-graphite/50 text-sm'}>{plan.text}</p>
                 </div>
-                <h3 className="text-xl font-serif font-medium mb-4">{item.title}</h3>
-                <p className="text-white/60 leading-relaxed">{item.desc}</p>
+                <div className="mb-8">
+                  <span className={`text-4xl font-serif font-bold ${plan.featured ? 'text-brand-accent' : 'text-brand-petroleum'}`}>
+                    {plan.price}
+                  </span>
+                  <span className={plan.featured ? 'text-white/60 ml-2' : 'text-brand-graphite/50 ml-2'}>/mês</span>
+                </div>
+                <ul className="space-y-4 mb-10 flex-grow">
+                  {plan.features.map((item) => (
+                    <li key={item} className={`flex items-start gap-3 text-sm ${plan.featured ? 'text-white/80' : 'text-brand-graphite/70'}`}>
+                      <Check className={`w-5 h-5 shrink-0 ${plan.featured ? 'text-brand-accent' : 'text-brand-green'}`} />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+                <div className="space-y-4">
+                  <Button
+                    variant={plan.featured ? 'secondary' : 'primary'}
+                    href={plan.href}
+                    className="w-full"
+                    trackEventName="click_checkout"
+                    trackPayload={{ plan: plan.name.toLowerCase() }}
+                  >
+                    {plan.cta}
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    href={WHATSAPP_URL}
+                    className={`w-full text-xs ${plan.featured ? 'text-white/70 hover:text-white' : ''}`}
+                    trackEventName="click_whatsapp"
+                    trackPayload={{ source: `plan_${plan.name.toLowerCase()}` }}
+                  >
+                    Falar com consultor
+                  </Button>
+                </div>
               </motion.div>
             ))}
           </div>
 
-          <div className="mt-14 md:mt-20 text-center">
-            <Button variant="secondary" href="#planos" className="px-10 md:px-12 py-4 text-base sm:text-lg">
-              Escolher plano ideal
-            </Button>
+          <div className="mt-12 overflow-x-auto rounded-2xl border border-brand-graphite/10 bg-brand-offwhite/40">
+            <table className="min-w-full text-sm">
+              <thead>
+                <tr className="border-b border-brand-graphite/10 text-left text-brand-graphite/70">
+                  <th className="px-5 py-4 font-semibold">Comparativo</th>
+                  <th className="px-5 py-4 font-semibold">Starter</th>
+                  <th className="px-5 py-4 font-semibold">Pro</th>
+                  <th className="px-5 py-4 font-semibold">Scale</th>
+                </tr>
+              </thead>
+              <tbody className="text-brand-graphite/80">
+                {[
+                  ['Usuários', 'Até 3', 'Até 8', 'Até 20'],
+                  ['Profissionais', 'Até 2', 'Até 6', 'Até 15'],
+                  ['WhatsApp com contexto', 'Base', 'Completo', 'Completo'],
+                  ['Suporte', 'Comercial', 'Prioritário', 'Dedicado']
+                ].map((row) => (
+                  <tr key={row[0]} className="border-b border-brand-graphite/10 last:border-b-0">
+                    {row.map((cell) => (
+                      <td key={cell} className="px-5 py-4">
+                        {cell}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
       </section>
 
-      {/* --- Pricing Plans --- */}
-      <section id="planos" className="section-padding bg-white">
-        <div className="container mx-auto px-4 sm:px-6">
-          <SectionHeading 
-            subtitle="Investimento"
-            title="Escolha o plano ideal para o momento da sua clínica."
-            centered={true}
-          />
-
-          <p className="text-center max-w-3xl mx-auto -mt-4 mb-10 text-base md:text-lg text-brand-graphite/60 leading-relaxed">
-            Cada plano atende um nível de estrutura e volume, desde clínicas em fase de organização até operações maiores.
-          </p>
-
-          <div className="grid lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            {/* Starter */}
-            <motion.div 
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="p-8 sm:p-10 rounded-[32px] sm:rounded-[40px] bg-brand-offwhite border border-brand-graphite/5 flex flex-col"
-            >
-              <div className="mb-8">
-                <p className="text-[11px] uppercase tracking-[0.22em] text-brand-green font-bold mb-4">Base operacional</p>
-                <h3 className="text-2xl font-serif font-medium text-brand-graphite mb-2">Starter</h3>
-                <p className="text-brand-graphite/50 text-sm">Ideal para clínicas menores ou em fase inicial de organização.</p>
-              </div>
-              <div className="mb-8">
-                <span className="text-4xl font-serif font-bold text-brand-petroleum">R$ 297</span>
-                <span className="text-brand-graphite/50 ml-2">/mês</span>
-              </div>
-              <ul className="space-y-4 mb-10 flex-grow">
-                {[
-                  "Agenda e gestão de pacientes",
-                  "Prontuário digital organizado",
-                  "Financeiro essencial",
-                  "Até 3 usuários",
-                  "Até 2 profissionais",
-                  "Suporte em horário comercial"
-                ].map((item, i) => (
-                  <li key={i} className="flex items-start gap-3 text-sm text-brand-graphite/70">
-                    <Check className="w-5 h-5 text-brand-green flex-shrink-0" />
-                    {item}
-                  </li>
-                ))}
-              </ul>
-              <div className="space-y-4">
-                <Button variant="primary" href={STRIPE_STARTER_URL} className="w-full">Começar com Starter</Button>
-                <Button variant="ghost" href={WHATSAPP_URL} className="w-full text-xs">Falar com consultor</Button>
-              </div>
-            </motion.div>
-
-            {/* Pro */}
-            <motion.div 
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.1 }}
-              className="p-8 sm:p-10 rounded-[32px] sm:rounded-[40px] bg-brand-petroleum text-white flex flex-col relative lg:scale-105 shadow-2xl shadow-brand-petroleum/20 z-10"
-            >
-              <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-brand-accent text-brand-petroleum px-4 py-1 rounded-full text-xs font-bold uppercase tracking-widest">
-                Escolha estratégica
-              </div>
-              <div className="mb-8">
-                <p className="text-[11px] uppercase tracking-[0.22em] text-brand-accent font-bold mb-4">Alta performance</p>
-                <h3 className="text-2xl font-serif font-medium mb-2">Pro</h3>
-                <p className="text-white/50 text-sm">Ideal para clínicas em crescimento que precisam de mais padrão e produtividade.</p>
-              </div>
-              <div className="mb-8">
-                <span className="text-4xl font-serif font-bold text-brand-accent">R$ 497</span>
-                <span className="text-white/50 ml-2">/mês</span>
-              </div>
-              <ul className="space-y-4 mb-10 flex-grow">
-                {[
-                  "Tudo do Starter",
-                  "Recursos para agilizar o atendimento",
-                  "Mais automação na rotina da equipe",
-                  "Até 8 usuários",
-                  "Até 6 profissionais",
-                  "Treinamento da equipe",
-                  "Suporte prioritário"
-                ].map((item, i) => (
-                  <li key={i} className="flex items-start gap-3 text-sm text-white/80">
-                    <Check className="w-5 h-5 text-brand-accent flex-shrink-0" />
-                    {item}
-                  </li>
-                ))}
-              </ul>
-              <div className="space-y-4">
-                <Button variant="secondary" href={STRIPE_PRO_URL} className="w-full">Escolher Pro</Button>
-                <Button variant="ghost" href={WHATSAPP_URL} className="w-full text-white/70 hover:text-white text-xs">Falar com especialista</Button>
-              </div>
-            </motion.div>
-
-            {/* Scale */}
-            <motion.div 
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.2 }}
-              className="p-8 sm:p-10 rounded-[32px] sm:rounded-[40px] bg-brand-offwhite border border-brand-graphite/5 flex flex-col"
-            >
-              <div className="mb-8">
-                <p className="text-[11px] uppercase tracking-[0.22em] text-brand-green font-bold mb-4">Expansão com controle</p>
-                <h3 className="text-2xl font-serif font-medium text-brand-graphite mb-2">Scale</h3>
-                <p className="text-brand-graphite/50 text-sm">Ideal para clínicas com mais profissionais, mais volume e operação mais complexa.</p>
-              </div>
-              <div className="mb-8">
-                <span className="text-4xl font-serif font-bold text-brand-petroleum">R$ 897</span>
-                <span className="text-brand-graphite/50 ml-2">/mês</span>
-              </div>
-              <ul className="space-y-4 mb-10 flex-grow">
-                {[
-                  "Tudo do Pro",
-                  "Até 20 usuários",
-                  "Até 15 profissionais",
-                  "Acompanhamento mensal",
-                  "Treinamento avançado de equipe",
-                  "Suporte dedicado"
-                ].map((item, i) => (
-                  <li key={i} className="flex items-start gap-3 text-sm text-brand-graphite/70">
-                    <Check className="w-5 h-5 text-brand-green flex-shrink-0" />
-                    {item}
-                  </li>
-                ))}
-              </ul>
-              <div className="space-y-4">
-                <Button variant="primary" href={STRIPE_SCALE_URL} className="w-full">Escolher Scale</Button>
-                <Button variant="ghost" href={WHATSAPP_URL} className="w-full text-xs">Falar com consultor</Button>
-              </div>
-            </motion.div>
-          </div>
-          
-          <p className="text-center mt-12 text-brand-graphite/40 text-sm">
-            Precisa de uma proposta personalizada? <a href={WHATSAPP_URL} className="text-brand-petroleum font-bold underline">Converse com nosso time no WhatsApp</a>.
-          </p>
-        </div>
-      </section>
-
-      {/* --- Credibility --- */}
       <section className="section-padding bg-brand-sand/20">
         <div className="container mx-auto px-4 sm:px-6 text-center">
           <div className="max-w-4xl mx-auto">
-            <SectionHeading 
+            <SectionHeading
               subtitle="Confiança"
-              title="Implantação guiada, suporte próximo e mais clareza para a equipe usar o sistema no dia a dia."
+              title="Implantação guiada, suporte humano e operação mais previsível desde o início."
               centered={true}
             />
             <p className="text-lg md:text-xl text-brand-graphite/60 mb-10 md:mb-12 leading-relaxed">
-              O Medainer foi pensado para ajudar clínicas a implantar um fluxo mais organizado sem complicar a rotina da recepção, dos profissionais e da gestão.
+              O Medainer foi desenhado para organizar a rotina da clínica sem travar a equipe na migração.
             </p>
-            
+
             <div className="grid md:grid-cols-3 gap-8 md:gap-12">
               {[
-                { label: "Implantação Guiada", desc: "Entrada acompanhada para colocar a clínica em operação com mais segurança." },
-                { label: "Rotina Mais Clara", desc: "Mais visibilidade sobre agenda, pacientes, equipe e operação." },
-                { label: "Suporte Humano", desc: "Acompanhamento próximo para a equipe usar o sistema com confiança." }
-              ].map((item, i) => (
-                <div key={i}>
+                { label: 'Implantação guiada', desc: 'Entrada planejada para sua equipe operar com segurança.' },
+                { label: 'Rotina mais clara', desc: 'Agenda, pacientes e financeiro no mesmo fluxo diário.' },
+                { label: 'Suporte humano', desc: 'Acompanhamento conforme plano e fase de implantação.' }
+              ].map((item) => (
+                <div key={item.label}>
                   <h4 className="text-lg font-bold text-brand-petroleum mb-2">{item.label}</h4>
                   <p className="text-sm text-brand-graphite/60">{item.desc}</p>
                 </div>
@@ -839,41 +857,36 @@ export default function App() {
         </div>
       </section>
 
-      {/* --- FAQ --- */}
       <section id="faq" className="section-padding bg-white">
         <div className="container mx-auto px-4 sm:px-6">
           <div className="max-w-3xl mx-auto">
-            <SectionHeading 
-              subtitle="Dúvidas Frequentes"
-              title="Perguntas comuns antes de contratar o Medainer."
-              centered={true}
-            />
-            
+            <SectionHeading subtitle="Objeções comuns" title="Perguntas antes de contratar o Medainer." centered={true} />
+
             <div className="mt-12">
               {[
-                { 
-                  q: "O Medainer serve para qual tipo de clínica?", 
-                  a: "O Medainer atende clínicas médicas, odontológicas, de psicologia, estética, fisioterapia e outras operações de saúde que precisam organizar agenda, pacientes, prontuário, equipe e financeiro em um só sistema." 
+                {
+                  q: 'Em quanto tempo minha clínica entra em operação?',
+                  a: 'Em geral, em até 14 dias com implantação guiada, dependendo do volume de dados e disponibilidade da equipe.'
                 },
-                { 
-                  q: "É difícil começar a usar?", 
-                  a: "Não. A implantação foi pensada para ser simples e guiada, para a clínica começar a usar o sistema sem travar a rotina." 
+                {
+                  q: 'Minha equipe vai conseguir usar no dia a dia?',
+                  a: 'Sim. O onboarding é feito por função (recepção, profissionais e gestão), com rotina prática.'
                 },
-                { 
-                  q: "Minha equipe vai conseguir usar?", 
-                  a: "Sim. O sistema foi pensado para recepção, profissionais e gestão trabalharem no mesmo fluxo, com uma navegação prática e sem complexidade desnecessária." 
+                {
+                  q: 'Posso migrar dados que já tenho?',
+                  a: 'Sim. Avaliamos o cenário na etapa de diagnóstico e definimos a melhor estratégia de migração.'
                 },
-                { 
-                  q: "Como sei qual plano faz mais sentido para minha clínica?", 
-                  a: "Você pode comparar os planos pela estrutura da sua operação ou falar com nosso time no WhatsApp para entender qual opção combina melhor com seu momento." 
+                {
+                  q: 'Como funciona suporte?',
+                  a: 'Suporte humano conforme o plano contratado e etapa de implantação/operação.'
                 },
-                { 
-                  q: "Existe suporte?", 
-                  a: "Sim. O suporte é humano e acompanha sua equipe para garantir melhor uso do sistema no dia a dia." 
+                {
+                  q: 'Tem contrato longo ou multa de saída?',
+                  a: 'A modalidade comercial e condições contratuais são apresentadas antes da assinatura para total clareza.'
                 },
-                { 
-                  q: "O sistema ajuda mesmo a organizar a agenda da clínica?", 
-                  a: "Sim. A agenda ajuda a reduzir conflitos, agilizar reagendamentos, organizar encaixes e melhorar a visão da ocupação da clínica." 
+                {
+                  q: 'Como funciona segurança e LGPD?',
+                  a: 'A plataforma opera com isolamento por clínica e controle de acesso por perfil, com políticas publicadas de privacidade e LGPD.'
                 }
               ].map((item, i) => (
                 <FAQItem key={i} question={item.q} answer={item.a} />
@@ -883,24 +896,37 @@ export default function App() {
         </div>
       </section>
 
-      {/* --- Final CTA --- */}
       <section className="section-padding bg-brand-graphite text-white relative overflow-hidden">
         <div className="absolute top-0 right-0 w-64 h-64 bg-brand-accent/10 blur-[100px] rounded-full" />
         <div className="absolute bottom-0 left-0 w-96 h-96 bg-brand-green/10 blur-[120px] rounded-full" />
-        
-        <div className="container mx-auto px-4 sm:px-6 text-center relative z-10">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif font-medium mb-6 md:mb-8 max-w-3xl mx-auto leading-tight">
-            Pare de depender de planilhas, memória e conversas soltas para tocar a operação da sua clínica.
-          </h2>
-          <p className="text-lg md:text-xl text-white/60 mb-10 md:mb-12 max-w-2xl mx-auto">
-            Se você quer mais clareza na agenda, mais contexto no atendimento e mais controle sobre a rotina, o Medainer é o próximo passo.
-          </p>
-          
-          <div className="flex flex-col sm:flex-row gap-6 justify-center">
-            <Button variant="secondary" href="#planos" className="px-10 md:px-12 py-4 text-base sm:text-lg">
+
+        <div className="container mx-auto px-4 sm:px-6 relative z-10">
+          <div className="max-w-3xl mx-auto text-center mb-10">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif font-medium mb-6 md:mb-8 leading-tight">
+              Organize a operação da sua clínica em um sistema único.
+            </h2>
+            <p className="text-lg md:text-xl text-white/70">
+              Compare os planos e fale com nosso time para começar a implantação.
+            </p>
+          </div>
+
+          <div className="max-w-3xl mx-auto flex flex-col sm:flex-row gap-4 justify-center">
+            <Button
+              variant="secondary"
+              href="#planos"
+              className="px-10 md:px-12 py-4 text-base sm:text-lg"
+              trackEventName="view_pricing"
+              trackPayload={{ source: 'final_cta' }}
+            >
               Ver planos
             </Button>
-            <Button variant="outline" href={WHATSAPP_URL} className="px-10 md:px-12 py-4 text-base sm:text-lg border-white text-white hover:bg-white hover:text-brand-graphite">
+            <Button
+              variant="outline"
+              href={WHATSAPP_URL}
+              className="px-10 md:px-12 py-4 text-base sm:text-lg border-white text-white hover:bg-white hover:text-brand-graphite"
+              trackEventName="click_whatsapp"
+              trackPayload={{ source: 'final_cta' }}
+            >
               <MessageCircle className="w-5 h-5 mr-2" />
               Falar no WhatsApp
             </Button>
@@ -908,46 +934,44 @@ export default function App() {
         </div>
       </section>
 
-      {/* --- Footer --- */}
       <footer className="py-12 bg-white border-t border-brand-graphite/5">
         <div className="container mx-auto px-4 sm:px-6">
           <div className="flex flex-col md:flex-row justify-between items-center gap-8">
             <div className="flex items-center gap-2">
-              <img
-                src={symbolMedainerImage}
-                alt="Símbolo Medainer"
-                className="w-8 h-8 rounded-lg object-contain"
-              />
+              <img src={symbolMedainerImage} alt="Símbolo Medainer" className="w-8 h-8 rounded-lg object-contain" />
               <span className="text-xl font-serif font-bold tracking-tight text-brand-petroleum">Medainer</span>
             </div>
-            
+
             <div className="flex flex-wrap justify-center gap-x-6 gap-y-3 text-sm text-brand-graphite/50">
-              <a href="#" className="hover:text-brand-petroleum transition-colors">Termos de Uso</a>
-              <a href="#" className="hover:text-brand-petroleum transition-colors">Privacidade</a>
-              <a href="#" className="hover:text-brand-petroleum transition-colors">Cookies</a>
+              <a href={TERMS_URL} className="hover:text-brand-petroleum transition-colors">
+                Termos de Uso
+              </a>
+              <a href={PRIVACY_URL} className="hover:text-brand-petroleum transition-colors">
+                Privacidade
+              </a>
+              <a href={LGPD_URL} className="hover:text-brand-petroleum transition-colors">
+                LGPD
+              </a>
             </div>
-            
-            <p className="text-sm text-brand-graphite/40">
-              © {new Date().getFullYear()} Medainer. Todos os direitos reservados.
-            </p>
+
+            <p className="text-sm text-brand-graphite/40">© {new Date().getFullYear()} Medainer. Todos os direitos reservados.</p>
           </div>
         </div>
       </footer>
 
-      {/* --- Floating WhatsApp Button --- */}
       <motion.a
         href={WHATSAPP_URL}
         initial={{ scale: 0, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         whileHover={{ scale: 1.1 }}
+        onClick={() => trackEvent('click_whatsapp', { source: 'floating_button' })}
         className="fixed bottom-5 right-4 sm:bottom-8 sm:right-8 z-50 w-14 h-14 sm:w-16 sm:h-16 bg-[#25D366] text-white rounded-full flex items-center justify-center shadow-2xl shadow-[#25D366]/40 group"
       >
         <MessageCircle className="w-7 h-7 sm:w-8 sm:h-8" />
         <span className="absolute right-full mr-4 bg-white text-brand-graphite px-4 py-2 rounded-xl text-sm font-bold shadow-xl opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none border border-brand-graphite/5 hidden sm:block">
-          Falar com Especialista
+          Agendar demo
         </span>
       </motion.a>
-
     </div>
   );
 }
