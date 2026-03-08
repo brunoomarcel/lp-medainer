@@ -211,13 +211,13 @@ export default function App() {
             <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8 }}>
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-green/10 text-brand-green text-[11px] sm:text-xs font-bold tracking-wider uppercase mb-6 md:mb-8">
                 <ShieldCheck className="w-4 h-4" />
-                SaaS para clínicas e consultórios
+                Software de gestão clínica com implantação guiada
               </div>
               <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-serif font-medium leading-[1.1] text-brand-graphite mb-6 md:mb-8 text-balance">
-                Reduza faltas e retrabalho em até 30 dias com uma operação <span className="text-brand-green italic">mais organizada.</span>
+                Organize agenda, pacientes e operação da sua clínica em um sistema <span className="text-brand-green italic">único.</span>
               </h1>
               <p className="text-base sm:text-lg md:text-xl text-brand-graphite/70 mb-8 md:mb-10 max-w-xl leading-relaxed">
-                Agenda, pacientes, prontuário, financeiro e WhatsApp no mesmo fluxo para recepção, profissionais e gestão.
+                Agenda, pacientes, prontuário, financeiro e automações no mesmo fluxo para recepção, profissionais e gestão.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 mb-10 md:mb-12">
@@ -229,7 +229,7 @@ export default function App() {
                   trackPayload={{ source: 'hero_primary' }}
                 >
                   <MessageCircle className="w-5 h-5 mr-2" />
-                  Agendar demonstração de 20 min
+                  Agendar demonstração
                 </Button>
                 <Button
                   variant="outline"
@@ -245,8 +245,8 @@ export default function App() {
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
                 {[
                   { icon: Calendar, text: 'Implantação guiada em até 14 dias' },
-                  { icon: Users, text: 'Planos para 3, 8 ou 20 usuários' },
-                  { icon: ClipboardList, text: 'Suporte humano conforme o plano' }
+                  { icon: Users, text: 'Planos para diferentes tamanhos de equipe' },
+                  { icon: ClipboardList, text: 'Onboarding e suporte humano' }
                 ].map((item, i) => (
                   <div key={i} className="flex items-center gap-3 text-sm font-medium text-brand-graphite/60">
                     <div className="w-8 h-8 rounded-full bg-white shadow-sm flex items-center justify-center text-brand-green">
@@ -306,7 +306,7 @@ export default function App() {
         <div className="container mx-auto px-4 sm:px-6">
           <SectionHeading
             subtitle="O Desafio da Rotina"
-            title="Quando a clínica depende de planilhas, memória e mensagens soltas, perde tempo, contexto e margem."
+            title="Quando a clínica depende de planilhas, memória e mensagens soltas, a operação perde ritmo."
             centered={true}
             dark={true}
           />
@@ -319,11 +319,11 @@ export default function App() {
               },
               {
                 title: 'Excesso de mensagens',
-                desc: 'Mensagens se perdem, pacientes ficam sem retorno e o atendimento perde ritmo.'
+                desc: 'Mensagens se perdem, pacientes ficam sem retorno e o atendimento perde padrão.'
               },
               {
                 title: 'Retrabalho constante',
-                desc: 'A mesma informação aparece em planilha, papel e conversa de WhatsApp.'
+                desc: 'A mesma informação aparece em planilha, papel e conversa espalhada.'
               },
               {
                 title: 'Falta de previsibilidade',
@@ -361,19 +361,19 @@ export default function App() {
         <div className="container mx-auto px-4 sm:px-6">
           <SectionHeading
             subtitle="Fit Ideal"
-            title="Para quem o Medainer é indicado e quando não faz sentido."
+            title="Para quem o Medainer faz sentido e quando não é a melhor escolha."
             centered={true}
           />
 
           <div className="grid lg:grid-cols-2 gap-6 max-w-5xl mx-auto">
             <div className="rounded-3xl border border-brand-green/20 bg-brand-green/5 p-7">
-              <h3 className="text-2xl font-serif text-brand-graphite mb-4">É para sua clínica se você:</h3>
+              <h3 className="text-2xl font-serif text-brand-graphite mb-4">Faz sentido para sua clínica se você:</h3>
               <ul className="space-y-3 text-brand-graphite/80">
                 {[
                   'Quer centralizar agenda, pacientes, prontuário e financeiro em um sistema único.',
                   'Tem equipe de recepção e profissionais que precisam trabalhar no mesmo fluxo.',
-                  'Quer reduzir faltas, reagendamentos e ruído operacional.',
-                  'Precisa de implantação guiada e suporte próximo na entrada.'
+                  'Quer ganhar padrão operacional, visibilidade e controle.',
+                  'Valoriza implantação guiada para colocar a operação de pé com mais segurança.'
                 ].map((item) => (
                   <li key={item} className="flex items-start gap-3">
                     <Check className="w-5 h-5 text-brand-green shrink-0 mt-0.5" />
@@ -388,8 +388,8 @@ export default function App() {
                 {[
                   'Busca apenas agenda básica sem rotina de equipe e operação.',
                   'Não quer padronizar processos de recepção e atendimento.',
-                  'Prefere manter dados em múltiplos sistemas desconectados.',
-                  'Não tem disponibilidade mínima para onboarding inicial.'
+                  'Prefere manter dados em vários sistemas desconectados.',
+                  'Não tem disponibilidade mínima para o onboarding inicial.'
                 ].map((item) => (
                   <li key={item} className="flex items-start gap-3">
                     <X className="w-5 h-5 text-brand-petroleum shrink-0 mt-0.5" />
@@ -404,16 +404,16 @@ export default function App() {
 
       <section className="section-padding bg-brand-petroleum text-white">
         <div className="container mx-auto px-4 sm:px-6">
-          <SectionHeading subtitle="Implantação" title="Como sua clínica entra em operação em 14 dias." centered={true} dark={true} />
+          <SectionHeading subtitle="Implantação" title="Como sua clínica entra em operação com apoio do nosso time." centered={true} dark={true} />
 
           <div className="grid sm:grid-cols-2 xl:grid-cols-4 gap-8 md:gap-12 relative">
             <div className="absolute top-1/4 left-0 right-0 h-0.5 bg-white/10 hidden xl:block" />
 
             {[
-              { step: '01', title: 'Diagnóstico', desc: 'Mapeamos agenda, equipe, serviços e rotina da recepção.' },
+              { step: '01', title: 'Diagnóstico', desc: 'Entendemos agenda, equipe, serviços e rotina da recepção.' },
               { step: '02', title: 'Configuração', desc: 'Parametrizamos perfis, especialidades, serviços e horários.' },
-              { step: '03', title: 'Onboarding', desc: 'Treinamos o time com fluxo guiado por função.' },
-              { step: '04', title: 'Acompanhamento', desc: 'Ajustamos operação e medimos ganhos nas primeiras semanas.' }
+              { step: '03', title: 'Onboarding', desc: 'Treinamos a equipe com fluxo guiado por função.' },
+              { step: '04', title: 'Entrada em operação', desc: 'Acompanhamos os primeiros dias para ajustar o uso real da clínica.' }
             ].map((item, i) => (
               <motion.div
                 key={item.step}
@@ -440,7 +440,7 @@ export default function App() {
               trackEventName="click_whatsapp"
               trackPayload={{ source: 'implementation_section' }}
             >
-              Agendar demonstração
+              Falar com especialista
             </Button>
           </div>
         </div>
@@ -452,7 +452,7 @@ export default function App() {
             <div className="w-full lg:w-1/2">
               <SectionHeading
                 subtitle="Resultados Operacionais"
-                title="Com o Medainer, recepção e profissionais trabalham no mesmo ritmo."
+                title="Com o Medainer, recepção, profissionais e gestão trabalham com mais contexto."
                 centered={false}
               />
 
@@ -460,7 +460,7 @@ export default function App() {
                 {[
                   {
                     title: 'Agenda organizada com menos choque de horários',
-                    desc: 'Visualize disponibilidade, encaixes e ocupação com rapidez para reduzir reagendamentos desnecessários.',
+                    desc: 'Visualize disponibilidade, encaixes e ocupação com rapidez para reduzir retrabalho operacional.',
                     icon: Calendar
                   },
                   {
@@ -469,13 +469,13 @@ export default function App() {
                     icon: HeartPulse
                   },
                   {
-                    title: 'Visão da operação e financeiro no mesmo painel',
-                    desc: 'Acompanhe evolução da rotina sem depender de conferência manual no fim do mês.',
+                    title: 'Visão da operação e do financeiro no mesmo ambiente',
+                    desc: 'Acompanhe a rotina sem depender de conferência manual no fim do mês.',
                     icon: LayoutDashboard
                   },
                   {
                     title: 'Base para crescer com padrão',
-                    desc: 'Amplie equipe e volume mantendo processo e previsibilidade operacional.',
+                    desc: 'Amplie equipe e volume mantendo processo, visibilidade e previsibilidade operacional.',
                     icon: TrendingUp
                   }
                 ].map((benefit, i) => (
@@ -509,13 +509,13 @@ export default function App() {
                   ))}
                 </div>
                 <p className="text-brand-graphite font-medium italic mb-4">
-                  "A equipe saiu de uma rotina reativa para um fluxo mais previsível em poucas semanas."
+                  "O objetivo do Medainer é tirar a clínica do improviso e colocar a operação em um fluxo claro."
                 </p>
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-full bg-brand-sand" />
                   <div>
-                    <p className="text-sm font-bold">Clínica piloto</p>
-                    <p className="text-xs text-brand-graphite/50">Implantação guiada</p>
+                    <p className="text-sm font-bold">Implantação guiada</p>
+                    <p className="text-xs text-brand-graphite/50">Entrada acompanhada</p>
                   </div>
                 </div>
               </div>
@@ -526,7 +526,7 @@ export default function App() {
 
       <section className="section-padding bg-brand-sand/20">
         <div className="container mx-auto px-4 sm:px-6">
-          <SectionHeading subtitle="Sistema em Ação" title="Visão real da operação em um único ambiente." centered={true} />
+          <SectionHeading subtitle="Sistema em Ação" title="Uma plataforma para a rotina da clínica, não mais um sistema solto." centered={true} />
 
           <div className="grid gap-6 xl:grid-cols-12 xl:items-stretch">
             <motion.div
@@ -589,7 +589,7 @@ export default function App() {
               },
               {
                 title: 'Financeiro integrado',
-                text: 'Receitas e despesas conectadas com a operação para visão de resultado real.',
+                text: 'Receitas e despesas conectadas com a operação para uma visão mais clara de resultado.',
                 image: financeiroImage
               }
             ].map((item) => (
@@ -609,7 +609,7 @@ export default function App() {
         <div className="container mx-auto px-4 sm:px-6">
           <SectionHeading
             subtitle="Diferenciais"
-            title="Recursos para escalar operação clínica com mais previsibilidade."
+            title="Recursos para dar mais padrão e previsibilidade à operação da clínica."
             centered={true}
           />
 
@@ -642,8 +642,8 @@ export default function App() {
               },
               {
                 icon: MessageCircle,
-                title: 'WhatsApp com contexto',
-                desc: 'Conversa e acompanhamento de atendimento no fluxo operacional.'
+                title: 'Automações e integração com WhatsApp',
+                desc: 'Configuração assistida para encaixar comunicação e rotina no fluxo da clínica.'
               },
               {
                 icon: LayoutDashboard,
@@ -653,7 +653,7 @@ export default function App() {
               {
                 icon: ShieldCheck,
                 title: 'Segurança e controle',
-                desc: 'Isolamento por clínica (multi-tenant) e controle de acesso por perfil.'
+                desc: 'Isolamento por clínica e controle de acesso por perfil.'
               }
             ].map((feature, i) => (
               <motion.div
@@ -677,10 +677,10 @@ export default function App() {
 
       <section id="planos" className="section-padding bg-white">
         <div className="container mx-auto px-4 sm:px-6">
-          <SectionHeading subtitle="Investimento" title="Escolha o plano ideal para o estágio da sua clínica." centered={true} />
+          <SectionHeading subtitle="Investimento" title="Escolha o plano ideal para o tamanho da sua operação." centered={true} />
 
           <p className="text-center max-w-3xl mx-auto -mt-4 mb-10 text-base md:text-lg text-brand-graphite/60 leading-relaxed">
-            Pagamento seguro via Stripe. Valores podem variar conforme escopo de implantação e necessidades da clínica.
+            Pagamento seguro via Stripe. A implantação é conduzida com apoio do nosso time para a clínica entrar em operação com mais segurança.
           </p>
 
           <div className="grid lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
@@ -698,7 +698,7 @@ export default function App() {
                   'Até 2 profissionais',
                   'Suporte em horário comercial'
                 ],
-                cta: 'Assinar Starter',
+                cta: 'Falar sobre Starter',
                 href: STRIPE_STARTER_URL,
                 featured: false
               },
@@ -706,16 +706,16 @@ export default function App() {
                 name: 'Pro',
                 price: 'R$ 497',
                 subtitle: 'Mais escolhido',
-                text: 'Para clínicas em crescimento que precisam de padrão e velocidade.',
+                text: 'Para clínicas em crescimento que precisam de mais padrão e velocidade.',
                 features: [
                   'Tudo do Starter',
                   'Mais automação na rotina',
-                  'WhatsApp com contexto',
+                  'Integração assistida com WhatsApp',
                   'Até 8 usuários',
                   'Até 6 profissionais',
                   'Suporte prioritário'
                 ],
-                cta: 'Assinar Pro',
+                cta: 'Falar sobre Pro',
                 href: STRIPE_PRO_URL,
                 featured: true
               },
@@ -732,7 +732,7 @@ export default function App() {
                   'Treinamento avançado',
                   'Suporte dedicado'
                 ],
-                cta: 'Assinar Scale',
+                cta: 'Falar sobre Scale',
                 href: STRIPE_SCALE_URL,
                 featured: false
               }
@@ -812,7 +812,7 @@ export default function App() {
                 {[
                   ['Usuários', 'Até 3', 'Até 8', 'Até 20'],
                   ['Profissionais', 'Até 2', 'Até 6', 'Até 15'],
-                  ['WhatsApp com contexto', 'Base', 'Completo', 'Completo'],
+                  ['Integração com WhatsApp', 'Assistida', 'Avançada', 'Avançada'],
                   ['Suporte', 'Comercial', 'Prioritário', 'Dedicado']
                 ].map((row) => (
                   <tr key={row[0]} className="border-b border-brand-graphite/10 last:border-b-0">
@@ -834,16 +834,16 @@ export default function App() {
           <div className="max-w-4xl mx-auto">
             <SectionHeading
               subtitle="Confiança"
-              title="Implantação guiada, suporte humano e operação mais previsível desde o início."
+              title="Implantação guiada, suporte humano e entrada em operação com mais clareza."
               centered={true}
             />
             <p className="text-lg md:text-xl text-brand-graphite/60 mb-10 md:mb-12 leading-relaxed">
-              O Medainer foi desenhado para organizar a rotina da clínica sem travar a equipe na migração.
+              O Medainer foi desenhado para organizar a rotina da clínica sem travar a equipe na mudança de processo.
             </p>
 
             <div className="grid md:grid-cols-3 gap-8 md:gap-12">
               {[
-                { label: 'Implantação guiada', desc: 'Entrada planejada para sua equipe operar com segurança.' },
+                { label: 'Implantação guiada', desc: 'Entrada planejada para sua equipe operar com mais segurança.' },
                 { label: 'Rotina mais clara', desc: 'Agenda, pacientes e financeiro no mesmo fluxo diário.' },
                 { label: 'Suporte humano', desc: 'Acompanhamento conforme plano e fase de implantação.' }
               ].map((item) => (
@@ -866,11 +866,11 @@ export default function App() {
               {[
                 {
                   q: 'Em quanto tempo minha clínica entra em operação?',
-                  a: 'Em geral, em até 14 dias com implantação guiada, dependendo do volume de dados e disponibilidade da equipe.'
+                  a: 'Em geral, em até 14 dias com implantação guiada, dependendo do volume de dados e da disponibilidade da equipe.'
                 },
                 {
                   q: 'Minha equipe vai conseguir usar no dia a dia?',
-                  a: 'Sim. O onboarding é feito por função (recepção, profissionais e gestão), com rotina prática.'
+                  a: 'Sim. O onboarding é feito por função, com foco no fluxo real de recepção, profissionais e gestão.'
                 },
                 {
                   q: 'Posso migrar dados que já tenho?',
@@ -878,15 +878,15 @@ export default function App() {
                 },
                 {
                   q: 'Como funciona suporte?',
-                  a: 'Suporte humano conforme o plano contratado e etapa de implantação/operação.'
+                  a: 'O suporte é humano e varia conforme o plano contratado e a etapa de implantação ou operação da clínica.'
                 },
                 {
                   q: 'Tem contrato longo ou multa de saída?',
-                  a: 'A modalidade comercial e condições contratuais são apresentadas antes da assinatura para total clareza.'
+                  a: 'As condições comerciais e contratuais são apresentadas antes da assinatura, com clareza sobre cobrança e renovação.'
                 },
                 {
                   q: 'Como funciona segurança e LGPD?',
-                  a: 'A plataforma opera com isolamento por clínica e controle de acesso por perfil, com políticas publicadas de privacidade e LGPD.'
+                  a: 'A plataforma opera com isolamento por clínica e controle de acesso por perfil, com páginas publicadas de privacidade, termos e LGPD.'
                 }
               ].map((item, i) => (
                 <FAQItem key={i} question={item.q} answer={item.a} />
@@ -903,10 +903,10 @@ export default function App() {
         <div className="container mx-auto px-4 sm:px-6 relative z-10">
           <div className="max-w-3xl mx-auto text-center mb-10">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif font-medium mb-6 md:mb-8 leading-tight">
-              Organize a operação da sua clínica em um sistema único.
+              Coloque a operação da sua clínica em um sistema único.
             </h2>
             <p className="text-lg md:text-xl text-white/70">
-              Compare os planos e fale com nosso time para começar a implantação.
+              Veja o plano ideal e fale com nosso time para iniciar a implantação.
             </p>
           </div>
 
@@ -918,7 +918,7 @@ export default function App() {
               trackEventName="view_pricing"
               trackPayload={{ source: 'final_cta' }}
             >
-              Ver planos
+              Comparar planos
             </Button>
             <Button
               variant="outline"
@@ -969,7 +969,7 @@ export default function App() {
       >
         <MessageCircle className="w-7 h-7 sm:w-8 sm:h-8" />
         <span className="absolute right-full mr-4 bg-white text-brand-graphite px-4 py-2 rounded-xl text-sm font-bold shadow-xl opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none border border-brand-graphite/5 hidden sm:block">
-          Agendar demo
+          Falar com vendas
         </span>
       </motion.a>
     </div>
