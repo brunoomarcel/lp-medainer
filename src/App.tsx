@@ -375,7 +375,7 @@ export default function App() {
 
           <div className="grid lg:grid-cols-2 gap-6 max-w-5xl mx-auto">
             <div className="rounded-3xl border border-brand-green/20 bg-brand-green/5 p-7">
-              <h3 className="text-2xl font-serif text-brand-graphite mb-4">Faz sentido para sua clínica se você:</h3>
+              <h3 className="text-2xl font-serif text-brand-graphite mb-4">Faz sentido para sua clínica se você: </h3>
               <ul className="space-y-3 text-brand-graphite/80">
                 {[
                   'Quer centralizar agenda, pacientes, prontuário e financeiro em um sistema único.',
