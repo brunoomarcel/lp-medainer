@@ -21,7 +21,6 @@ import {
   X
 } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
-import dashboardPreviewImage from './assets/images/image-hero-2.gif';
 import clinicTeamImage from './assets/images/clinic-team.png';
 import symbolMedainerImage from './assets/images/symbol-medainer.png';
 import dashboardGeralImage from './assets/images/dash-geral.png';
@@ -41,10 +40,10 @@ const WHATSAPP_URL =
   'https://wa.me/5579999805993?text=Ol%C3%A1%2C%20quero%20agendar%20uma%20demonstra%C3%A7%C3%A3o%20do%20Medainer';
 const STRIPE_STARTER_URL = (import.meta.env.VITE_STRIPE_STARTER_URL as string | undefined)?.trim() || WHATSAPP_URL;
 const STRIPE_PRO_URL = (import.meta.env.VITE_STRIPE_PRO_URL as string | undefined)?.trim() || WHATSAPP_URL;
-const STRIPE_SCALE_URL = (import.meta.env.VITE_STRIPE_SCALE_URL as string | undefined)?.trim() || WHATSAPP_URL;
 const TERMS_URL = (import.meta.env.VITE_TERMS_URL as string | undefined)?.trim() || '/termos';
 const PRIVACY_URL = (import.meta.env.VITE_PRIVACY_URL as string | undefined)?.trim() || '/privacidade';
 const LGPD_URL = (import.meta.env.VITE_LGPD_URL as string | undefined)?.trim() || '/lgpd';
+const HERO_YOUTUBE_EMBED_URL = 'https://www.youtube.com/embed/1K2zYpofJUk?rel=0';
 
 function trackEvent(eventName: string, payload: Record<string, unknown> = {}) {
   if (typeof window === 'undefined') return;
@@ -211,13 +210,13 @@ export default function App() {
             <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8 }}>
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-green/10 text-brand-green text-[11px] sm:text-xs font-bold tracking-wider uppercase mb-6 md:mb-8">
                 <ShieldCheck className="w-4 h-4" />
-                Software de gestão clínica com implantação guiada
+                Gestão clínica com implantação guiada e opção de automação no WhatsApp
               </div>
               <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-serif font-medium leading-[1.1] text-brand-graphite mb-6 md:mb-8 text-balance">
                 Organize agenda, pacientes e operação da sua clínica em um sistema <span className="text-brand-green italic">único.</span>
               </h1>
               <p className="text-base sm:text-lg md:text-xl text-brand-graphite/70 mb-8 md:mb-10 max-w-xl leading-relaxed">
-                Agenda, pacientes, prontuário, financeiro e automações no mesmo fluxo para recepção, profissionais e gestão.
+                Comece com agenda, pacientes, prontuário e financeiro em um fluxo único. Quando fizer sentido, evolua para automações com IA no WhatsApp.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 mb-10 md:mb-12">
@@ -245,7 +244,7 @@ export default function App() {
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
                 {[
                   { icon: Calendar, text: 'Implantação guiada em até 14 dias' },
-                  { icon: Users, text: 'Planos para diferentes tamanhos de equipe' },
+                  { icon: Users, text: '2 ofertas claras: operação ou operação + IA' },
                   { icon: ClipboardList, text: 'Onboarding e suporte humano' }
                 ].map((item, i) => (
                   <div key={i} className="flex items-center gap-3 text-sm font-medium text-brand-graphite/60">
@@ -264,8 +263,17 @@ export default function App() {
               transition={{ duration: 1, delay: 0.2 }}
               className="relative mx-auto w-full max-w-xl lg:max-w-none"
             >
-              <div className="relative z-10 rounded-[28px] overflow-hidden shadow-2xl border-4 sm:border-8 border-white">
-                <img src={dashboardPreviewImage} alt="Dashboard do Medainer" className="w-full h-auto" />
+              <div className="relative z-10 overflow-hidden rounded-[28px] border-4 border-white bg-brand-graphite shadow-2xl sm:border-8">
+                <div className="aspect-video w-full">
+                  <iframe
+                    src={HERO_YOUTUBE_EMBED_URL}
+                    title="Apresentacao do Medainer"
+                    className="h-full w-full"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerPolicy="strict-origin-when-cross-origin"
+                    allowFullScreen
+                  />
+                </div>
               </div>
               <motion.div
                 animate={{ y: [0, -10, 0] }}
@@ -474,8 +482,8 @@ export default function App() {
                     icon: LayoutDashboard
                   },
                   {
-                    title: 'Base para crescer com padrão',
-                    desc: 'Amplie equipe e volume mantendo processo, visibilidade e previsibilidade operacional.',
+                    title: 'Base para crescer com padrão e depois automatizar',
+                    desc: 'Estruture a clínica primeiro e avance para fluxos com IA quando o volume no WhatsApp justificar.',
                     icon: TrendingUp
                   }
                 ].map((benefit, i) => (
@@ -642,8 +650,8 @@ export default function App() {
               },
               {
                 icon: MessageCircle,
-                title: 'Automações e integração com WhatsApp',
-                desc: 'Configuração assistida para encaixar comunicação e rotina no fluxo da clínica.'
+                title: 'Agente IA e automações no WhatsApp',
+                desc: 'Disponível no plano Medainer IA para confirmação, remarcação, lembretes e envio de links.'
               },
               {
                 icon: LayoutDashboard,
@@ -677,64 +685,48 @@ export default function App() {
 
       <section id="planos" className="section-padding bg-white">
         <div className="container mx-auto px-4 sm:px-6">
-          <SectionHeading subtitle="Investimento" title="Escolha o plano ideal para o tamanho da sua operação." centered={true} />
+          <SectionHeading subtitle="Investimento" title="Escolha entre organizar a operação ou também automatizar o WhatsApp." centered={true} />
 
           <p className="text-center max-w-3xl mx-auto -mt-4 mb-10 text-base md:text-lg text-brand-graphite/60 leading-relaxed">
-            Pagamento seguro via Stripe. A implantação é conduzida com apoio do nosso time para a clínica entrar em operação com mais segurança.
+            Contratação com pagamento seguro via Stripe e implantação guiada para a clínica entrar em operação com mais segurança.
           </p>
 
-          <div className="grid lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+          <div className="grid lg:grid-cols-2 gap-8 max-w-5xl mx-auto">
             {[
               {
-                name: 'Starter',
+                name: 'Medainer Essencial',
                 price: 'R$ 297',
-                subtitle: 'Base operacional',
-                text: 'Para clínicas em fase inicial de organização.',
+                subtitle: 'Operação organizada',
+                text: 'Para clínicas que precisam colocar agenda, pacientes e rotina em ordem.',
                 features: [
-                  'Agenda e gestão de pacientes',
-                  'Prontuário digital',
-                  'Financeiro essencial',
-                  'Até 3 usuários',
-                  'Até 2 profissionais',
+                  'Agenda da clínica e dos profissionais',
+                  'Pacientes, prontuário básico e financeiro básico',
+                  'Equipe e acessos',
+                  'Até 5 usuários',
+                  'Até 3 profissionais',
                   'Suporte em horário comercial'
                 ],
-                cta: 'Falar sobre Starter',
+                cta: 'Contratar Essencial',
                 href: STRIPE_STARTER_URL,
                 featured: false
               },
               {
-                name: 'Pro',
-                price: 'R$ 497',
-                subtitle: 'Mais escolhido',
-                text: 'Para clínicas em crescimento que precisam de mais padrão e velocidade.',
+                name: 'Medainer IA',
+                price: 'R$ 597',
+                subtitle: 'Operação + automação',
+                text: 'Para clínicas com volume no WhatsApp e recepção sobrecarregada com confirmação e remarcação.',
                 features: [
-                  'Tudo do Starter',
-                  'Mais automação na rotina',
-                  'Integração assistida com WhatsApp',
+                  'Tudo do Medainer Essencial',
+                  'Agente de agendamento por IA',
+                  'Confirmação e remarcação por WhatsApp',
+                  'Lembretes e envio de links',
                   'Até 8 usuários',
                   'Até 6 profissionais',
                   'Suporte prioritário'
                 ],
-                cta: 'Falar sobre Pro',
+                cta: 'Contratar Medainer IA',
                 href: STRIPE_PRO_URL,
                 featured: true
-              },
-              {
-                name: 'Scale',
-                price: 'R$ 897',
-                subtitle: 'Expansão com controle',
-                text: 'Para operações maiores com mais equipe e volume.',
-                features: [
-                  'Tudo do Pro',
-                  'Até 20 usuários',
-                  'Até 15 profissionais',
-                  'Acompanhamento mensal',
-                  'Treinamento avançado',
-                  'Suporte dedicado'
-                ],
-                cta: 'Falar sobre Scale',
-                href: STRIPE_SCALE_URL,
-                featured: false
               }
             ].map((plan, index) => (
               <motion.div
@@ -803,17 +795,17 @@ export default function App() {
               <thead>
                 <tr className="border-b border-brand-graphite/10 text-left text-brand-graphite/70">
                   <th className="px-5 py-4 font-semibold">Comparativo</th>
-                  <th className="px-5 py-4 font-semibold">Starter</th>
-                  <th className="px-5 py-4 font-semibold">Pro</th>
-                  <th className="px-5 py-4 font-semibold">Scale</th>
+                  <th className="px-5 py-4 font-semibold">Medainer Essencial</th>
+                  <th className="px-5 py-4 font-semibold">Medainer IA</th>
                 </tr>
               </thead>
               <tbody className="text-brand-graphite/80">
                 {[
-                  ['Usuários', 'Até 3', 'Até 8', 'Até 20'],
-                  ['Profissionais', 'Até 2', 'Até 6', 'Até 15'],
-                  ['Integração com WhatsApp', 'Assistida', 'Avançada', 'Avançada'],
-                  ['Suporte', 'Comercial', 'Prioritário', 'Dedicado']
+                  ['Preço', 'R$ 297/mês', 'R$ 597/mês'],
+                  ['Usuários', 'Até 5', 'Até 8'],
+                  ['Profissionais', 'Até 3', 'Até 6'],
+                  ['WhatsApp e IA', 'Não incluído', 'Incluído'],
+                  ['Suporte', 'Horário comercial', 'Prioritário']
                 ].map((row) => (
                   <tr key={row[0]} className="border-b border-brand-graphite/10 last:border-b-0">
                     {row.map((cell) => (
@@ -881,12 +873,12 @@ export default function App() {
                   a: 'O suporte é humano e varia conforme o plano contratado e a etapa de implantação ou operação da clínica.'
                 },
                 {
-                  q: 'Tem contrato longo ou multa de saída?',
-                  a: 'As condições comerciais e contratuais são apresentadas antes da assinatura, com clareza sobre cobrança e renovação.'
+                  q: 'Qual a diferença entre Medainer Essencial e Medainer IA?',
+                  a: 'O Essencial organiza a operação da clínica em um único sistema. O Medainer IA inclui tudo do Essencial e adiciona automações no WhatsApp, como confirmação, remarcação, lembretes e envio de links.'
                 },
                 {
                   q: 'Como funciona segurança e LGPD?',
-                  a: 'A plataforma opera com isolamento por clínica e controle de acesso por perfil, com páginas publicadas de privacidade, termos e LGPD.'
+                  a: 'A plataforma opera com isolamento por clínica e controle de acesso por perfil. Termos, privacidade e informações de tratamento de dados podem ser disponibilizados no processo comercial e no ambiente publicado.'
                 }
               ].map((item, i) => (
                 <FAQItem key={i} question={item.q} answer={item.a} />
@@ -906,7 +898,7 @@ export default function App() {
               Coloque a operação da sua clínica em um sistema único.
             </h2>
             <p className="text-lg md:text-xl text-white/70">
-              Veja o plano ideal e fale com nosso time para iniciar a implantação.
+              Escolha entre estruturar a operação com o Essencial ou avançar para automações com o Medainer IA.
             </p>
           </div>
 
@@ -918,7 +910,7 @@ export default function App() {
               trackEventName="view_pricing"
               trackPayload={{ source: 'final_cta' }}
             >
-              Comparar planos
+              Comparar ofertas
             </Button>
             <Button
               variant="outline"
