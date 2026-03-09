@@ -210,7 +210,7 @@ export default function App() {
             <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8 }}>
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-green/10 text-brand-green text-[11px] sm:text-xs font-bold tracking-wider uppercase mb-6 md:mb-8">
                 <ShieldCheck className="w-4 h-4" />
-                Gestão clínica com implantação guiada e opção de automação no WhatsApp
+                Gestão clínica com Inteligência Artificial
               </div>
               <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-serif font-medium leading-[1.1] text-brand-graphite mb-6 md:mb-8 text-balance">
                 Organize agenda, pacientes e operação da sua clínica em um sistema <span className="text-brand-green italic">único.</span>
