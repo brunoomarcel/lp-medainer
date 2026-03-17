@@ -37,7 +37,7 @@ declare global {
 
 const WHATSAPP_PHONE = '5579999805993';
 const REGISTER_URL = 'https://app.medainer.com.br/register';
-const GA_MEASUREMENT_ID = (import.meta.env.VITE_GA_MEASUREMENT_ID as string | undefined)?.trim() || 'G-K476JPP88F';
+const GA_MEASUREMENT_ID = (import.meta.env.VITE_GA_MEASUREMENT_ID as string | undefined)?.trim() || 'G-9M8QCBLVR9';
 
 function buildWhatsAppUrl(message: string) {
   return `https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(message)}`;
