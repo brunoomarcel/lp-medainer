@@ -38,20 +38,44 @@ jobs:
           : "${FTP_PASSWORD:?Missing secret FTP_PASSWORD}"
           : "${FTP_PATH:?Missing secret FTP_PATH}"
 
+      - name: Normalize deploy target
+        id: target
+        env:
+          FTP_HOST: ${{ secrets.FTP_HOST }}
+          FTP_PORT: ${{ secrets.FTP_PORT }}
+          FTP_PATH: ${{ secrets.FTP_PATH }}
+        run: |
+          set -euo pipefail
+
+          HOST="${FTP_HOST#ftp://}"
+          HOST="${HOST#ftps://}"
+          HOST="${HOST#sftp://}"
+          HOST="${HOST%/}"
+
+          PORT="${FTP_PORT:-21}"
+
+          REMOTE_PATH="${FTP_PATH:-public_html}"
+          REMOTE_PATH="${REMOTE_PATH%/}/"
+
+          echo "host=$HOST" >> "$GITHUB_OUTPUT"
+          echo "port=$PORT" >> "$GITHUB_OUTPUT"
+          echo "remote_path=$REMOTE_PATH" >> "$GITHUB_OUTPUT"
+
       - name: Install dependencies
         run: npm ci
 
       - name: Build project
         run: npm run build
 
-      - name: Deploy via SFTP
-        uses: wlixcc/SFTP-Deploy-Action@v1.2.6
+      - name: Deploy via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.6
         with:
+          server: ${{ steps.target.outputs.host }}
           username: ${{ secrets.FTP_USER }}
-          server: ${{ secrets.FTP_HOST }}
           password: ${{ secrets.FTP_PASSWORD }}
-          port: ${{ secrets.FTP_PORT || 22 }}
-          local_path: './dist/*'
-          remote_path: ${{ secrets.FTP_PATH }}
-          sftp_only: true
-          sftpArgs: '-o ConnectTimeout=30'
+          port: ${{ steps.target.outputs.port }}
+          protocol: ftp
+          local-dir: dist/
+          server-dir: ${{ steps.target.outputs.remote_path }}
+          timeout: 120000
+          log-level: verbose
