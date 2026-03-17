@@ -5,10 +5,16 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-lp-main
+  cancel-in-progress: true
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
 
     steps:
       - uses: actions/checkout@v4
@@ -17,19 +23,35 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: npm
+
+      - name: Validate required secrets
+        env:
+          FTP_HOST: ${{ secrets.FTP_HOST }}
+          FTP_USER: ${{ secrets.FTP_USER }}
+          FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+          FTP_PATH: ${{ secrets.FTP_PATH }}
+        run: |
+          set -euo pipefail
+          : "${FTP_HOST:?Missing secret FTP_HOST}"
+          : "${FTP_USER:?Missing secret FTP_USER}"
+          : "${FTP_PASSWORD:?Missing secret FTP_PASSWORD}"
+          : "${FTP_PATH:?Missing secret FTP_PATH}"
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: Build project
         run: npm run build
 
-      - name: Deploy via FTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+      - name: Deploy via SFTP
+        uses: wlixcc/SFTP-Deploy-Action@v1.2.6
         with:
-          server: ${{ secrets.FTP_HOST }}
           username: ${{ secrets.FTP_USER }}
+          server: ${{ secrets.FTP_HOST }}
           password: ${{ secrets.FTP_PASSWORD }}
-          port: ${{ secrets.FTP_PORT }}
-          server-dir: ${{ secrets.FTP_PATH }}
-          local-dir: dist/
+          port: ${{ secrets.FTP_PORT || 22 }}
+          local_path: './dist/*'
+          remote_path: ${{ secrets.FTP_PATH }}
+          sftp_only: true
+          sftpArgs: '-o ConnectTimeout=30'
