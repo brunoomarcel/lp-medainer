@@ -29,13 +29,15 @@ import financeiroImage from './assets/images/financeiro.jpg';
 
 declare global {
   interface Window {
-    dataLayer?: Array<Record<string, unknown>>;
+    dataLayer?: unknown[];
     gtag?: (...args: unknown[]) => void;
+    __gaInitialized?: boolean;
   }
 }
 
 const WHATSAPP_PHONE = '5579999805993';
 const REGISTER_URL = 'https://app.medainer.com.br/register';
+const GA_MEASUREMENT_ID = (import.meta.env.VITE_GA_MEASUREMENT_ID as string | undefined)?.trim() || 'G-K476JPP88F';
 
 function buildWhatsAppUrl(message: string) {
   return `https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(message)}`;
@@ -169,6 +171,34 @@ const FAQItem = ({ question, answer }: { question: string; answer: string }) => 
 
 export default function App() {
   const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    if (!GA_MEASUREMENT_ID || typeof window === 'undefined') return;
+
+    window.dataLayer = window.dataLayer || [];
+    window.gtag =
+      window.gtag ||
+      ((...args: unknown[]) => {
+        window.dataLayer?.push(args);
+      });
+
+    const existingScript = document.querySelector<HTMLScriptElement>(
+      `script[src="https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}"]`,
+    );
+
+    if (!existingScript) {
+      const script = document.createElement('script');
+      script.async = true;
+      script.src = `https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`;
+      document.head.appendChild(script);
+    }
+
+    if (!window.__gaInitialized) {
+      window.gtag('js', new Date());
+      window.gtag('config', GA_MEASUREMENT_ID);
+      window.__gaInitialized = true;
+    }
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
@@ -819,8 +849,10 @@ export default function App() {
                   q: 'Como funciona segurança e LGPD?',
                   a: 'A plataforma opera com isolamento por clínica e controle de acesso por perfil. Termos, privacidade e informações de tratamento de dados são apresentados no processo comercial e no ambiente publicado.'
                 }
-              ].map((item, i) => (
-                <FAQItem key={i} question={item.q} answer={item.a} />
+              ].map((item) => (
+                <React.Fragment key={item.q}>
+                  <FAQItem question={item.q} answer={item.a} />
+                </React.Fragment>
               ))}
             </div>
           </div>
