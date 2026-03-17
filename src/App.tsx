@@ -31,13 +31,11 @@ declare global {
   interface Window {
     dataLayer?: unknown[];
     gtag?: (...args: unknown[]) => void;
-    __gaInitialized?: boolean;
   }
 }
 
 const WHATSAPP_PHONE = '5579999805993';
 const REGISTER_URL = 'https://app.medainer.com.br/register';
-const GA_MEASUREMENT_ID = 'G-9M8QCBLVR9';
 
 function buildWhatsAppUrl(message: string) {
   return `https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(message)}`;
@@ -51,13 +49,9 @@ const LGPD_URL = (import.meta.env.VITE_LGPD_URL as string | undefined)?.trim() |
 const HERO_YOUTUBE_EMBED_URL = 'https://www.youtube.com/embed/1K2zYpofJUk?rel=0';
 
 function trackEvent(eventName: string, payload: Record<string, unknown> = {}) {
-  if (typeof window === 'undefined') return;
+  if (typeof window === 'undefined' || typeof window.gtag !== 'function') return;
 
-  window.dataLayer?.push({ event: eventName, ...payload });
-
-  if (typeof window.gtag === 'function') {
-    window.gtag('event', eventName, payload);
-  }
+  window.gtag('event', eventName, payload);
 }
 
 const Button = ({
@@ -171,39 +165,6 @@ const FAQItem = ({ question, answer }: { question: string; answer: string }) => 
 
 export default function App() {
   const [isScrolled, setIsScrolled] = useState(false);
-
-  useEffect(() => {
-    if (!GA_MEASUREMENT_ID || typeof window === 'undefined') return;
-
-    window.dataLayer = window.dataLayer || [];
-    window.gtag =
-      window.gtag ||
-      ((...args: unknown[]) => {
-        window.dataLayer?.push(args);
-      });
-
-    const existingScript = document.querySelector<HTMLScriptElement>(
-      `script[src="https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}"]`,
-    );
-
-    if (!existingScript) {
-      const script = document.createElement('script');
-      script.async = true;
-      script.src = `https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`;
-      document.head.appendChild(script);
-    }
-
-    if (!window.__gaInitialized) {
-      window.gtag('js', new Date());
-      window.gtag('config', GA_MEASUREMENT_ID, { send_page_view: false });
-      window.gtag('event', 'page_view', {
-        page_title: document.title,
-        page_location: window.location.href,
-        page_path: window.location.pathname,
-      });
-      window.__gaInitialized = true;
-    }
-  }, []);
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
