@@ -4,7 +4,13 @@ declare global {
   interface Window {
     dataLayer?: unknown[];
     gtag?: (...args: unknown[]) => void;
+    __gaInitialized?: boolean;
   }
+}
+
+function getNormalizedPagePath() {
+  const normalizedPathname = window.location.pathname.replace(/\/index\.html$/, '') || '/';
+  return `${normalizedPathname}${window.location.search}`;
 }
 
 export function initAnalytics() {
@@ -25,9 +31,14 @@ export function initAnalytics() {
     document.head.appendChild(script);
   }
 
-  if ((window as Window & { __gaInitialized?: boolean }).__gaInitialized) return;
+  if (window.__gaInitialized) return;
 
   window.gtag('js', new Date());
-  window.gtag('config', GA_MEASUREMENT_ID);
-  (window as Window & { __gaInitialized?: boolean }).__gaInitialized = true;
+  window.gtag('config', GA_MEASUREMENT_ID, { send_page_view: false });
+  window.gtag('event', 'page_view', {
+    page_title: document.title,
+    page_path: getNormalizedPagePath(),
+    page_location: `${window.location.origin}${getNormalizedPagePath()}`,
+  });
+  window.__gaInitialized = true;
 }
