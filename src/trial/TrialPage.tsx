@@ -20,6 +20,7 @@ import agendaImage from '../assets/images/agenda.jpg';
 import pacientesImage from '../assets/images/pacientes.jpg';
 import prontuarioImage from '../assets/images/prontuario.jpg';
 import financeiroImage from '../assets/images/financeiro.jpg';
+import { buildTrackedUrl } from '../analytics';
 
 declare global {
   interface Window {
@@ -154,6 +155,7 @@ const FAQItem = ({ question, answer }: { question: string; answer: string }) => 
 
 export function TrialPage() {
   const [isScrolled, setIsScrolled] = useState(false);
+  const appRegisterUrl = buildTrackedUrl(APP_REGISTER_URL);
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
@@ -177,7 +179,7 @@ export function TrialPage() {
           <div className="hidden sm:flex">
             <Button
               variant="secondary"
-              href={APP_REGISTER_URL}
+              href={appRegisterUrl}
               className="px-6 py-2.5"
               trackEventName="click_checkout"
               trackPayload={{ source: 'header_trial', plan: 'medainer essencial' }}
@@ -211,7 +213,7 @@ export function TrialPage() {
               <div className="mb-10 flex flex-col gap-4 sm:flex-row md:mb-12">
                 <Button
                   variant="primary"
-                  href={APP_REGISTER_URL}
+                  href={appRegisterUrl}
                   className="px-8 py-4 text-base sm:px-10 sm:text-lg"
                   trackEventName="click_checkout"
                   trackPayload={{ source: 'hero_primary', plan: 'medainer essencial' }}
@@ -372,7 +374,7 @@ export function TrialPage() {
                   'Até 5 usuários e 3 profissionais',
                 ],
                 cta: 'Ativar teste grátis',
-                href: APP_REGISTER_URL,
+                href: appRegisterUrl,
                 featured: true,
               },
               {
@@ -544,7 +546,7 @@ export function TrialPage() {
             <div className="mx-auto mt-10 flex max-w-3xl flex-col justify-center gap-4 sm:flex-row">
               <Button
                 variant="secondary"
-                href={APP_REGISTER_URL}
+                href={appRegisterUrl}
                 className="px-10 py-4 text-base sm:text-lg md:px-12"
                 trackEventName="click_checkout"
                 trackPayload={{ source: 'final_cta', plan: 'medainer essencial' }}

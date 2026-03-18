@@ -26,6 +26,7 @@ import agendaImage from './assets/images/agenda.jpg';
 import pacientesImage from './assets/images/pacientes.jpg';
 import prontuarioImage from './assets/images/prontuario.jpg';
 import financeiroImage from './assets/images/financeiro.jpg';
+import { buildTrackedUrl } from './analytics';
 
 declare global {
   interface Window {
@@ -165,6 +166,7 @@ const FAQItem = ({ question, answer }: { question: string; answer: string }) => 
 
 export default function App() {
   const [isScrolled, setIsScrolled] = useState(false);
+  const trialUrl = buildTrackedUrl(TRIAL_URL);
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
@@ -220,7 +222,7 @@ export default function App() {
               <div className="flex flex-col sm:flex-row gap-4 mb-10 md:mb-12">
                 <Button
                   variant="primary"
-                  href={TRIAL_URL}
+                  href={trialUrl}
                   className="px-8 sm:px-10 py-4 text-base sm:text-lg"
                   trackEventName="click_trial"
                   trackPayload={{ source: 'hero_primary' }}
@@ -489,7 +491,7 @@ export default function App() {
           <div className="mt-14 md:mt-20 flex flex-col sm:flex-row gap-4 justify-center">
             <Button
               variant="secondary"
-              href={TRIAL_URL}
+              href={trialUrl}
               className="px-10 md:px-12 py-4 text-base sm:text-lg"
               trackEventName="click_trial"
               trackPayload={{ source: 'trial_section' }}
@@ -594,7 +596,7 @@ export default function App() {
                 <div className="space-y-4">
                   <Button
                     variant={plan.featured ? 'secondary' : 'primary'}
-                    href={TRIAL_URL}
+                    href={trialUrl}
                     className="w-full sm:w-full"
                     trackEventName="click_trial"
                     trackPayload={{ source: `plan_trial_${plan.name.toLowerCase()}` }}
@@ -842,7 +844,7 @@ export default function App() {
           <div className="max-w-3xl mx-auto flex flex-col sm:flex-row gap-4 justify-center">
             <Button
               variant="secondary"
-              href={TRIAL_URL}
+              href={trialUrl}
               className="px-10 md:px-12 py-4 text-base sm:text-lg"
               trackEventName="click_trial"
               trackPayload={{ source: 'final_cta_primary' }}
@@ -888,7 +890,7 @@ export default function App() {
       </footer>
 
       <motion.a
-        href={TRIAL_URL}
+        href={trialUrl}
         initial={{ scale: 0, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         whileHover={{ scale: 1.1 }}
