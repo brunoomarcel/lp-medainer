@@ -5,40 +5,71 @@ declare global {
     dataLayer?: unknown[];
     gtag?: (...args: unknown[]) => void;
     __gaInitialized?: boolean;
+    __gaScriptLoading?: boolean;
   }
 }
 
 function getNormalizedPagePath() {
-  const normalizedPathname = window.location.pathname.replace(/\/index\.html$/, '') || '/';
+  const normalizedPathname = (window.location.pathname.replace(/\/index\.html$/, '').replace(/\/$/, '') || '/') as string;
   return `${normalizedPathname}${window.location.search}`;
+}
+
+function ensureGtagStub() {
+  window.dataLayer = window.dataLayer || [];
+
+  if (typeof window.gtag === 'function') return;
+
+  window.gtag = function gtag() {
+    window.dataLayer?.push(arguments);
+  };
+}
+
+function sendInitialPageView() {
+  if (window.__gaInitialized || typeof window.gtag !== 'function') return;
+
+  const pagePath = getNormalizedPagePath();
+
+  window.gtag('js', new Date());
+  window.gtag('config', GA_MEASUREMENT_ID, {
+    send_page_view: false,
+    page_path: pagePath,
+    page_location: `${window.location.origin}${pagePath}`,
+    page_title: document.title,
+  });
+  window.gtag('event', 'page_view', {
+    page_title: document.title,
+    page_path: pagePath,
+    page_location: `${window.location.origin}${pagePath}`,
+  });
+  window.__gaInitialized = true;
 }
 
 export function initAnalytics() {
   if (typeof window === 'undefined' || !GA_MEASUREMENT_ID) return;
 
-  window.dataLayer = window.dataLayer || [];
+  ensureGtagStub();
 
-  if (typeof window.gtag !== 'function') {
-    window.gtag = function gtag(...args: unknown[]) {
-      window.dataLayer?.push(args);
-    };
+  const existingScript = document.querySelector(
+    `script[src*="googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}"]`,
+  ) as HTMLScriptElement | null;
+
+  if (existingScript) {
+    if (window.__gaScriptLoading) return;
+    sendInitialPageView();
+    return;
   }
 
-  if (!document.querySelector(`script[src*="googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}"]`)) {
-    const script = document.createElement('script');
-    script.async = true;
-    script.src = `https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`;
-    document.head.appendChild(script);
-  }
+  window.__gaScriptLoading = true;
 
-  if (window.__gaInitialized) return;
-
-  window.gtag('js', new Date());
-  window.gtag('config', GA_MEASUREMENT_ID, { send_page_view: false });
-  window.gtag('event', 'page_view', {
-    page_title: document.title,
-    page_path: getNormalizedPagePath(),
-    page_location: `${window.location.origin}${getNormalizedPagePath()}`,
-  });
-  window.__gaInitialized = true;
+  const script = document.createElement('script');
+  script.async = true;
+  script.src = `https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`;
+  script.onload = () => {
+    window.__gaScriptLoading = false;
+    sendInitialPageView();
+  };
+  script.onerror = () => {
+    window.__gaScriptLoading = false;
+  };
+  document.head.appendChild(script);
 }
