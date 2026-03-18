@@ -42,20 +42,50 @@ jobs:
           FTP_HOST: ${{ secrets.FTP_HOST }}
           FTP_PORT: ${{ secrets.FTP_PORT }}
           FTP_PATH: ${{ secrets.FTP_PATH }}
+          FTP_PROTOCOL: ${{ secrets.FTP_PROTOCOL }}
         run: |
           set -euo pipefail
+
+          PROTOCOL="${FTP_PROTOCOL:-}"
+          PROTOCOL="$(printf '%s' "$PROTOCOL" | tr '[:upper:]' '[:lower:]')"
+
+          if [ -z "$PROTOCOL" ]; then
+            case "$FTP_HOST" in
+              ftps://*) PROTOCOL="ftps" ;;
+              ftp://*) PROTOCOL="ftp" ;;
+              sftp://*) PROTOCOL="sftp" ;;
+              *) PROTOCOL="ftp" ;;
+            esac
+          fi
+
+          if [ "$PROTOCOL" = "sftp" ]; then
+            echo "SamKirkland/FTP-Deploy-Action does not support SFTP. Use FTP/FTPS or switch the deploy action."
+            exit 1
+          fi
 
           HOST="${FTP_HOST#ftp://}"
           HOST="${HOST#ftps://}"
           HOST="${HOST#sftp://}"
           HOST="${HOST%/}"
 
-          PORT="${FTP_PORT:-21}"
+          if [ -n "${FTP_PORT:-}" ]; then
+            PORT="$FTP_PORT"
+          else
+            case "$PROTOCOL" in
+              ftp) PORT="21" ;;
+              ftps) PORT="21" ;;
+              *)
+                echo "Unsupported FTP_PROTOCOL: $PROTOCOL"
+                exit 1
+                ;;
+            esac
+          fi
 
           REMOTE_PATH="${FTP_PATH:-public_html}"
           REMOTE_PATH="${REMOTE_PATH%/}/"
 
           echo "host=$HOST" >> "$GITHUB_OUTPUT"
+          echo "protocol=$PROTOCOL" >> "$GITHUB_OUTPUT"
           echo "port=$PORT" >> "$GITHUB_OUTPUT"
           echo "remote_path=$REMOTE_PATH" >> "$GITHUB_OUTPUT"
 
@@ -72,7 +102,7 @@ jobs:
           username: ${{ secrets.FTP_USER }}
           password: ${{ secrets.FTP_PASSWORD }}
           port: ${{ steps.target.outputs.port }}
-          protocol: ftp
+          protocol: ${{ steps.target.outputs.protocol }}
           local-dir: dist/
           server-dir: ${{ steps.target.outputs.remote_path }}
           timeout: 120000
