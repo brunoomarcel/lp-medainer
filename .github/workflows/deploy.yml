@@ -30,13 +30,11 @@ jobs:
           FTP_HOST: ${{ secrets.FTP_HOST }}
           FTP_USER: ${{ secrets.FTP_USER }}
           FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
-          FTP_PATH: ${{ secrets.FTP_PATH }}
         run: |
           set -euo pipefail
           : "${FTP_HOST:?Missing secret FTP_HOST}"
           : "${FTP_USER:?Missing secret FTP_USER}"
           : "${FTP_PASSWORD:?Missing secret FTP_PASSWORD}"
-          : "${FTP_PATH:?Missing secret FTP_PATH}"
 
       - name: Normalize deploy target
         id: target
