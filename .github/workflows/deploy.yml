@@ -5,10 +5,16 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-lp-main
+  cancel-in-progress: true
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
 
     steps:
       - uses: actions/checkout@v4
@@ -17,19 +23,59 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: npm
+
+      - name: Validate required secrets
+        env:
+          FTP_HOST: ${{ secrets.FTP_HOST }}
+          FTP_USER: ${{ secrets.FTP_USER }}
+          FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+          FTP_PATH: ${{ secrets.FTP_PATH }}
+        run: |
+          set -euo pipefail
+          : "${FTP_HOST:?Missing secret FTP_HOST}"
+          : "${FTP_USER:?Missing secret FTP_USER}"
+          : "${FTP_PASSWORD:?Missing secret FTP_PASSWORD}"
+          : "${FTP_PATH:?Missing secret FTP_PATH}"
+
+      - name: Normalize deploy target
+        id: target
+        env:
+          FTP_HOST: ${{ secrets.FTP_HOST }}
+          FTP_PORT: ${{ secrets.FTP_PORT }}
+          FTP_PATH: ${{ secrets.FTP_PATH }}
+        run: |
+          set -euo pipefail
+
+          HOST="${FTP_HOST#ftp://}"
+          HOST="${HOST#ftps://}"
+          HOST="${HOST#sftp://}"
+          HOST="${HOST%/}"
+
+          PORT="${FTP_PORT:-21}"
+
+          REMOTE_PATH="${FTP_PATH:-public_html}"
+          REMOTE_PATH="${REMOTE_PATH%/}/"
+
+          echo "host=$HOST" >> "$GITHUB_OUTPUT"
+          echo "port=$PORT" >> "$GITHUB_OUTPUT"
+          echo "remote_path=$REMOTE_PATH" >> "$GITHUB_OUTPUT"
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: Build project
         run: npm run build
 
       - name: Deploy via FTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.6
         with:
-          server: ${{ secrets.FTP_HOST }}
+          server: ${{ steps.target.outputs.host }}
           username: ${{ secrets.FTP_USER }}
           password: ${{ secrets.FTP_PASSWORD }}
-          port: ${{ secrets.FTP_PORT }}
-          server-dir: ${{ secrets.FTP_PATH }}
+          port: ${{ steps.target.outputs.port }}
+          protocol: ftp
           local-dir: dist/
+          server-dir: ${{ steps.target.outputs.remote_path }}
+          timeout: 120000
+          log-level: verbose
