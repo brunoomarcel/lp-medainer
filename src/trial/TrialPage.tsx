@@ -23,7 +23,7 @@ import financeiroImage from '../assets/images/financeiro.jpg';
 
 declare global {
   interface Window {
-    dataLayer?: Array<Record<string, unknown>>;
+    dataLayer?: unknown[];
     gtag?: (...args: unknown[]) => void;
   }
 }
@@ -520,7 +520,9 @@ export function TrialPage() {
                 a: 'Sim. Tem um consultor disponível para tirar dúvidas antes da ativação, sem compromisso.',
               },
             ].map((item) => (
-              <FAQItem key={item.q} question={item.q} answer={item.a} />
+              <div key={item.q}>
+                <FAQItem question={item.q} answer={item.a} />
+              </div>
             ))}
           </div>
         </div>
