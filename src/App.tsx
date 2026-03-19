@@ -42,7 +42,7 @@ function buildWhatsAppUrl(message: string) {
   return `https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(message)}`;
 }
 
-const TRIAL_WHATSAPP_URL = buildWhatsAppUrl('Olá, quero solicitar um teste assistido de 7 dias do Medainer');
+const TRIAL_WHATSAPP_URL = buildWhatsAppUrl('Olá, quero solicitar um teste assistido de 15 dias do Medainer');
 const TRIAL_URL = (import.meta.env.VITE_TRIAL_URL as string | undefined)?.trim() || REGISTER_URL;
 const TERMS_URL = (import.meta.env.VITE_TERMS_URL as string | undefined)?.trim() || '/termos';
 const PRIVACY_URL = (import.meta.env.VITE_PRIVACY_URL as string | undefined)?.trim() || '/privacidade';
@@ -227,7 +227,7 @@ export default function App() {
                   trackEventName="click_trial"
                   trackPayload={{ source: 'hero_primary' }}
                 >
-                  Testar o Medainer por 7 dias
+                  Testar o Medainer por 15 dias
                 </Button>
                 <Button
                   variant="outline"
@@ -242,7 +242,7 @@ export default function App() {
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
                 {[
-                  { icon: Calendar, text: 'Teste assistido de 7 dias' },
+                  { icon: Calendar, text: 'Teste assistido de 15 dias' },
                   { icon: Users, text: 'Implantação guiada para a equipe' },
                   { icon: ClipboardList, text: 'Suporte humano no uso inicial' }
                 ].map((item, i) => (
@@ -453,7 +453,7 @@ export default function App() {
         <div className="container mx-auto px-4 sm:px-6">
           <SectionHeading
             subtitle="Teste Assistido"
-            title="Teste o Medainer por 7 dias."
+            title="Teste o Medainer por 15 dias."
             centered={true}
             dark={true}
           />
@@ -496,7 +496,7 @@ export default function App() {
               trackEventName="click_trial"
               trackPayload={{ source: 'trial_section' }}
             >
-              Solicitar teste de 7 dias
+              Solicitar teste de 15 dias
             </Button>
             <Button
               variant="outline"
@@ -790,7 +790,7 @@ export default function App() {
             <div className="mt-12">
               {[
                 {
-                  q: 'Como funciona o teste assistido de 7 dias?',
+                  q: 'Como funciona o teste assistido de 15 dias?',
                   a: 'Entendemos o cenário da clínica, configuramos o essencial e acompanhamos o uso inicial para sua equipe validar a aderência do Medainer na rotina real.'
                 },
                 {
@@ -837,7 +837,7 @@ export default function App() {
               Teste ou assine agora.
             </h2>
             <p className="text-lg md:text-xl text-white/70">
-              Comece pelo teste de 7 dias ou siga direto para o plano ideal da sua clínica.
+              Comece pelo teste de 15 dias ou siga direto para o plano ideal da sua clínica.
             </p>
           </div>
 
@@ -849,7 +849,7 @@ export default function App() {
               trackEventName="click_trial"
               trackPayload={{ source: 'final_cta_primary' }}
             >
-              Solicitar teste de 7 dias
+              Solicitar teste de 15 dias
             </Button>
             <Button
               variant="outline"
