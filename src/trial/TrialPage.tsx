@@ -28,7 +28,7 @@ declare global {
 }
 
 function buildWhatsAppUrl(message: string) {
-  return `https://wa.me/5579999805993?text=${encodeURIComponent(message)}`;
+  return `https://wa.me/5579996018591?text=${encodeURIComponent(message)}`;
 }
 
 const WHATSAPP_URL = buildWhatsAppUrl('Olá, quero tirar uma dúvida antes de ativar os 7 dias grátis do Medainer Solo');

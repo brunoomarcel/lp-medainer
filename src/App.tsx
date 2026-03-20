@@ -35,7 +35,7 @@ declare global {
   }
 }
 
-const WHATSAPP_PHONE = '5579999805993';
+const WHATSAPP_PHONE = '5579996018591';
 const REGISTER_URL = 'https://app.medainer.com.br/register';
 const TRIAL_URL = (import.meta.env.VITE_TRIAL_URL as string | undefined)?.trim() || REGISTER_URL;
 const TERMS_URL = (import.meta.env.VITE_TERMS_URL as string | undefined)?.trim() || '/termos';
