@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @license
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -42,6 +42,66 @@ const TERMS_URL = (import.meta.env.VITE_TERMS_URL as string | undefined)?.trim()
 const PRIVACY_URL = (import.meta.env.VITE_PRIVACY_URL as string | undefined)?.trim() || '/privacidade';
 const LGPD_URL = (import.meta.env.VITE_LGPD_URL as string | undefined)?.trim() || '/lgpd';
 const HERO_YOUTUBE_EMBED_URL = 'https://www.youtube.com/embed/1K2zYpofJUk?rel=0';
+
+const LANDING_PLANS = [
+  {
+    name: 'Medainer Solo',
+    price: 'R$ 99',
+    subtitle: 'Plano de entrada',
+    text: 'Para sair do papel, organizar a base da clinica e continuar depois do trial sem pesar no caixa.',
+    features: [
+      'Ate 1 profissional e ate 2 usuarios',
+      'Agenda da clinica e dos profissionais',
+      'Pacientes e prontuario basico',
+      'Confirmacao e remarcacao por link',
+      'Dashboard simples',
+      'Onboarding self-service e suporte por chat ou e-mail'
+    ],
+    promise: 'Voce comeca com 7 dias gratis e continua so se fizer sentido.',
+    featured: false
+  },
+  {
+    name: 'Medainer Clinica',
+    price: 'R$ 297',
+    subtitle: 'Proximo passo',
+    text: 'Para clinicas que ja precisam de recepcao, equipe, agenda, pacientes e financeiro funcionando no mesmo fluxo.',
+    features: [
+      'Tudo do Medainer Solo',
+      'Financeiro basico',
+      'Equipe e permissoes',
+      'Dashboard Saude da Clinica',
+      'Alertas operacionais e pacientes sem retorno',
+      'Onboarding ao vivo e suporte em horario comercial'
+    ],
+    promise: 'Faz sentido quando a clinica ja precisa de mais estrutura operacional.',
+    featured: true
+  },
+  {
+    name: 'Medainer Automacao',
+    price: 'R$ 497',
+    subtitle: 'Upgrade natural',
+    text: 'Para clinicas em que o WhatsApp ja virou gargalo e o time precisa reduzir trabalho manual, no-show e remarcacoes.',
+    features: [
+      'Tudo do Medainer Clinica',
+      'Agente no WhatsApp',
+      'Confirmacao, remarcacao e lembretes automaticos',
+      'Reativacao de pacientes e fila de encaixe',
+      'Suporte prioritario'
+    ],
+    promise: 'Entra quando a base ja estiver organizada e o gargalo for o WhatsApp.',
+    featured: false
+  }
+] as const;
+
+const LANDING_PLAN_COMPARISON = [
+  ['Preco', 'R$ 99/mes', 'R$ 297/mes', 'R$ 497/mes'],
+  ['Melhor momento', 'Entrada e validacao', 'Operacao com equipe', 'Escala com WhatsApp'],
+  ['Profissionais', 'Ate 1', 'Equipe completa', 'Equipe completa'],
+  ['Usuarios', 'Ate 2', 'Equipe e permissoes', 'Equipe e permissoes'],
+  ['Financeiro', 'Nao incluido', 'Incluido', 'Incluido'],
+  ['Automacoes no WhatsApp', 'Confirmacao por link', 'Confirmacao por link', 'Automacoes incluidas'],
+  ['Suporte', 'Chat ou e-mail', 'Horario comercial', 'Prioritario']
+] as const;
 
 function trackEvent(eventName: string, payload: Record<string, unknown> = {}) {
   if (typeof window === 'undefined' || typeof window.gtag !== 'function') return;
@@ -510,43 +570,11 @@ export default function App() {
           <SectionHeading subtitle="Oferta" title="Escolha seu plano." centered={true} />
 
           <p className="text-center max-w-3xl mx-auto -mt-4 mb-10 text-base md:text-lg text-brand-graphite/60 leading-relaxed">
-            Escolha o Medainer Solo para centralizar a operação da clínica ou o Medainer IA para automatizar o WhatsApp e reduzir o trabalho da recepção.
+            Escolha o plano que faz sentido para o momento da sua clinica: sair do improviso, estruturar a operacao ou automatizar o WhatsApp.
           </p>
 
-          <div className="grid lg:grid-cols-2 gap-8 max-w-5xl mx-auto">
-            {[
-              {
-                name: 'Medainer Solo',
-                price: 'R$ 297',
-                subtitle: 'Operação organizada',
-                text: 'Para clínicas que querem centralizar agenda, pacientes, prontuário e financeiro em um único sistema.',
-                features: [
-                  'Agenda da clínica e dos profissionais',
-                  'Pacientes, prontuário e financeiro integrado',
-                  'Equipe e perfis de acesso',
-                  'Até 5 usuários',
-                  'Até 3 profissionais',
-                  'Suporte humano em horário comercial'
-                ],
-                featured: false
-              },
-              {
-                name: 'Medainer IA',
-                price: 'R$ 597',
-                subtitle: 'Operação + automação',
-                text: 'Para clínicas com recepção sobrecarregada e alto volume de confirmações e remarcações no WhatsApp.',
-                features: [
-                  'Tudo do Medainer Solo',
-                  'Agente IA de atendimento no WhatsApp',
-                  'Confirmação, remarcação e lembretes automáticos',
-                  'Envio automático de links e orientações',
-                  'Até 8 usuários',
-                  'Até 6 profissionais',
-                  'Suporte prioritário'
-                ],
-                featured: true
-              }
-            ].map((plan, index) => (
+          <div className="grid gap-8 max-w-6xl mx-auto lg:grid-cols-[0.95fr_1.1fr_0.95fr]">
+            {LANDING_PLANS.map((plan, index) => (
               <motion.div
                 key={plan.name}
                 initial={{ opacity: 0, y: 30 }}
@@ -555,7 +583,7 @@ export default function App() {
                 transition={{ delay: index * 0.1 }}
                 className={`p-8 sm:p-10 rounded-[32px] sm:rounded-[40px] flex flex-col ${
                   plan.featured
-                    ? 'bg-brand-petroleum text-white lg:scale-105 shadow-2xl shadow-brand-petroleum/20 z-10'
+                    ? 'bg-brand-petroleum text-white shadow-2xl shadow-brand-petroleum/20 z-10 lg:-my-4'
                     : 'bg-brand-offwhite border border-brand-graphite/5'
                 }`}
               >
@@ -574,10 +602,8 @@ export default function App() {
                   <span className={`text-4xl font-serif font-bold ${plan.featured ? 'text-brand-accent' : 'text-brand-petroleum'}`}>
                     {plan.price}
                   </span>
-                  <span className={plan.featured ? 'text-white/60 ml-2' : 'text-brand-graphite/50 ml-2'}>/mês</span>
-                  <p className={`mt-3 text-sm ${plan.featured ? 'text-white/70' : 'text-brand-graphite/60'}`}>
-                    Teste assistido disponível antes da assinatura.
-                  </p>
+                  <span className={plan.featured ? 'text-white/60 ml-2' : 'text-brand-graphite/50 ml-2'}>/mes</span>
+                  <p className={`mt-3 text-sm ${plan.featured ? 'text-white/70' : 'text-brand-graphite/60'}`}>{plan.promise}</p>
                 </div>
                 <ul className="space-y-4 mb-10 flex-grow">
                   {plan.features.map((item) => (
@@ -595,7 +621,7 @@ export default function App() {
                     trackEventName="click_trial"
                     trackPayload={{ source: `plan_trial_${plan.name.toLowerCase()}` }}
                   >
-                    Testar grátis
+                    Testar gratis
                   </Button>
                 </div>
               </motion.div>
@@ -608,18 +634,12 @@ export default function App() {
                 <tr className="border-b border-brand-graphite/10 text-left text-brand-graphite/70">
                   <th className="px-5 py-4 font-semibold">Comparativo</th>
                   <th className="px-5 py-4 font-semibold">Medainer Solo</th>
-                  <th className="px-5 py-4 font-semibold">Medainer IA</th>
+                  <th className="px-5 py-4 font-semibold">Medainer Clinica</th>
+                  <th className="px-5 py-4 font-semibold">Medainer Automacao</th>
                 </tr>
               </thead>
               <tbody className="text-brand-graphite/80">
-                {[
-                  ['Preço', 'R$ 297/mês', 'R$ 597/mês'],
-                  ['Teste assistido', 'Disponível', 'Disponível'],
-                  ['Usuários', 'Até 5', 'Até 8'],
-                  ['Profissionais', 'Até 3', 'Até 6'],
-                  ['Automações no WhatsApp', 'Não incluídas', 'Incluídas'],
-                  ['Suporte', 'Horário comercial', 'Prioritário']
-                ].map((row) => (
+                {LANDING_PLAN_COMPARISON.map((row) => (
                   <tr key={row[0]} className="border-b border-brand-graphite/10 last:border-b-0">
                     {row.map((cell) => (
                       <td key={cell} className="px-5 py-4">
@@ -662,8 +682,8 @@ export default function App() {
                     icon: LayoutDashboard
                   },
                   {
-                    title: 'Automações de WhatsApp no Medainer IA',
-                    desc: 'Confirmação, remarcação e lembretes automáticos reduzem trabalho manual e liberam tempo da recepção.',
+                    title: 'Automações de WhatsApp no Medainer Automacao',
+                    desc: 'Confirmacao, remarcacao e lembretes automaticos reduzem trabalho manual e liberam tempo da recepcao.',
                     icon: TrendingUp
                   }
                 ].map((benefit, i) => (
@@ -804,8 +824,8 @@ export default function App() {
                   a: 'O suporte é humano e varia conforme o plano contratado, com apoio na implantação e na rotina operacional.'
                 },
                 {
-                  q: 'Qual a diferença entre Medainer Solo e Medainer IA?',
-                  a: 'O Medainer Solo organiza agenda, pacientes, prontuário e financeiro em um único sistema. O Medainer IA inclui tudo do Medainer Solo e adiciona automações no WhatsApp, como confirmação, remarcação, lembretes e envio de links.'
+                  q: 'Qual a diferenca entre Medainer Solo, Clinica e Automacao?',
+                  a: 'O Medainer Solo organiza a base da clinica com agenda, pacientes e prontuario basico. O Medainer Clinica adiciona financeiro, equipe e visao operacional. O Medainer Automacao inclui tudo do Clinica e soma automacoes no WhatsApp para reduzir retrabalho.'
                 },
                 {
                   q: 'Como funciona segurança e LGPD?',
@@ -899,3 +919,5 @@ export default function App() {
     </div>
   );
 }
+
+
