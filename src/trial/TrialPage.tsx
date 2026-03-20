@@ -31,7 +31,7 @@ function buildWhatsAppUrl(message: string) {
   return `https://wa.me/5579999805993?text=${encodeURIComponent(message)}`;
 }
 
-const WHATSAPP_URL = buildWhatsAppUrl('Olá, quero começar a avaliação do Medainer Solo');
+const WHATSAPP_URL = buildWhatsAppUrl('Olá, quero tirar uma dúvida antes de ativar os 7 dias grátis do Medainer Solo');
 const APP_REGISTER_URL =
   (import.meta.env.VITE_APP_REGISTER_URL as string | undefined)?.trim() || 'https://app.medainer.com.br/register';
 const TERMS_URL = (import.meta.env.VITE_TERMS_URL as string | undefined)?.trim() || '/termos';
@@ -41,34 +41,34 @@ const LGPD_URL = (import.meta.env.VITE_LGPD_URL as string | undefined)?.trim() |
 const HERO_HIGHLIGHTS = [
   {
     icon: Calendar,
-    text: 'Sem cartão de crédito. Cancela quando quiser.',
+    text: '7 dias grátis e sem cartão de crédito',
   },
   {
     icon: Clock,
-    text: 'Ative agora e teste com a equipe da clínica',
+    text: 'Teste com a rotina real da clínica',
   },
   {
     icon: TrendingUp,
-    text: 'Agenda, pacientes, prontuário.',
+    text: 'Agenda, pacientes e prontuário em um só lugar',
   },
 ];
 
 const EVALUATION_FEATURES = [
   {
-    title: 'Agenda organizada sem improviso',
-    text: 'Horários, profissionais e visão do dia no mesmo lugar para parar de depender de planilha e recado solto.',
+    title: 'Agenda sem buraco e sem confusão',
+    text: 'Horários, profissionais e visão do dia no mesmo lugar para parar de apagar incêndio com planilha, papel e recado solto.',
     image: agendaImage,
     icon: Calendar,
   },
   {
-    title: 'Pacientes centralizados',
-    text: 'Cadastro único para a equipe parar de procurar informação em WhatsApp, papel e memória.',
+    title: 'Paciente sem informação espalhada',
+    text: 'Centralize cadastro e histórico básico para a equipe parar de caçar informação em WhatsApp, papel e memória.',
     image: pacientesImage,
     icon: UserCheck,
   },
   {
-    title: 'Prontuário básico e confirmações por link',
-    text: 'Você valida a rotina clínica no sistema real, com registro do atendimento e ações simples para confirmação e remarcação.',
+    title: 'Atendimento registrado e confirmação mais simples',
+    text: 'Use prontuário básico e confirmações por link para validar o fluxo real sem depender de improviso a cada atendimento.',
     image: prontuarioImage,
     icon: ClipboardList,
   },
@@ -76,16 +76,16 @@ const EVALUATION_FEATURES = [
 
 const FLOW_STEPS = [
   {
-    title: '1. Cadastre a clínica e entre no Solo',
-    text: 'O acesso de avaliação atual leva direto para o plano de entrada do Medainer.',
+    title: '1. Crie seu acesso em poucos minutos',
+    text: 'Você ativa os 7 dias grátis do Medainer Solo sem cartão e já entra na plataforma.',
   },
   {
-    title: '2. Valide a rotina real',
-    text: 'Teste agenda, pacientes, prontuário e confirmações com a operação do dia a dia.',
+    title: '2. Coloque a rotina real para rodar',
+    text: 'Cadastre pacientes, organize a agenda e teste o fluxo da clínica do jeito que ele acontece hoje.',
   },
   {
-    title: '3. Decida o próximo passo',
-    text: 'Continue no Solo por R$ 99/mês ou suba para Clínica e Automação quando fizer sentido.',
+    title: '3. Veja se a clínica respira melhor',
+    text: 'Se fizer sentido, continue no Solo por R$ 99/mês ou avance depois para mais controle e automação.',
   },
 ];
 
@@ -94,7 +94,7 @@ const PLAN_CARDS = [
     name: 'Medainer Solo',
     price: 'R$ 99/mês',
     subtitle: 'Plano de entrada',
-    text: 'Para profissional solo ou clínica muito pequena que precisa sair do papel sem entrar num sistema pesado.',
+    text: 'Para sair do papel, organizar a base da clínica e continuar depois do trial sem pesar no caixa.',
     features: [
       'Até 1 profissional e até 2 usuários',
       'Agenda da clínica e dos profissionais',
@@ -103,15 +103,15 @@ const PLAN_CARDS = [
       'Dashboard simples',
       'Onboarding self-service e suporte por chat ou e-mail',
     ],
-    cta: 'Começar avaliação',
+    cta: 'Começar 7 dias grátis',
     href: 'register',
     featured: false,
   },
   {
     name: 'Medainer Clínica',
     price: 'R$ 297/mês',
-    subtitle: 'Plano recomendado',
-    text: 'Para clínicas em operação real que precisam de mais controle sobre equipe, agenda, pacientes e financeiro.',
+    subtitle: 'Próximo passo',
+    text: 'Para clínicas que já precisam de recepção, equipe, agenda, pacientes e financeiro funcionando no mesmo fluxo.',
     features: [
       'Tudo do Medainer Solo',
       'Financeiro básico',
@@ -120,7 +120,7 @@ const PLAN_CARDS = [
       'Alertas operacionais e pacientes sem retorno',
       'Onboarding ao vivo e suporte em horário comercial',
     ],
-    cta: 'Falar sobre Clínica',
+    cta: 'Entender plano Clínica',
     href: 'whatsapp',
     featured: true,
   },
@@ -128,7 +128,7 @@ const PLAN_CARDS = [
     name: 'Medainer Automação',
     price: 'R$ 497/mês',
     subtitle: 'Upgrade natural',
-    text: 'Para clínicas com volume no WhatsApp que precisam reduzir trabalho manual, no-show e remarcações.',
+    text: 'Para clínicas em que o WhatsApp já virou gargalo e o time precisa reduzir trabalho manual, no-show e remarcações.',
     features: [
       'Tudo do Medainer Clínica',
       'Agente no WhatsApp',
@@ -136,7 +136,7 @@ const PLAN_CARDS = [
       'Reativação de pacientes e fila de encaixe',
       'Suporte prioritário',
     ],
-    cta: 'Quero ver automação',
+    cta: 'Entender automação',
     href: 'whatsapp',
     featured: false,
   },
@@ -145,15 +145,15 @@ const PLAN_CARDS = [
 const FAQ_ITEMS = [
   {
     q: 'O que eu ativo hoje nessa página?',
-    a: 'Você entra no acesso de avaliação do Medainer Solo. Hoje esse cadastro ainda libera 7 dias sem cartão, mas a oferta principal já é começar pelo Solo como plano de entrada do produto.',
+    a: 'Você ativa os 7 dias grátis do Medainer Solo. O objetivo dessa página é colocar a sua clínica para testar a rotina real sem cartão e sem depender de demo.',
   },
   {
     q: 'O que minha clínica testa nesse período?',
-    a: 'Agenda, pacientes, prontuário básico, confirmações por link e dashboard simples. O objetivo é validar a organização da rotina, não apenas ver uma demo.',
+    a: 'Agenda, pacientes, prontuário básico, confirmações por link e dashboard simples. A ideia é sentir se a clínica sai do improviso no dia a dia, não apenas assistir uma apresentação.',
   },
   {
     q: 'O financeiro faz parte da avaliação?',
-    a: 'Não como proposta principal do Solo. O financeiro entra a partir do Medainer Clínica, que é o plano recomendado para clínicas com equipe e operação mais completa.',
+    a: 'Não como proposta principal do Solo. O financeiro entra a partir do Medainer Clínica, que é o próximo passo para clínicas com equipe e operação mais completa.',
   },
   {
     q: 'Quanto custa continuar depois da avaliação?',
@@ -165,7 +165,7 @@ const FAQ_ITEMS = [
   },
   {
     q: 'Posso falar com alguém antes de me cadastrar?',
-    a: 'Sim. Se quiser alinhar o melhor plano antes de começar, você pode falar com o time comercial pelo WhatsApp.',
+    a: 'Sim. Se quiser tirar uma dúvida rápida antes de ativar o trial, você pode falar com o time comercial pelo WhatsApp.',
   },
 ];
 
@@ -315,7 +315,7 @@ export function TrialPage() {
               trackEventName="click_checkout"
               trackPayload={{ source: 'header_trial', plan: 'medainer solo' }}
             >
-              Começar avaliação
+              Começar 7 dias grátis
             </Button>
           </div>
         </div>
@@ -330,15 +330,15 @@ export function TrialPage() {
             <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8 }}>
               <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-brand-green/10 px-4 py-2 text-[11px] font-bold uppercase tracking-wider text-brand-green sm:text-xs md:mb-8">
                 <ShieldCheck className="h-4 w-4" />
-                COMECE PELO MEDAINER SOLO
+                TESTE GRÁTIS O MEDAINER SOLO
               </div>
 
               <h1 className="text-balance mb-6 font-serif text-4xl font-medium leading-[1.06] text-brand-graphite sm:text-5xl md:mb-8 md:text-6xl lg:text-7xl">
-                Teste o Medainer por 7 dias e organize a agenda de forma fácil.
+                Teste o Medainer por 7 dias e pare de tocar a clínica no improviso.
               </h1>
 
               <p className="mb-8 max-w-xl text-base leading-relaxed text-brand-graphite/70 sm:text-lg md:mb-10 md:text-xl">
-                Gerencie agenda, financeiro, prontuários e profissionais em um só lugar.
+                Organize agenda, pacientes e prontuário em um só lugar para reduzir recado solto, informação perdida e correria no dia a dia.
               </p>
 
               <div className="mb-10 flex flex-col gap-4 sm:flex-row md:mb-12">
@@ -349,7 +349,7 @@ export function TrialPage() {
                   trackEventName="click_checkout"
                   trackPayload={{ source: 'hero_primary', plan: 'medainer solo' }}
                 >
-                  Começar avaliação do Solo
+                  Começar 7 dias grátis
                 </Button>
                 <Button
                   variant="outline"
@@ -358,7 +358,7 @@ export function TrialPage() {
                   trackEventName="click_whatsapp"
                   trackPayload={{ source: 'hero_secondary' }}
                 >
-                  Falar sobre planos
+                  Tirar dúvida antes de testar
                 </Button>
               </div>
 
@@ -394,7 +394,7 @@ export function TrialPage() {
                     <TrendingUp className="h-6 w-6" />
                   </div>
                   <div>
-                    <p className="text-xs font-bold uppercase tracking-wider text-brand-graphite/50">Plano de entrada</p>
+                    <p className="text-xs font-bold uppercase tracking-wider text-brand-graphite/50">Depois do teste</p>
                     <p className="font-serif text-xl font-bold text-brand-petroleum">R$ 99/mês</p>
                   </div>
                 </div>
@@ -410,7 +410,7 @@ export function TrialPage() {
                     <Clock className="h-6 w-6" />
                   </div>
                   <div>
-                    <p className="text-xs font-bold uppercase tracking-wider text-brand-graphite/50">Avaliação atual</p>
+                    <p className="text-xs font-bold uppercase tracking-wider text-brand-graphite/50">Teste gratuito</p>
                     <p className="font-serif text-xl font-bold text-brand-petroleum">7 dias</p>
                   </div>
                 </div>
@@ -424,7 +424,7 @@ export function TrialPage() {
         <div className="container mx-auto px-4 sm:px-6">
           <SectionHeading
             subtitle="O que você ativa hoje"
-            title="A avaliação existe para validar o começo da operação no Medainer Solo."
+            title="Você testa o que mais pesa na rotina da clínica."
           />
 
           <div className="grid gap-6 lg:grid-cols-3">
@@ -452,19 +452,17 @@ export function TrialPage() {
             <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
               <div>
                 <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-brand-accent">Importante</p>
-                <h3 className="mt-3 font-serif text-3xl leading-tight">O Solo resolve o começo. O Clínica entra quando a operação pede mais controle.</h3>
+                <h3 className="mt-3 font-serif text-3xl leading-tight">Você testa sem risco e sente rápido se a rotina melhora.</h3>
                 <p className="mt-4 max-w-2xl text-sm leading-relaxed text-white/70">
-                  No estado atual do produto, o Solo é a porta de entrada com agenda, pacientes, prontuário básico,
-                  confirmações por link e dashboard simples. Financeiro, equipe e visão operacional entram no Medainer
-                  Clínica. Automações mais pesadas entram no Medainer Automação.
+                  Sem cartão, sem demo travada e com o essencial para uma clínica pequena organizar o dia a dia.
                 </p>
               </div>
 
               <div className="grid gap-3 text-sm text-white/80">
                 {[
-                  'Financeiro básico disponível no Medainer Clínica',
-                  'Equipe, permissões e dashboard mais completo no Medainer Clínica',
-                  'WhatsApp, lembretes automáticos e reativação no Medainer Automação',
+                  'Você já testa agenda, pacientes e prontuário no fluxo real',
+                  'Se precisar de financeiro, equipe e mais controle, o próximo passo é o Medainer Clínica',
+                  'Se o gargalo estiver no WhatsApp, a evolução natural é o Medainer Automação',
                 ].map((item) => (
                   <div key={item} className="rounded-2xl border border-white/10 bg-white/5 px-4 py-4">
                     <div className="flex items-start gap-3">
@@ -483,7 +481,7 @@ export function TrialPage() {
         <div className="container mx-auto px-4 sm:px-6">
           <SectionHeading
             subtitle="Como funciona hoje"
-            title="A avaliação atual é uma ponte simples para você sentir o produto antes de assinar."
+            title="Você ativa os 7 dias grátis e valida na rotina da clínica."
           />
 
           <div className="grid gap-6 md:grid-cols-3">
@@ -508,14 +506,9 @@ export function TrialPage() {
       <section id="planos" className="section-padding bg-white">
         <div className="container mx-auto px-4 sm:px-6">
           <SectionHeading
-            subtitle="Escada de planos"
-            title="Comece simples, evolua com clareza e só pague por automação quando ela realmente fizer diferença."
+            subtitle="Depois do trial"
+            title="Se fizer sentido continuar, você já sabe por onde evoluir."
           />
-
-          <p className="mx-auto mb-10 max-w-3xl text-center text-base leading-relaxed text-brand-graphite/60 md:text-lg">
-            A oferta pública do Medainer agora é organizada em três passos: Solo como entrada, Clínica como plano
-            principal e Automação como upgrade natural.
-          </p>
 
           <div className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-[0.95fr_1.1fr_0.95fr]">
             {PLAN_CARDS.map((plan) => {
@@ -552,10 +545,10 @@ export function TrialPage() {
                     </span>
                     <p className={`mt-2 text-sm ${plan.featured ? 'text-white/70' : 'text-brand-graphite/60'}`}>
                       {plan.featured
-                        ? 'Plano que o Medainer deve defender como principal para clínicas em operação.'
+                        ? 'Faz sentido quando o trial mostrar que a clínica já precisa de mais estrutura.'
                         : plan.name === 'Medainer Solo'
-                          ? 'Plano de entrada com avaliação de 7 dias disponível hoje.'
-                          : 'Plano para clínicas com volume e dor forte no WhatsApp.'}
+                          ? 'Você começa com 7 dias grátis e continua só se fizer sentido.'
+                          : 'Entra quando a base já estiver organizada e o gargalo for o WhatsApp.'}
                     </p>
                   </div>
 
@@ -604,8 +597,8 @@ export function TrialPage() {
 
             <div>
               <SectionHeading
-                subtitle="Quando o Clínica entra"
-                title="O Solo ajuda a sair do improviso. O Clínica coloca a operação em ordem."
+                subtitle="Se precisar de mais controle"
+                title="O Solo tira do improviso. O Clínica entra quando a operação pede recepção, equipe e financeiro."
                 centered={false}
               />
               <div className="space-y-4 text-brand-graphite/75">
@@ -646,8 +639,8 @@ export function TrialPage() {
           <div className="grid items-center gap-10 lg:grid-cols-[1.05fr_0.95fr]">
             <div>
               <SectionHeading
-                subtitle="Quando a automação vira prioridade"
-                title="Automação não é o primeiro passo para todo mundo. É o upgrade certo para quem vive no WhatsApp."
+                subtitle="Se o gargalo for o WhatsApp"
+                title="Depois de organizar a base, a automação entra para cortar retrabalho, no-show e remarcações."
                 centered={false}
               />
 
@@ -682,7 +675,7 @@ export function TrialPage() {
       <section id="faq" className="section-padding bg-brand-sand/20">
         <div className="container mx-auto px-4 sm:px-6">
           <div className="mx-auto max-w-3xl">
-            <SectionHeading subtitle="FAQ" title="O que a clínica normalmente quer entender antes de começar." />
+            <SectionHeading subtitle="FAQ" title="O que a clínica normalmente quer saber antes de ativar os 7 dias grátis." />
 
             {FAQ_ITEMS.map((item) => (
               <div key={item.q}>
@@ -700,11 +693,10 @@ export function TrialPage() {
         <div className="container relative z-10 mx-auto px-4 sm:px-6">
           <div className="mx-auto max-w-3xl text-center">
             <h2 className="font-serif text-3xl font-medium leading-tight sm:text-4xl md:text-5xl">
-              Comece pelo Solo, valide em 7 dias e evolua com clareza quando a clínica pedir mais.
+              Ative os 7 dias grátis e veja a clínica funcionar com menos improviso.
             </h2>
             <p className="mt-6 text-lg text-white/70 md:text-xl">
-              O acesso de avaliação está disponível hoje, mas a proposta já está clara: o Medainer começa no Solo por
-              R$ 99/mês.
+              Sem cartão de crédito. Você testa na rotina real e decide depois se continua no Solo por R$ 99/mês.
             </p>
 
             <div className="mx-auto mt-10 flex max-w-3xl flex-col justify-center gap-4 sm:flex-row">
@@ -715,7 +707,7 @@ export function TrialPage() {
                 trackEventName="click_checkout"
                 trackPayload={{ source: 'final_cta', plan: 'medainer solo' }}
               >
-                Criar acesso de avaliação
+                Começar 7 dias grátis
               </Button>
               <Button
                 variant="outline"
@@ -725,7 +717,7 @@ export function TrialPage() {
                 trackPayload={{ source: 'final_cta' }}
               >
                 <MessageCircle className="mr-2 h-5 w-5" />
-                Falar com vendas
+                Tirar dúvida antes de testar
               </Button>
             </div>
           </div>
@@ -761,7 +753,7 @@ export function TrialPage() {
       >
         <MessageCircle className="h-7 w-7 sm:h-8 sm:w-8" />
         <span className="pointer-events-none absolute right-full mr-4 hidden whitespace-nowrap rounded-xl border border-brand-graphite/5 bg-white px-4 py-2 text-sm font-bold text-brand-graphite opacity-0 shadow-xl transition-opacity group-hover:opacity-100 sm:block">
-          Falar sobre planos
+          Tirar dúvida antes de testar
         </span>
       </motion.a>
     </div>
