@@ -42,48 +42,68 @@ jobs:
           FTP_HOST: ${{ secrets.FTP_HOST }}
           FTP_PORT: ${{ secrets.FTP_PORT }}
           FTP_PATH: ${{ secrets.FTP_PATH }}
-          FTP_PROTOCOL: ${{ secrets.FTP_PROTOCOL }}
         run: |
           set -euo pipefail
 
-          PROTOCOL="${FTP_PROTOCOL:-}"
-          PROTOCOL="$(printf '%s' "$PROTOCOL" | tr '[:upper:]' '[:lower:]')"
+          RAW_TARGET="${FTP_HOST:?Missing secret FTP_HOST}"
+          TARGET="$RAW_TARGET"
+          PROTOCOL="ftp"
 
-          if [ -z "$PROTOCOL" ]; then
-            case "$FTP_HOST" in
-              ftps://*) PROTOCOL="ftps" ;;
-              ftp://*) PROTOCOL="ftp" ;;
-              sftp://*) PROTOCOL="sftp" ;;
-              *) PROTOCOL="ftp" ;;
-            esac
-          fi
+          case "$TARGET" in
+            *://*) TARGET="${TARGET#*://}" ;;
+          esac
 
-          if [ "$PROTOCOL" = "sftp" ]; then
-            echo "SamKirkland/FTP-Deploy-Action does not support SFTP. Use FTP/FTPS or switch the deploy action."
-            exit 1
-          fi
+          case "$TARGET" in
+            *@*) TARGET="${TARGET#*@}" ;;
+          esac
 
-          HOST="${FTP_HOST#ftp://}"
-          HOST="${HOST#ftps://}"
-          HOST="${HOST#sftp://}"
-          HOST="${HOST%/}"
+          HOST_PORT="$TARGET"
+          PATH_FROM_HOST=""
+          case "$TARGET" in
+            */*)
+              HOST_PORT="${TARGET%%/*}"
+              PATH_FROM_HOST="${TARGET#*/}"
+              ;;
+          esac
+
+          HOST="$HOST_PORT"
+          PORT_FROM_HOST=""
+          case "$HOST_PORT" in
+            *:*)
+              HOST="${HOST_PORT%%:*}"
+              PORT_FROM_HOST="${HOST_PORT##*:}"
+              ;;
+          esac
 
           if [ -n "${FTP_PORT:-}" ]; then
             PORT="$FTP_PORT"
+          elif [ -n "$PORT_FROM_HOST" ]; then
+            PORT="$PORT_FROM_HOST"
           else
-            case "$PROTOCOL" in
-              ftp) PORT="21" ;;
-              ftps) PORT="21" ;;
-              *)
-                echo "Unsupported FTP_PROTOCOL: $PROTOCOL"
-                exit 1
-                ;;
-            esac
+            PORT="21"
           fi
 
-          REMOTE_PATH="${FTP_PATH:-public_html}"
+          if [ -z "$HOST" ]; then
+            echo "Could not determine FTP host from FTP_HOST"
+            exit 1
+          fi
+
+          if [ "$PORT" = "990" ]; then
+            echo "FTP_PORT=990 indica FTPS implicito, mas este deploy foi configurado para FTP comum."
+            echo "Use a porta 21 para FTP ou ajuste a hospedagem para FTPS."
+            exit 1
+          fi
+
+          REMOTE_PATH="${FTP_PATH:-}"
+          if [ -z "$REMOTE_PATH" ] && [ -n "$PATH_FROM_HOST" ]; then
+            REMOTE_PATH="$PATH_FROM_HOST"
+          fi
+          if [ -z "$REMOTE_PATH" ]; then
+            REMOTE_PATH="public_html"
+          fi
           REMOTE_PATH="${REMOTE_PATH%/}/"
 
+          echo "Deploy target: host=$HOST protocol=$PROTOCOL port=$PORT path=$REMOTE_PATH"
           echo "host=$HOST" >> "$GITHUB_OUTPUT"
           echo "protocol=$PROTOCOL" >> "$GITHUB_OUTPUT"
           echo "port=$PORT" >> "$GITHUB_OUTPUT"
