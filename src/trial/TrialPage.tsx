@@ -5,12 +5,10 @@ import {
   ChevronDown,
   ClipboardList,
   Clock,
-  LayoutDashboard,
   MessageCircle,
   ShieldCheck,
   TrendingUp,
   UserCheck,
-  Users,
 } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 import clinicTeamImage from '../assets/images/clinic-team.png';
@@ -29,14 +27,147 @@ declare global {
   }
 }
 
-const WHATSAPP_URL =
-  'https://wa.me/5579999805993?text=Ol%C3%A1%2C%20quero%20ativar%20o%20teste%20gr%C3%A1tis%20de%2015%20dias%20do%20Medainer%20Essencial';
+function buildWhatsAppUrl(message: string) {
+  return `https://wa.me/5579999805993?text=${encodeURIComponent(message)}`;
+}
+
+const WHATSAPP_URL = buildWhatsAppUrl('Olá, quero começar a avaliação do Medainer Solo');
 const APP_REGISTER_URL =
   (import.meta.env.VITE_APP_REGISTER_URL as string | undefined)?.trim() || 'https://app.medainer.com.br/register';
-const STRIPE_PRO_URL = (import.meta.env.VITE_STRIPE_PRO_URL as string | undefined)?.trim() || WHATSAPP_URL;
 const TERMS_URL = (import.meta.env.VITE_TERMS_URL as string | undefined)?.trim() || '/termos';
 const PRIVACY_URL = (import.meta.env.VITE_PRIVACY_URL as string | undefined)?.trim() || '/privacidade';
 const LGPD_URL = (import.meta.env.VITE_LGPD_URL as string | undefined)?.trim() || '/lgpd';
+
+const HERO_HIGHLIGHTS = [
+  {
+    icon: Calendar,
+    text: 'Sem cartão de crédito. Cancela quando quiser.',
+  },
+  {
+    icon: Clock,
+    text: 'Ative agora e teste com a equipe da clínica',
+  },
+  {
+    icon: TrendingUp,
+    text: 'Agenda, pacientes, prontuário.',
+  },
+];
+
+const EVALUATION_FEATURES = [
+  {
+    title: 'Agenda organizada sem improviso',
+    text: 'Horários, profissionais e visão do dia no mesmo lugar para parar de depender de planilha e recado solto.',
+    image: agendaImage,
+    icon: Calendar,
+  },
+  {
+    title: 'Pacientes centralizados',
+    text: 'Cadastro único para a equipe parar de procurar informação em WhatsApp, papel e memória.',
+    image: pacientesImage,
+    icon: UserCheck,
+  },
+  {
+    title: 'Prontuário básico e confirmações por link',
+    text: 'Você valida a rotina clínica no sistema real, com registro do atendimento e ações simples para confirmação e remarcação.',
+    image: prontuarioImage,
+    icon: ClipboardList,
+  },
+];
+
+const FLOW_STEPS = [
+  {
+    title: '1. Cadastre a clínica e entre no Solo',
+    text: 'O acesso de avaliação atual leva direto para o plano de entrada do Medainer.',
+  },
+  {
+    title: '2. Valide a rotina real',
+    text: 'Teste agenda, pacientes, prontuário e confirmações com a operação do dia a dia.',
+  },
+  {
+    title: '3. Decida o próximo passo',
+    text: 'Continue no Solo por R$ 99/mês ou suba para Clínica e Automação quando fizer sentido.',
+  },
+];
+
+const PLAN_CARDS = [
+  {
+    name: 'Medainer Solo',
+    price: 'R$ 99/mês',
+    subtitle: 'Plano de entrada',
+    text: 'Para profissional solo ou clínica muito pequena que precisa sair do papel sem entrar num sistema pesado.',
+    features: [
+      'Até 1 profissional e até 2 usuários',
+      'Agenda da clínica e dos profissionais',
+      'Pacientes e prontuário básico',
+      'Confirmação e remarcação por link',
+      'Dashboard simples',
+      'Onboarding self-service e suporte por chat ou e-mail',
+    ],
+    cta: 'Começar avaliação',
+    href: 'register',
+    featured: false,
+  },
+  {
+    name: 'Medainer Clínica',
+    price: 'R$ 297/mês',
+    subtitle: 'Plano recomendado',
+    text: 'Para clínicas em operação real que precisam de mais controle sobre equipe, agenda, pacientes e financeiro.',
+    features: [
+      'Tudo do Medainer Solo',
+      'Financeiro básico',
+      'Equipe e permissões',
+      'Dashboard Saúde da Clínica',
+      'Alertas operacionais e pacientes sem retorno',
+      'Onboarding ao vivo e suporte em horário comercial',
+    ],
+    cta: 'Falar sobre Clínica',
+    href: 'whatsapp',
+    featured: true,
+  },
+  {
+    name: 'Medainer Automação',
+    price: 'R$ 497/mês',
+    subtitle: 'Upgrade natural',
+    text: 'Para clínicas com volume no WhatsApp que precisam reduzir trabalho manual, no-show e remarcações.',
+    features: [
+      'Tudo do Medainer Clínica',
+      'Agente no WhatsApp',
+      'Confirmação, remarcação e lembretes automáticos',
+      'Reativação de pacientes e fila de encaixe',
+      'Suporte prioritário',
+    ],
+    cta: 'Quero ver automação',
+    href: 'whatsapp',
+    featured: false,
+  },
+];
+
+const FAQ_ITEMS = [
+  {
+    q: 'O que eu ativo hoje nessa página?',
+    a: 'Você entra no acesso de avaliação do Medainer Solo. Hoje esse cadastro ainda libera 7 dias sem cartão, mas a oferta principal já é começar pelo Solo como plano de entrada do produto.',
+  },
+  {
+    q: 'O que minha clínica testa nesse período?',
+    a: 'Agenda, pacientes, prontuário básico, confirmações por link e dashboard simples. O objetivo é validar a organização da rotina, não apenas ver uma demo.',
+  },
+  {
+    q: 'O financeiro faz parte da avaliação?',
+    a: 'Não como proposta principal do Solo. O financeiro entra a partir do Medainer Clínica, que é o plano recomendado para clínicas com equipe e operação mais completa.',
+  },
+  {
+    q: 'Quanto custa continuar depois da avaliação?',
+    a: 'Medainer Solo custa R$ 99/mês. Se a clínica precisar de financeiro, equipe e mais visão operacional, o Medainer Clínica custa R$ 297/mês. O Medainer Automação custa R$ 497/mês.',
+  },
+  {
+    q: 'Quando vale subir para Clínica ou Automação?',
+    a: 'Vale subir para Clínica quando a operação já envolve recepção, mais de um profissional ou necessidade de financeiro. A Automação entra quando o WhatsApp começa a gerar muito retrabalho com confirmações, remarcações e pacientes sem retorno.',
+  },
+  {
+    q: 'Posso falar com alguém antes de me cadastrar?',
+    a: 'Sim. Se quiser alinhar o melhor plano antes de começar, você pode falar com o time comercial pelo WhatsApp.',
+  },
+];
 
 function trackEvent(eventName: string, payload: Record<string, unknown> = {}) {
   if (typeof window === 'undefined') return;
@@ -182,9 +313,9 @@ export function TrialPage() {
               href={appRegisterUrl}
               className="px-6 py-2.5"
               trackEventName="click_checkout"
-              trackPayload={{ source: 'header_trial', plan: 'medainer essencial' }}
+              trackPayload={{ source: 'header_trial', plan: 'medainer solo' }}
             >
-              Ativar teste grátis agora
+              Começar avaliação
             </Button>
           </div>
         </div>
@@ -199,11 +330,11 @@ export function TrialPage() {
             <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8 }}>
               <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-brand-green/10 px-4 py-2 text-[11px] font-bold uppercase tracking-wider text-brand-green sm:text-xs md:mb-8">
                 <ShieldCheck className="h-4 w-4" />
-                GESTÃO MÉDICA PARA CLÍNICAS E CONSULTÓRIOS
+                COMECE PELO MEDAINER SOLO
               </div>
 
-              <h1 className="text-balance mb-6 font-serif text-4xl font-medium leading-[1.08] text-brand-graphite sm:text-5xl md:mb-8 md:text-6xl lg:text-7xl">
-                Teste o Medainer por 15 dias e organize a agenda de forma fácil.
+              <h1 className="text-balance mb-6 font-serif text-4xl font-medium leading-[1.06] text-brand-graphite sm:text-5xl md:mb-8 md:text-6xl lg:text-7xl">
+                Teste o Medainer por 7 dias e organize a agenda de forma fácil.
               </h1>
 
               <p className="mb-8 max-w-xl text-base leading-relaxed text-brand-graphite/70 sm:text-lg md:mb-10 md:text-xl">
@@ -216,9 +347,9 @@ export function TrialPage() {
                   href={appRegisterUrl}
                   className="px-8 py-4 text-base sm:px-10 sm:text-lg"
                   trackEventName="click_checkout"
-                  trackPayload={{ source: 'hero_primary', plan: 'medainer essencial' }}
+                  trackPayload={{ source: 'hero_primary', plan: 'medainer solo' }}
                 >
-                  Ativar teste grátis agora
+                  Começar avaliação do Solo
                 </Button>
                 <Button
                   variant="outline"
@@ -227,17 +358,13 @@ export function TrialPage() {
                   trackEventName="click_whatsapp"
                   trackPayload={{ source: 'hero_secondary' }}
                 >
-                  Falar com consultor
+                  Falar sobre planos
                 </Button>
               </div>
 
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 sm:gap-6">
-                {[
-                  { icon: Calendar, text: 'Sem cartão de crédito. Cancela quando quiser.' },
-                  { icon: Users, text: 'Ative agora e teste com a equipe da clÃ­nica.' },
-                  { icon: ClipboardList, text: 'Agenda, pacientes, prontuÃ¡rio bÃ¡sico e financeiro bÃ¡sico.' },
-                ].map((item, index) => (
-                  <div key={index} className="flex items-center gap-3 text-sm font-medium text-brand-graphite/60">
+                {HERO_HIGHLIGHTS.map((item) => (
+                  <div key={item.text} className="flex items-center gap-3 text-sm font-medium text-brand-graphite/60">
                     <div className="flex h-8 w-8 items-center justify-center rounded-full bg-white text-brand-green shadow-sm">
                       <item.icon className="h-4 w-4" />
                     </div>
@@ -267,8 +394,8 @@ export function TrialPage() {
                     <TrendingUp className="h-6 w-6" />
                   </div>
                   <div>
-                    <p className="text-xs font-bold uppercase tracking-wider text-brand-graphite/50">Trial</p>
-                    <p className="font-serif text-xl font-bold text-brand-petroleum">sistema real</p>
+                    <p className="text-xs font-bold uppercase tracking-wider text-brand-graphite/50">Plano de entrada</p>
+                    <p className="font-serif text-xl font-bold text-brand-petroleum">R$ 99/mês</p>
                   </div>
                 </div>
               </motion.div>
@@ -283,8 +410,8 @@ export function TrialPage() {
                     <Clock className="h-6 w-6" />
                   </div>
                   <div>
-                    <p className="text-xs font-bold uppercase tracking-wider text-brand-graphite/50">Período</p>
-                    <p className="font-serif text-xl font-bold text-brand-petroleum">15 dias</p>
+                    <p className="text-xs font-bold uppercase tracking-wider text-brand-graphite/50">Avaliação atual</p>
+                    <p className="font-serif text-xl font-bold text-brand-petroleum">7 dias</p>
                   </div>
                 </div>
               </motion.div>
@@ -296,31 +423,12 @@ export function TrialPage() {
       <section className="section-padding bg-white">
         <div className="container mx-auto px-4 sm:px-6">
           <SectionHeading
-            subtitle="O que sua clínica usa no trial"
-            title="Veja o que o Medainer oferece"
+            subtitle="O que você ativa hoje"
+            title="A avaliação existe para validar o começo da operação no Medainer Solo."
           />
 
           <div className="grid gap-6 lg:grid-cols-3">
-            {[
-              {
-                title: 'Agenda que a recepção consegue usar',
-                text: 'Horários, profissionais e visão do dia — sem planilha, sem recado solto, sem confusão.',
-                image: agendaImage,
-                icon: Calendar,
-              },
-              {
-                title: 'Pacientes centralizados',
-                text: 'Cadastro único para parar de repetir informação em caderninho, WhatsApp e memória da recepção.',
-                image: pacientesImage,
-                icon: UserCheck,
-              },
-              {
-                title: 'Prontuário e financeiro básico',
-                text: 'O suficiente para a clínica funcionar com controle — sem precisar de treinamento de semanas.',
-                image: prontuarioImage,
-                icon: LayoutDashboard,
-              },
-            ].map((item) => (
+            {EVALUATION_FEATURES.map((item) => (
               <motion.article
                 key={item.title}
                 initial={{ opacity: 0, y: 20 }}
@@ -340,151 +448,189 @@ export function TrialPage() {
             ))}
           </div>
 
-          <div className="mt-6">
-            <div className="overflow-hidden rounded-[32px] border border-brand-graphite/8 bg-brand-offwhite p-6 shadow-sm">
-              <img src={financeiroImage} alt="Financeiro integrado" className="rounded-[24px] border border-brand-graphite/8 object-cover" />
+          <div className="mt-8 rounded-[32px] border border-brand-graphite/8 bg-brand-graphite px-6 py-7 text-white shadow-xl shadow-brand-graphite/10 sm:px-8">
+            <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
+              <div>
+                <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-brand-accent">Importante</p>
+                <h3 className="mt-3 font-serif text-3xl leading-tight">O Solo resolve o começo. O Clínica entra quando a operação pede mais controle.</h3>
+                <p className="mt-4 max-w-2xl text-sm leading-relaxed text-white/70">
+                  No estado atual do produto, o Solo é a porta de entrada com agenda, pacientes, prontuário básico,
+                  confirmações por link e dashboard simples. Financeiro, equipe e visão operacional entram no Medainer
+                  Clínica. Automações mais pesadas entram no Medainer Automação.
+                </p>
+              </div>
+
+              <div className="grid gap-3 text-sm text-white/80">
+                {[
+                  'Financeiro básico disponível no Medainer Clínica',
+                  'Equipe, permissões e dashboard mais completo no Medainer Clínica',
+                  'WhatsApp, lembretes automáticos e reativação no Medainer Automação',
+                ].map((item) => (
+                  <div key={item} className="rounded-2xl border border-white/10 bg-white/5 px-4 py-4">
+                    <div className="flex items-start gap-3">
+                      <Check className="mt-0.5 h-5 w-5 shrink-0 text-brand-accent" />
+                      <span>{item}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      <section id="planos" className="section-padding bg-brand-offwhite">
+      <section className="section-padding bg-brand-offwhite">
         <div className="container mx-auto px-4 sm:px-6">
           <SectionHeading
-            subtitle="Planos"
-            title={`O trial te dá o Essencial.\nO Essencial já resolve.`}
+            subtitle="Como funciona hoje"
+            title="A avaliação atual é uma ponte simples para você sentir o produto antes de assinar."
           />
 
-          <p className="mx-auto mb-10 max-w-3xl text-center text-base leading-relaxed text-brand-graphite/60 md:text-lg">
-            Depois dos 15 dias, você escolhe continuar ou encerrar. Sem pegadinha, sem contrato.
-          </p>
-
-          <div className="mx-auto grid max-w-5xl gap-8 lg:grid-cols-2">
-            {[
-              {
-                name: 'Medainer Essencial',
-                price: '15 dias grátis',
-                subtitle: 'Oferta principal desta landing',
-                text: 'Para clínicas que precisam de controle operacional real, sem depender de automação pesada pra começar.',
-                afterPrice: 'Depois: R$ 297/mês — cancela quando quiser',
-                features: [
-                  'Agenda da clínica e dos profissionais',
-                  'Pacientes, prontuário básico e financeiro básico',
-                  'Equipe e acessos',
-                  'Até 5 usuários e 3 profissionais',
-                ],
-                cta: 'Ativar teste grátis',
-                href: appRegisterUrl,
-                featured: true,
-              },
-              {
-                name: 'Medainer IA',
-                price: 'R$ 597/mês',
-                subtitle: 'Próximo passo para clínicas com volume',
-                text: 'Para quando o gargalo já está no volume de confirmações, remarcações e recados no WhatsApp.',
-                afterPrice: 'Inclui tudo do Essencial',
-                features: [
-                  'Agente de agendamento por IA',
-                  'Confirmação e remarcação por WhatsApp',
-                  'Lembretes e envio de links',
-                  'Até 8 usuários e 6 profissionais',
-                ],
-                cta: 'Falar sobre plano IA',
-                href: STRIPE_PRO_URL,
-                featured: false,
-              },
-            ].map((plan) => (
+          <div className="grid gap-6 md:grid-cols-3">
+            {FLOW_STEPS.map((item, index) => (
               <motion.article
-                key={plan.name}
+                key={item.title}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                className={`flex flex-col rounded-[36px] p-8 sm:p-10 ${
-                  plan.featured
-                    ? 'bg-brand-petroleum text-white shadow-2xl shadow-brand-petroleum/15'
-                    : 'border border-brand-graphite/8 bg-white'
-                }`}
+                transition={{ delay: index * 0.08 }}
+                className="rounded-[28px] border border-brand-graphite/8 bg-white p-6 shadow-sm"
               >
-                <div className="mb-8">
-                  <p
-                    className={`mb-4 text-[11px] font-bold uppercase tracking-[0.22em] ${
-                      plan.featured ? 'text-brand-accent' : 'text-brand-green'
-                    }`}
-                  >
-                    {plan.subtitle}
-                  </p>
-                  <h3 className="font-serif text-2xl font-medium">{plan.name}</h3>
-                  <p className={`mt-2 text-sm ${plan.featured ? 'text-white/65' : 'text-brand-graphite/55'}`}>{plan.text}</p>
-                </div>
-
-                <div className="mb-8">
-                  <span className={`font-serif text-4xl font-bold ${plan.featured ? 'text-brand-accent' : 'text-brand-petroleum'}`}>
-                    {plan.price}
-                  </span>
-                  <p className={`mt-2 text-sm ${plan.featured ? 'text-white/70' : 'text-brand-graphite/60'}`}>
-                    {plan.afterPrice}
-                  </p>
-                </div>
-
-                <ul className="mb-10 flex-grow space-y-4">
-                  {plan.features.map((item) => (
-                    <li key={item} className={`flex items-start gap-3 text-sm ${plan.featured ? 'text-white/80' : 'text-brand-graphite/70'}`}>
-                      <Check className={`mt-0.5 h-5 w-5 shrink-0 ${plan.featured ? 'text-brand-accent' : 'text-brand-green'}`} />
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-
-                <div className="space-y-4">
-                  <Button
-                    variant={plan.featured ? 'secondary' : 'primary'}
-                    href={plan.href}
-                    className="w-full"
-                    trackEventName="click_checkout"
-                    trackPayload={{ source: `plan_${plan.name.toLowerCase()}` }}
-                  >
-                    {plan.cta}
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    href={WHATSAPP_URL}
-                    className={`w-full text-xs ${plan.featured ? 'text-white/75 hover:text-white' : ''}`}
-                    trackEventName="click_whatsapp"
-                    trackPayload={{ source: `plan_support_${plan.name.toLowerCase()}` }}
-                  >
-                    ou falar com consultor
-                  </Button>
-                </div>
+                <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-brand-green">Passo {index + 1}</p>
+                <h3 className="mt-4 font-serif text-2xl text-brand-graphite">{item.title}</h3>
+                <p className="mt-3 text-sm leading-relaxed text-brand-graphite/70">{item.text}</p>
               </motion.article>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="section-padding bg-white">
+      <section id="planos" className="section-padding bg-white">
+        <div className="container mx-auto px-4 sm:px-6">
+          <SectionHeading
+            subtitle="Escada de planos"
+            title="Comece simples, evolua com clareza e só pague por automação quando ela realmente fizer diferença."
+          />
+
+          <p className="mx-auto mb-10 max-w-3xl text-center text-base leading-relaxed text-brand-graphite/60 md:text-lg">
+            A oferta pública do Medainer agora é organizada em três passos: Solo como entrada, Clínica como plano
+            principal e Automação como upgrade natural.
+          </p>
+
+          <div className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-[0.95fr_1.1fr_0.95fr]">
+            {PLAN_CARDS.map((plan) => {
+              const href = plan.href === 'register' ? appRegisterUrl : WHATSAPP_URL;
+              const trackEventName = plan.href === 'register' ? 'click_checkout' : 'click_whatsapp';
+
+              return (
+                <motion.article
+                  key={plan.name}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  className={`flex flex-col rounded-[36px] p-8 sm:p-10 ${
+                    plan.featured
+                      ? 'bg-brand-petroleum text-white shadow-2xl shadow-brand-petroleum/15 lg:-my-4'
+                      : 'border border-brand-graphite/8 bg-brand-offwhite'
+                  }`}
+                >
+                  <div className="mb-8">
+                    <p
+                      className={`mb-4 text-[11px] font-bold uppercase tracking-[0.22em] ${
+                        plan.featured ? 'text-brand-accent' : 'text-brand-green'
+                      }`}
+                    >
+                      {plan.subtitle}
+                    </p>
+                    <h3 className="font-serif text-2xl font-medium">{plan.name}</h3>
+                    <p className={`mt-2 text-sm ${plan.featured ? 'text-white/70' : 'text-brand-graphite/55'}`}>{plan.text}</p>
+                  </div>
+
+                  <div className="mb-8">
+                    <span className={`font-serif text-4xl font-bold ${plan.featured ? 'text-brand-accent' : 'text-brand-petroleum'}`}>
+                      {plan.price}
+                    </span>
+                    <p className={`mt-2 text-sm ${plan.featured ? 'text-white/70' : 'text-brand-graphite/60'}`}>
+                      {plan.featured
+                        ? 'Plano que o Medainer deve defender como principal para clínicas em operação.'
+                        : plan.name === 'Medainer Solo'
+                          ? 'Plano de entrada com avaliação de 7 dias disponível hoje.'
+                          : 'Plano para clínicas com volume e dor forte no WhatsApp.'}
+                    </p>
+                  </div>
+
+                  <ul className="mb-10 flex-grow space-y-4">
+                    {plan.features.map((item) => (
+                      <li key={item} className={`flex items-start gap-3 text-sm ${plan.featured ? 'text-white/80' : 'text-brand-graphite/70'}`}>
+                        <Check className={`mt-0.5 h-5 w-5 shrink-0 ${plan.featured ? 'text-brand-accent' : 'text-brand-green'}`} />
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+
+                  <div className="space-y-4">
+                    <Button
+                      variant={plan.featured ? 'secondary' : 'primary'}
+                      href={href}
+                      className="w-full"
+                      trackEventName={trackEventName}
+                      trackPayload={{ source: `plan_${plan.name.toLowerCase()}` }}
+                    >
+                      {plan.cta}
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      href={WHATSAPP_URL}
+                      className={`w-full text-xs ${plan.featured ? 'text-white/75 hover:text-white' : ''}`}
+                      trackEventName="click_whatsapp"
+                      trackPayload={{ source: `plan_support_${plan.name.toLowerCase()}` }}
+                    >
+                      ou falar com consultor
+                    </Button>
+                  </div>
+                </motion.article>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      <section className="section-padding bg-brand-offwhite">
         <div className="container mx-auto px-4 sm:px-6">
           <div className="grid items-center gap-10 lg:grid-cols-[0.95fr_1.05fr]">
-            <div className="overflow-hidden rounded-[32px] border border-brand-graphite/8 shadow-sm">
-              <img src={clinicTeamImage} alt="Equipe clínica usando o Medainer" className="aspect-[4/5] w-full object-cover" />
+            <div className="overflow-hidden rounded-[32px] border border-brand-graphite/8 bg-white shadow-sm">
+              <img src={financeiroImage} alt="Financeiro do Medainer Clínica" className="w-full object-cover" />
             </div>
 
             <div>
               <SectionHeading
-                subtitle="O que muda na rotina"
-                title="Fica mais claro onde a clínica ganha tempo e para de depender do improviso."
+                subtitle="Quando o Clínica entra"
+                title="O Solo ajuda a sair do improviso. O Clínica coloca a operação em ordem."
                 centered={false}
               />
               <div className="space-y-4 text-brand-graphite/75">
-                <p>Hoje a recepção costuma depender de planilha, recado solto, WhatsApp e memória. No teste, você compara isso com uma rotina mais organizada, no sistema.</p>
+                <p>
+                  Se a clínica já tem recepção, mais de um profissional ou precisa enxergar melhor receita, faltas e
+                  pacientes sem retorno, o melhor encaixe passa a ser o Medainer Clínica.
+                </p>
               </div>
 
               <div className="mt-8 grid gap-4 sm:grid-cols-3">
                 {[
-                  { title: 'Hoje: agenda espalhada', desc: 'No teste: horários, profissionais e visão do dia ficam no mesmo lugar, sem depender de planilha e recado.' },
-                  { title: 'Hoje: paciente repete informação', desc: 'No teste: o cadastro fica centralizado, e a equipe para de procurar dado em WhatsApp, papel e memória.' },
-                  { title: 'Hoje: financeiro anda separado', desc: 'No teste: o financeiro básico acompanha a operação e dá mais clareza do que entrou, saiu e ficou pendente.' },
+                  {
+                    title: 'Financeiro básico',
+                    desc: 'Receita, lançamentos e visão financeira entram a partir do plano Clínica.',
+                  },
+                  {
+                    title: 'Equipe e permissões',
+                    desc: 'Mais controle para recepção, profissionais e rotina compartilhada.',
+                  },
+                  {
+                    title: 'Painel mais acionável',
+                    desc: 'Alertas operacionais, saúde da clínica e pacientes sem retorno para agir mais rápido.',
+                  },
                 ].map((item) => (
-                  <div key={item.title} className="rounded-2xl border border-brand-graphite/10 bg-brand-offwhite p-4">
+                  <div key={item.title} className="rounded-2xl border border-brand-graphite/10 bg-white p-4">
                     <p className="font-semibold text-brand-graphite">{item.title}</p>
                     <p className="mt-2 text-sm text-brand-graphite/65">{item.desc}</p>
                   </div>
@@ -495,33 +641,50 @@ export function TrialPage() {
         </div>
       </section>
 
+      <section className="section-padding bg-white">
+        <div className="container mx-auto px-4 sm:px-6">
+          <div className="grid items-center gap-10 lg:grid-cols-[1.05fr_0.95fr]">
+            <div>
+              <SectionHeading
+                subtitle="Quando a automação vira prioridade"
+                title="Automação não é o primeiro passo para todo mundo. É o upgrade certo para quem vive no WhatsApp."
+                centered={false}
+              />
+
+              <div className="grid gap-4 sm:grid-cols-3">
+                {[
+                  'Confirmações e remarcações manuais demais para a recepção.',
+                  'Pacientes sem retorno e agenda com janelas ociosas.',
+                  'No-show alto e muito retrabalho para responder mensagens.',
+                ].map((item) => (
+                  <div key={item} className="rounded-2xl border border-brand-graphite/10 bg-brand-offwhite p-4 text-sm text-brand-graphite/70">
+                    <div className="flex items-start gap-3">
+                      <TrendingUp className="mt-0.5 h-5 w-5 shrink-0 text-brand-green" />
+                      <span>{item}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <p className="mt-6 text-sm leading-relaxed text-brand-graphite/70">
+                Nessa fase, o Medainer Automação passa a fazer sentido porque reduz confirmação manual, remarcações,
+                lembretes e esforço da recepção no WhatsApp.
+              </p>
+            </div>
+
+            <div className="overflow-hidden rounded-[32px] border border-brand-graphite/8 shadow-sm">
+              <img src={clinicTeamImage} alt="Equipe clínica usando o Medainer" className="aspect-[4/5] w-full object-cover" />
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section id="faq" className="section-padding bg-brand-sand/20">
         <div className="container mx-auto px-4 sm:px-6">
           <div className="mx-auto max-w-3xl">
-            <SectionHeading subtitle="FAQ" title="O que a clínica normalmente quer saber antes de começar." />
+            <SectionHeading subtitle="FAQ" title="O que a clínica normalmente quer entender antes de começar." />
 
-            {[
-              {
-                q: 'O que exatamente minha clínica testa nesses 15 dias?',
-                a: 'O Medainer Essencial completo — agenda, pacientes, prontuário básico e financeiro básico. Não é uma demo guiada. É o sistema real, que você usa na rotina do dia a dia.',
-              },
-              {
-                q: 'Quanto custa se eu quiser continuar?',
-                a: 'R$ 297/mês no plano Essencial. Não tem contrato mínimo. Você pode cancelar a qualquer momento.',
-              },
-              {
-                q: 'Essa landing é do plano IA também?',
-                a: 'Não. Aqui o foco é o Medainer Essencial — para clínicas que precisam primeiro organizar a operação. O plano IA aparece como próximo passo, para quando fizer sentido.',
-              },
-              {
-                q: 'Minha equipe precisa parar tudo para testar?',
-                a: 'Não. Você pode ativar e configurar em paralelo, no seu ritmo. O onboarding é simples e não exige treinamento longo.',
-              },
-              {
-                q: 'Posso falar com alguém antes de ativar o trial?',
-                a: 'Sim. Tem um consultor disponível para tirar dúvidas antes da ativação, sem compromisso.',
-              },
-            ].map((item) => (
+            {FAQ_ITEMS.map((item) => (
               <div key={item.q}>
                 <FAQItem question={item.q} answer={item.a} />
               </div>
@@ -537,10 +700,11 @@ export function TrialPage() {
         <div className="container relative z-10 mx-auto px-4 sm:px-6">
           <div className="mx-auto max-w-3xl text-center">
             <h2 className="font-serif text-3xl font-medium leading-tight sm:text-4xl md:text-5xl">
-              Se sua clínica precisa de ordem antes de automação, o teste é o próximo passo.
+              Comece pelo Solo, valide em 7 dias e evolua com clareza quando a clínica pedir mais.
             </h2>
             <p className="mt-6 text-lg text-white/70 md:text-xl">
-              15 dias com o sistema real. Você usa, sente e decide.
+              O acesso de avaliação está disponível hoje, mas a proposta já está clara: o Medainer começa no Solo por
+              R$ 99/mês.
             </p>
 
             <div className="mx-auto mt-10 flex max-w-3xl flex-col justify-center gap-4 sm:flex-row">
@@ -549,9 +713,9 @@ export function TrialPage() {
                 href={appRegisterUrl}
                 className="px-10 py-4 text-base sm:text-lg md:px-12"
                 trackEventName="click_checkout"
-                trackPayload={{ source: 'final_cta', plan: 'medainer essencial' }}
+                trackPayload={{ source: 'final_cta', plan: 'medainer solo' }}
               >
-                Ativar teste grátis
+                Criar acesso de avaliação
               </Button>
               <Button
                 variant="outline"
@@ -597,7 +761,7 @@ export function TrialPage() {
       >
         <MessageCircle className="h-7 w-7 sm:h-8 sm:w-8" />
         <span className="pointer-events-none absolute right-full mr-4 hidden whitespace-nowrap rounded-xl border border-brand-graphite/5 bg-white px-4 py-2 text-sm font-bold text-brand-graphite opacity-0 shadow-xl transition-opacity group-hover:opacity-100 sm:block">
-          Falar com vendas
+          Falar sobre planos
         </span>
       </motion.a>
     </div>

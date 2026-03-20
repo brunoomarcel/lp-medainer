@@ -37,12 +37,6 @@ declare global {
 
 const WHATSAPP_PHONE = '5579999805993';
 const REGISTER_URL = 'https://app.medainer.com.br/register';
-
-function buildWhatsAppUrl(message: string) {
-  return `https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(message)}`;
-}
-
-const TRIAL_WHATSAPP_URL = buildWhatsAppUrl('Olá, quero solicitar um teste assistido de 15 dias do Medainer');
 const TRIAL_URL = (import.meta.env.VITE_TRIAL_URL as string | undefined)?.trim() || REGISTER_URL;
 const TERMS_URL = (import.meta.env.VITE_TERMS_URL as string | undefined)?.trim() || '/termos';
 const PRIVACY_URL = (import.meta.env.VITE_PRIVACY_URL as string | undefined)?.trim() || '/privacidade';
@@ -227,7 +221,7 @@ export default function App() {
                   trackEventName="click_trial"
                   trackPayload={{ source: 'hero_primary' }}
                 >
-                  Testar o Medainer por 15 dias
+                  Testar o Medainer por 7 dias
                 </Button>
                 <Button
                   variant="outline"
@@ -242,7 +236,7 @@ export default function App() {
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
                 {[
-                  { icon: Calendar, text: 'Teste assistido de 15 dias' },
+                  { icon: Calendar, text: 'Teste assistido de 7 dias' },
                   { icon: Users, text: 'Implantação guiada para a equipe' },
                   { icon: ClipboardList, text: 'Suporte humano no uso inicial' }
                 ].map((item, i) => (
@@ -453,7 +447,7 @@ export default function App() {
         <div className="container mx-auto px-4 sm:px-6">
           <SectionHeading
             subtitle="Teste Assistido"
-            title="Teste o Medainer por 15 dias."
+            title="Teste o Medainer por 7 dias."
             centered={true}
             dark={true}
           />
@@ -496,7 +490,7 @@ export default function App() {
               trackEventName="click_trial"
               trackPayload={{ source: 'trial_section' }}
             >
-              Solicitar teste de 15 dias
+              Solicitar teste de 7 dias
             </Button>
             <Button
               variant="outline"
@@ -516,13 +510,13 @@ export default function App() {
           <SectionHeading subtitle="Oferta" title="Escolha seu plano." centered={true} />
 
           <p className="text-center max-w-3xl mx-auto -mt-4 mb-10 text-base md:text-lg text-brand-graphite/60 leading-relaxed">
-            Escolha o Essencial para centralizar a operação da clínica ou o Medainer IA para automatizar o WhatsApp e reduzir o trabalho da recepção.
+            Escolha o Medainer Solo para centralizar a operação da clínica ou o Medainer IA para automatizar o WhatsApp e reduzir o trabalho da recepção.
           </p>
 
           <div className="grid lg:grid-cols-2 gap-8 max-w-5xl mx-auto">
             {[
               {
-                name: 'Medainer Essencial',
+                name: 'Medainer Solo',
                 price: 'R$ 297',
                 subtitle: 'Operação organizada',
                 text: 'Para clínicas que querem centralizar agenda, pacientes, prontuário e financeiro em um único sistema.',
@@ -542,7 +536,7 @@ export default function App() {
                 subtitle: 'Operação + automação',
                 text: 'Para clínicas com recepção sobrecarregada e alto volume de confirmações e remarcações no WhatsApp.',
                 features: [
-                  'Tudo do Medainer Essencial',
+                  'Tudo do Medainer Solo',
                   'Agente IA de atendimento no WhatsApp',
                   'Confirmação, remarcação e lembretes automáticos',
                   'Envio automático de links e orientações',
@@ -613,7 +607,7 @@ export default function App() {
               <thead>
                 <tr className="border-b border-brand-graphite/10 text-left text-brand-graphite/70">
                   <th className="px-5 py-4 font-semibold">Comparativo</th>
-                  <th className="px-5 py-4 font-semibold">Medainer Essencial</th>
+                  <th className="px-5 py-4 font-semibold">Medainer Solo</th>
                   <th className="px-5 py-4 font-semibold">Medainer IA</th>
                 </tr>
               </thead>
@@ -790,12 +784,12 @@ export default function App() {
             <div className="mt-12">
               {[
                 {
-                  q: 'Como funciona o teste assistido de 15 dias?',
+                  q: 'Como funciona o teste assistido de 7 dias?',
                   a: 'Entendemos o cenário da clínica, configuramos o essencial e acompanhamos o uso inicial para sua equipe validar a aderência do Medainer na rotina real.'
                 },
                 {
                   q: 'Em quanto tempo minha clínica entra em operação?',
-                  a: 'Em geral, em até 14 dias com implantação guiada, dependendo do volume de dados, da migração necessária e da disponibilidade da equipe.'
+                  a: 'Em geral, em poucos dias com implantação guiada, dependendo do volume de dados, da migração necessária e da disponibilidade da equipe.'
                 },
                 {
                   q: 'Minha equipe vai conseguir usar no dia a dia?',
@@ -810,8 +804,8 @@ export default function App() {
                   a: 'O suporte é humano e varia conforme o plano contratado, com apoio na implantação e na rotina operacional.'
                 },
                 {
-                  q: 'Qual a diferença entre Medainer Essencial e Medainer IA?',
-                  a: 'O Essencial organiza agenda, pacientes, prontuário e financeiro em um único sistema. O Medainer IA inclui tudo do Essencial e adiciona automações no WhatsApp, como confirmação, remarcação, lembretes e envio de links.'
+                  q: 'Qual a diferença entre Medainer Solo e Medainer IA?',
+                  a: 'O Medainer Solo organiza agenda, pacientes, prontuário e financeiro em um único sistema. O Medainer IA inclui tudo do Medainer Solo e adiciona automações no WhatsApp, como confirmação, remarcação, lembretes e envio de links.'
                 },
                 {
                   q: 'Como funciona segurança e LGPD?',
@@ -837,7 +831,7 @@ export default function App() {
               Teste ou assine agora.
             </h2>
             <p className="text-lg md:text-xl text-white/70">
-              Comece pelo teste de 15 dias ou siga direto para o plano ideal da sua clínica.
+              Comece pelo teste de 7 dias ou siga direto para o plano ideal da sua clínica.
             </p>
           </div>
 
@@ -849,7 +843,7 @@ export default function App() {
               trackEventName="click_trial"
               trackPayload={{ source: 'final_cta_primary' }}
             >
-              Solicitar teste de 15 dias
+              Solicitar teste de 7 dias
             </Button>
             <Button
               variant="outline"
