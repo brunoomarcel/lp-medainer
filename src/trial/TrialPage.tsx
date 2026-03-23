@@ -39,30 +39,21 @@ const PRIVACY_URL = (import.meta.env.VITE_PRIVACY_URL as string | undefined)?.tr
 const LGPD_URL = (import.meta.env.VITE_LGPD_URL as string | undefined)?.trim() || '/lgpd';
 
 const HERO_HIGHLIGHTS = [
-  {
-    icon: Calendar,
-    text: '7 dias grátis e sem cartão de crédito',
-  },
-  {
-    icon: Clock,
-    text: 'Teste com a rotina real da clínica',
-  },
-  {
-    icon: TrendingUp,
-    text: 'Agenda, pacientes e prontuário em um só lugar',
-  },
-];
+  { icon: Calendar, text: '7 dias grátis e sem cartão de crédito' },
+  { icon: Clock, text: 'Teste com a rotina real da clínica' },
+  { icon: TrendingUp, text: 'Agenda, pacientes e prontuário em um só lugar' },
+] as const;
 
 const EVALUATION_FEATURES = [
   {
-    title: 'Agenda sem buraco e sem confusão',
+    title: 'Agenda sem buracos e sem confusão',
     text: 'Horários, profissionais e visão do dia no mesmo lugar para parar de apagar incêndio com planilha, papel e recado solto.',
     image: agendaImage,
     icon: Calendar,
   },
   {
     title: 'Paciente sem informação espalhada',
-    text: 'Centralize cadastro e histórico básico para a equipe parar de caçar informação em WhatsApp, papel e memória.',
+    text: 'Centralize cadastro e histórico básico para a equipe parar de procurar informação em WhatsApp, papel e memória.',
     image: pacientesImage,
     icon: UserCheck,
   },
@@ -72,7 +63,7 @@ const EVALUATION_FEATURES = [
     image: prontuarioImage,
     icon: ClipboardList,
   },
-];
+] as const;
 
 const FLOW_STEPS = [
   {
@@ -87,7 +78,7 @@ const FLOW_STEPS = [
     title: '3. Veja se a clínica respira melhor',
     text: 'Se fizer sentido, continue no Solo por R$ 99/mês ou avance depois para mais controle e automação.',
   },
-];
+] as const;
 
 const PLAN_CARDS = [
   {
@@ -140,16 +131,16 @@ const PLAN_CARDS = [
     href: 'whatsapp',
     featured: false,
   },
-];
+] as const;
 
 const FAQ_ITEMS = [
   {
-    q: 'O que eu ativo hoje nessa página?',
-    a: 'Você ativa os 7 dias grátis do Medainer Solo. O objetivo dessa página é colocar a sua clínica para testar a rotina real sem cartão e sem depender de demo.',
+    q: 'O que eu ativo hoje nesta página?',
+    a: 'Você ativa os 7 dias grátis do Medainer Solo. O objetivo desta página é colocar a sua clínica para testar a rotina real sem cartão e sem depender de demo.',
   },
   {
     q: 'O que minha clínica testa nesse período?',
-    a: 'Agenda, pacientes, prontuário básico, confirmações por link e dashboard simples. A ideia é sentir se a clínica sai do improviso no dia a dia, não apenas assistir uma apresentação.',
+    a: 'Agenda, pacientes, prontuário básico, confirmações por link e dashboard simples. A ideia é sentir se a clínica sai do improviso no dia a dia, não apenas assistir a uma apresentação.',
   },
   {
     q: 'O financeiro faz parte da avaliação?',
@@ -167,7 +158,7 @@ const FAQ_ITEMS = [
     q: 'Posso falar com alguém antes de me cadastrar?',
     a: 'Sim. Se quiser tirar uma dúvida rápida antes de ativar o trial, você pode falar com o time comercial pelo WhatsApp.',
   },
-];
+] as const;
 
 function trackEvent(eventName: string, payload: Record<string, unknown> = {}) {
   if (typeof window === 'undefined') return;
@@ -447,33 +438,6 @@ export function TrialPage() {
               </motion.article>
             ))}
           </div>
-
-          <div className="mt-8 rounded-[32px] border border-brand-graphite/8 bg-brand-graphite px-6 py-7 text-white shadow-xl shadow-brand-graphite/10 sm:px-8">
-            <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
-              <div>
-                <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-brand-accent">Importante</p>
-                <h3 className="mt-3 font-serif text-3xl leading-tight">Você testa sem risco e sente rápido se a rotina melhora.</h3>
-                <p className="mt-4 max-w-2xl text-sm leading-relaxed text-white/70">
-                  Sem cartão, sem demo travada e com o essencial para uma clínica pequena organizar o dia a dia.
-                </p>
-              </div>
-
-              <div className="grid gap-3 text-sm text-white/80">
-                {[
-                  'Você já testa agenda, pacientes e prontuário no fluxo real',
-                  'Se precisar de financeiro, equipe e mais controle, o próximo passo é o Medainer Clínica',
-                  'Se o gargalo estiver no WhatsApp, a evolução natural é o Medainer Automação',
-                ].map((item) => (
-                  <div key={item} className="rounded-2xl border border-white/10 bg-white/5 px-4 py-4">
-                    <div className="flex items-start gap-3">
-                      <Check className="mt-0.5 h-5 w-5 shrink-0 text-brand-accent" />
-                      <span>{item}</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
         </div>
       </section>
 
@@ -578,7 +542,7 @@ export function TrialPage() {
                       trackEventName="click_whatsapp"
                       trackPayload={{ source: `plan_support_${plan.name.toLowerCase()}` }}
                     >
-                      ou falar com consultor
+                      ou falar com um consultor
                     </Button>
                   </div>
                 </motion.article>
@@ -603,8 +567,7 @@ export function TrialPage() {
               />
               <div className="space-y-4 text-brand-graphite/75">
                 <p>
-                  Se a clínica já tem recepção, mais de um profissional ou precisa enxergar melhor receita, faltas e
-                  pacientes sem retorno, o melhor encaixe passa a ser o Medainer Clínica.
+                  Se a clínica já tem recepção, mais de um profissional ou precisa enxergar melhor receita, faltas e pacientes sem retorno, o melhor encaixe passa a ser o Medainer Clínica.
                 </p>
               </div>
 
@@ -660,8 +623,7 @@ export function TrialPage() {
               </div>
 
               <p className="mt-6 text-sm leading-relaxed text-brand-graphite/70">
-                Nessa fase, o Medainer Automação passa a fazer sentido porque reduz confirmação manual, remarcações,
-                lembretes e esforço da recepção no WhatsApp.
+                Nessa fase, o Medainer Automação passa a fazer sentido porque reduz confirmação manual, remarcações, lembretes e esforço da recepção no WhatsApp.
               </p>
             </div>
 

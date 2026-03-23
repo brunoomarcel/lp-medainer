@@ -5,20 +5,17 @@
 
 import React, { useEffect, useState } from 'react';
 import {
+  Bot,
   Calendar,
   Check,
-  ChevronDown,
-  ClipboardList,
-  Clock,
+  CircleHelp,
   HeartPulse,
   LayoutDashboard,
   MessageCircle,
   ShieldCheck,
-  TrendingUp,
-  Users,
-  X
+  Users
 } from 'lucide-react';
-import { AnimatePresence, motion } from 'motion/react';
+import { motion } from 'motion/react';
 import clinicTeamImage from './assets/images/clinic-team.png';
 import symbolMedainerImage from './assets/images/symbol-medainer.png';
 import dashboardGeralImage from './assets/images/dash-geral.png';
@@ -26,6 +23,7 @@ import agendaImage from './assets/images/agenda.jpg';
 import pacientesImage from './assets/images/pacientes.jpg';
 import prontuarioImage from './assets/images/prontuario.jpg';
 import financeiroImage from './assets/images/financeiro.jpg';
+import profissionalImage from './assets/images/profissional.png';
 import { buildTrackedUrl } from './analytics';
 
 declare global {
@@ -35,72 +33,148 @@ declare global {
   }
 }
 
-const WHATSAPP_PHONE = '5579996018591';
 const REGISTER_URL = 'https://app.medainer.com.br/register';
 const TRIAL_URL = (import.meta.env.VITE_TRIAL_URL as string | undefined)?.trim() || REGISTER_URL;
 const TERMS_URL = (import.meta.env.VITE_TERMS_URL as string | undefined)?.trim() || '/termos';
 const PRIVACY_URL = (import.meta.env.VITE_PRIVACY_URL as string | undefined)?.trim() || '/privacidade';
 const LGPD_URL = (import.meta.env.VITE_LGPD_URL as string | undefined)?.trim() || '/lgpd';
 const HERO_YOUTUBE_EMBED_URL = 'https://www.youtube.com/embed/1K2zYpofJUk?rel=0';
+const PRICING_PATH = '/planos';
+const TRIAL = '/teste-gratuito';
+const WHATSAPP_PHONE = '5579996018591';
+const WHATSAPP_MESSAGE = 'Oi! Quero solicitar uma demonstração do Medainer.';
+const WHATSAPP_URL = `https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`;
 
 const LANDING_PLANS = [
   {
     name: 'Medainer Solo',
     price: 'R$ 99',
-    subtitle: 'Plano de entrada',
-    text: 'Para sair do papel, organizar a base da clinica e continuar depois do trial sem pesar no caixa.',
+    subtitle: 'Para começar',
+    text: 'Para profissionais que querem sair do improviso e organizar a base da clínica com mais clareza.',
     features: [
-      'Ate 1 profissional e ate 2 usuarios',
-      'Agenda da clinica e dos profissionais',
-      'Pacientes e prontuario basico',
-      'Confirmacao e remarcacao por link',
-      'Dashboard simples',
-      'Onboarding self-service e suporte por chat ou e-mail'
+      'Até 1 profissional',
+      'Até 2 usuários',
+      'Agenda da clínica',
+      'Pacientes e prontuário básico',
+      'Confirmação por link',
+      'Suporte por chat ou e-mail'
     ],
-    promise: 'Voce comeca com 7 dias gratis e continua so se fizer sentido.',
     featured: false
   },
   {
-    name: 'Medainer Clinica',
+    name: 'Medainer Clínica',
     price: 'R$ 297',
-    subtitle: 'Proximo passo',
-    text: 'Para clinicas que ja precisam de recepcao, equipe, agenda, pacientes e financeiro funcionando no mesmo fluxo.',
+    subtitle: 'Mais completo',
+    text: 'Para clínicas que precisam reunir recepção, equipe, agenda, pacientes e financeiro no mesmo fluxo.',
     features: [
       'Tudo do Medainer Solo',
-      'Financeiro basico',
-      'Equipe e permissoes',
-      'Dashboard Saude da Clinica',
-      'Alertas operacionais e pacientes sem retorno',
-      'Onboarding ao vivo e suporte em horario comercial'
+      'Financeiro integrado',
+      'Equipe e permissões',
+      'Dashboard da clínica',
+      'Mais visão operacional',
+      'Onboarding acompanhado'
     ],
-    promise: 'Faz sentido quando a clinica ja precisa de mais estrutura operacional.',
     featured: true
   },
   {
-    name: 'Medainer Automacao',
+    name: 'Medainer Automação',
     price: 'R$ 497',
-    subtitle: 'Upgrade natural',
-    text: 'Para clinicas em que o WhatsApp ja virou gargalo e o time precisa reduzir trabalho manual, no-show e remarcacoes.',
+    subtitle: 'Para ganhar escala',
+    text: 'Para clínicas que querem reduzir trabalho manual e automatizar partes da comunicação e da rotina.',
     features: [
-      'Tudo do Medainer Clinica',
-      'Agente no WhatsApp',
-      'Confirmacao, remarcacao e lembretes automaticos',
-      'Reativacao de pacientes e fila de encaixe',
-      'Suporte prioritario'
+      'Tudo do Medainer Clínica',
+      'Automações no WhatsApp',
+      'Lembretes e confirmações',
+      'Reativação de pacientes',
+      'Fila de encaixe',
+      'Suporte prioritário'
     ],
-    promise: 'Entra quando a base ja estiver organizada e o gargalo for o WhatsApp.',
     featured: false
   }
 ] as const;
 
 const LANDING_PLAN_COMPARISON = [
-  ['Preco', 'R$ 99/mes', 'R$ 297/mes', 'R$ 497/mes'],
-  ['Melhor momento', 'Entrada e validacao', 'Operacao com equipe', 'Escala com WhatsApp'],
-  ['Profissionais', 'Ate 1', 'Equipe completa', 'Equipe completa'],
-  ['Usuarios', 'Ate 2', 'Equipe e permissoes', 'Equipe e permissoes'],
-  ['Financeiro', 'Nao incluido', 'Incluido', 'Incluido'],
-  ['Automacoes no WhatsApp', 'Confirmacao por link', 'Confirmacao por link', 'Automacoes incluidas'],
-  ['Suporte', 'Chat ou e-mail', 'Horario comercial', 'Prioritario']
+  ['Melhor momento', 'Organizar a base', 'Estruturar a operação', 'Ganhar escala com automação'],
+  ['Profissionais', 'Até 1', 'Equipe completa', 'Equipe completa'],
+  ['Usuários', 'Até 2', 'Equipe e permissões', 'Equipe e permissões'],
+  ['Financeiro', 'Não incluído', 'Incluído', 'Incluído'],
+  ['Automações', 'Não incluído', 'Fluxos básicos', 'Fluxos mais completos'],
+  ['Onboarding', 'Remoto', 'Acompanhado', 'Acompanhado e prioritário']
+] as const;
+
+const PAIN_POINTS = [
+  'A agenda muda o tempo todo e a recepção precisa resolver tudo ao mesmo tempo.',
+  'Informações importantes ficam espalhadas entre papel, WhatsApp e várias planilhas.',
+  'A equipe perde tempo procurando contexto em vez de cuidar da rotina da clínica.'
+] as const;
+
+const CENTRALIZATION_AREAS = [
+  'Agenda',
+  'Pacientes',
+  'Prontuários',
+  'Financeiro',
+  'Equipe e acessos'
+] as const;
+
+const BENEFITS = [
+  {
+    icon: Calendar,
+    title: 'Agenda mais clara',
+    text: 'Visualize horários, encaixes e confirmações com menos retrabalho para a recepção.'
+  },
+  {
+    icon: Users,
+    title: 'Pacientes em um só lugar',
+    text: 'Cadastro e histórico ficam acessíveis para a equipe sem depender de várias fontes.'
+  },
+  {
+    icon: HeartPulse,
+    title: 'Prontuários organizados',
+    text: 'As informações clínicas acompanham o atendimento com mais contexto e continuidade.'
+  },
+  {
+    icon: LayoutDashboard,
+    title: 'Financeiro conectado',
+    text: 'A operação da clínica e a leitura financeira ficam mais claras no mesmo sistema.'
+  },
+  {
+    icon: ShieldCheck,
+    title: 'Equipe com mais controle',
+    text: 'Cada pessoa acessa o que precisa, com mais segurança e menos confusão no dia a dia.'
+  }
+] as const;
+
+const ONBOARDING_STEPS = [
+  {
+    step: '01',
+    title: 'Entendemos sua rotina',
+    text: 'Começamos pelo funcionamento da sua clínica para configurar o essencial com clareza.'
+  },
+  {
+    step: '02',
+    title: 'Organizamos o início',
+    text: 'Agenda, acessos e fluxo principal ficam prontos para a equipe usar sem complicação.'
+  },
+  {
+    step: '03',
+    title: 'Acompanhamos a adoção',
+    text: 'Sua equipe entra com orientação simples para ganhar segurança nos primeiros dias.'
+  }
+] as const;
+
+const HERO_HIGHLIGHTS = [
+  { icon: Calendar, text: 'Rotina mais clara' },
+  { icon: Users, text: 'Equipe mais alinhada' },
+  { icon: CircleHelp, text: 'Informações em um só lugar' }
+] as const;
+
+const HERO_MARQUEE_ITEMS = [
+  { icon: ShieldCheck, text: 'Demonstração guiada' },
+  { icon: Calendar, text: 'Rotina mais clara' },
+  { icon: Users, text: 'Equipe mais alinhada' },
+  { icon: CircleHelp, text: 'Informações em um só lugar' },
+  { icon: Check, text: 'Implantação acompanhada' },
+  { icon: LayoutDashboard, text: 'Mais clareza desde o início' }
 ] as const;
 
 function trackEvent(eventName: string, payload: Record<string, unknown> = {}) {
@@ -114,810 +188,578 @@ const Button = ({
   variant = 'primary',
   className = '',
   href,
-  onClick,
   trackEventName,
   trackPayload
 }: {
   children: React.ReactNode;
-  variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'whatsapp';
+  variant?: 'primary' | 'secondary' | 'outline' | 'link';
   className?: string;
-  href?: string;
-  onClick?: () => void;
+  href: string;
   trackEventName?: string;
   trackPayload?: Record<string, unknown>;
 }) => {
   const baseStyles =
-    'inline-flex w-full sm:w-auto items-center justify-center px-6 py-3 rounded-full font-medium text-center transition-all duration-300 active:scale-95 cursor-pointer';
+    'inline-flex w-full sm:w-auto items-center justify-center rounded-xl px-6 py-3.5 text-center text-sm font-semibold transition-all duration-300';
   const variants = {
-    primary: 'bg-brand-petroleum text-white hover:bg-brand-petroleum/90 shadow-lg shadow-brand-petroleum/20',
-    secondary: 'bg-brand-accent text-white hover:bg-brand-accent/90 shadow-lg shadow-brand-accent/20',
-    outline: 'border-2 border-brand-petroleum text-brand-petroleum hover:bg-brand-petroleum hover:text-white',
-    ghost: 'text-brand-petroleum hover:bg-brand-petroleum/5',
-    whatsapp: 'bg-[#25D366] text-white hover:bg-[#20ba5a] shadow-lg shadow-[#25D366]/20'
+    primary: 'bg-brand-primary text-white shadow-[0_16px_32px_rgba(59,130,246,0.18)] hover:bg-brand-primary-strong',
+    secondary: 'bg-brand-green text-white shadow-[0_16px_32px_rgba(82,163,127,0.18)] hover:bg-brand-green-strong',
+    outline: 'border border-brand-line bg-white text-brand-primary hover:border-brand-primary hover:bg-brand-primary-soft',
+    link: 'w-auto rounded-none px-0 py-0 text-brand-primary shadow-none hover:text-brand-primary-strong'
   };
 
   const handleClick = () => {
     if (trackEventName) {
       trackEvent(trackEventName, trackPayload);
     }
-    onClick?.();
   };
 
-  if (href) {
-    return (
-      <a href={href} onClick={handleClick} className={`${baseStyles} ${variants[variant]} ${className}`}>
-        {children}
-      </a>
-    );
-  }
-
   return (
-    <button onClick={handleClick} className={`${baseStyles} ${variants[variant]} ${className}`}>
+    <a href={href} onClick={handleClick} className={`${baseStyles} ${variants[variant]} ${className}`}>
       {children}
-    </button>
+    </a>
   );
 };
 
 const SectionHeading = ({
+  eyebrow,
   title,
-  subtitle,
-  centered = true,
-  dark = false
+  text,
+  centered = false
 }: {
+  eyebrow: string;
   title: string;
-  subtitle?: string;
+  text?: string;
   centered?: boolean;
-  dark?: boolean;
 }) => (
-  <div className={`mb-12 md:mb-16 ${centered ? 'text-center' : 'text-left'} max-w-3xl ${centered ? 'mx-auto' : ''}`}>
-    <motion.span
-      initial={{ opacity: 0, y: 10 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      className={`inline-block text-[11px] md:text-xs font-bold tracking-[0.2em] uppercase mb-4 ${dark ? 'text-brand-accent' : 'text-brand-green'}`}
-    >
-      {subtitle}
-    </motion.span>
-    <motion.h2
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ delay: 0.1 }}
-      className={`text-3xl sm:text-4xl md:text-5xl font-serif font-medium leading-tight ${dark ? 'text-white' : 'text-brand-graphite'}`}
-    >
-      {title}
-    </motion.h2>
+  <div className={`max-w-3xl ${centered ? 'mx-auto text-center' : ''}`}>
+    <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-brand-green">{eyebrow}</p>
+    <h2 className="mt-4 text-3xl font-serif font-semibold leading-tight text-brand-ink sm:text-4xl lg:text-5xl">{title}</h2>
+    {text ? <p className="mt-5 text-base leading-relaxed text-brand-muted sm:text-lg">{text}</p> : null}
   </div>
 );
 
-const FAQItem = ({ question, answer }: { question: string; answer: string }) => {
-  const [isOpen, setIsOpen] = useState(false);
+const isExternalHref = (href: string) => /^(https?:|mailto:|tel:)/.test(href);
+
+const navigateTo = (href: string) => {
+  if (typeof window === 'undefined' || isExternalHref(href)) return;
+
+  window.history.pushState({}, '', href);
+  window.dispatchEvent(new PopStateEvent('popstate'));
+  window.scrollTo({ top: 0, behavior: 'auto' });
+};
+
+const NavLink = ({
+  href,
+  children,
+  className = '',
+  onClick
+}: {
+  href: string;
+  children: React.ReactNode;
+  className?: string;
+  onClick?: () => void;
+}) => {
+  const handleClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    onClick?.();
+
+    if (isExternalHref(href) || href.startsWith('#')) return;
+
+    event.preventDefault();
+    navigateTo(href);
+  };
 
   return (
-    <div className="border-b border-brand-graphite/10 py-6">
-      <button onClick={() => setIsOpen(!isOpen)} className="flex w-full items-center justify-between text-left group">
-        <span className="text-lg font-medium text-brand-graphite group-hover:text-brand-petroleum transition-colors">{question}</span>
-        <div className={`transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}>
-          <ChevronDown className="w-5 h-5 text-brand-green" />
-        </div>
-      </button>
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="overflow-hidden"
-          >
-            <p className="pt-4 text-brand-graphite/70 leading-relaxed">{answer}</p>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
+    <a href={href} onClick={handleClick} className={className}>
+      {children}
+    </a>
   );
 };
 
 export default function App() {
   const [isScrolled, setIsScrolled] = useState(false);
-  const trialUrl = buildTrackedUrl(TRIAL_URL);
+  const [pathname, setPathname] = useState(() => (typeof window === 'undefined' ? '/' : window.location.pathname));
+  const demoWhatsappUrl = buildTrackedUrl(WHATSAPP_URL);
+  const isPricingPage = pathname === PRICING_PATH;
 
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 50);
+    const handleScroll = () => setIsScrolled(window.scrollY > 24);
+    const handlePopState = () => setPathname(window.location.pathname);
+
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener('popstate', handlePopState);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('popstate', handlePopState);
+    };
   }, []);
 
   return (
-    <div className="min-h-screen font-sans selection:bg-brand-petroleum selection:text-white">
+    <div className="min-h-screen bg-brand-page font-sans text-brand-ink selection:bg-brand-primary selection:text-white">
       <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-          isScrolled ? 'bg-white/90 backdrop-blur-lg py-4 shadow-sm' : 'bg-transparent py-6'
+        className={`fixed inset-x-0 top-0 z-50 transition-all duration-400 ${
+          isScrolled ? 'bg-white/90 py-3 shadow-[0_10px_30px_rgba(15,23,42,0.08)] backdrop-blur-xl' : 'bg-transparent py-5'
         }`}
       >
-        <div className="container mx-auto px-4 sm:px-6 flex items-center justify-between gap-4">
-          <div className="flex items-center gap-2">
-            <img src={symbolMedainerImage} alt="Símbolo Medainer" className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl object-contain" />
-            <span className="text-xl sm:text-2xl font-serif font-bold tracking-tight text-brand-petroleum">Medainer</span>
-          </div>
+        <div className="mx-auto flex w-full max-w-[1240px] items-center justify-between gap-4 px-4 sm:px-6">
+          <NavLink href="/" className="flex items-center gap-3">
+            <img src={symbolMedainerImage} alt="Símbolo Medainer" className="h-10 w-10 rounded-2xl object-contain" />
+            <span className="text-lg font-serif font-semibold text-brand-ink sm:text-xl">Medainer</span>
+          </NavLink>
+
+          <nav className="hidden items-center gap-7 text-sm text-brand-muted lg:flex">
+            <a href="/#como-funciona" className="hover:text-brand-primary transition-colors">
+              Como funciona
+            </a>
+            <a href="/#beneficios" className="hover:text-brand-primary transition-colors">
+              Benefícios
+            </a>
+            <a href="/#automacao" className="hover:text-brand-primary transition-colors">
+              Automação
+            </a>
+            <NavLink href={PRICING_PATH} className="hover:text-brand-primary transition-colors" onClick={() => trackEvent('view_pricing', { source: 'header_menu' })}>
+              Planos
+            </NavLink>
+            <a href={TRIAL} className="hover:text-brand-primary transition-colors" onClick={() => trackEvent('click_trial', { source: 'header_menu' })}>
+              Teste grátis
+            </a>
+
+          </nav>
 
           <div className="hidden sm:flex">
             <Button
+              href={demoWhatsappUrl}
               variant="primary"
-              href="#planos"
-              className="px-6 py-2.5"
-              trackEventName="view_pricing"
+              className="px-5 py-3"
+              trackEventName="click_trial"
               trackPayload={{ source: 'header' }}
             >
-              Assinar agora
+              Solicitar demonstração
             </Button>
           </div>
         </div>
       </header>
 
-      <section className="relative overflow-hidden pt-28 pb-16 sm:pt-32 md:pt-36 lg:pt-40 md:pb-24 lg:pb-32">
-        <div className="absolute top-0 right-0 -z-10 w-1/2 h-full bg-brand-sand/30 rounded-l-[100px] hidden lg:block" />
-        <div className="absolute top-1/4 left-4 sm:left-10 -z-10 w-48 h-48 sm:w-64 sm:h-64 bg-brand-green/5 blur-3xl rounded-full" />
+      <main>
+        {isPricingPage ? (
+          <section className="bg-[linear-gradient(180deg,#f8fbff_0%,#ffffff_100%)] pt-28 sm:pt-32 lg:pt-36">
+            <div className="mx-auto w-full max-w-[1240px] px-4 pb-20 sm:px-6 lg:pb-24">
 
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="grid lg:grid-cols-2 gap-10 md:gap-14 lg:gap-16 items-center">
-            <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8 }}>
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-green/10 text-brand-green text-[11px] sm:text-xs font-bold tracking-wider uppercase mb-6 md:mb-8">
-                <ShieldCheck className="w-4 h-4" />
-                SaaS de gestão para clínicas
+              <div className="mt-14 grid gap-6 lg:grid-cols-[0.95fr_1.08fr_0.95fr]">
+                {LANDING_PLANS.map((plan) => (
+                  <article
+                    key={plan.name}
+                    className={`flex h-full flex-col rounded-[24px] border p-8 shadow-sm ${
+                      plan.featured
+                        ? 'border-brand-primary bg-white shadow-[0_24px_60px_rgba(59,130,246,0.10)]'
+                        : 'border-brand-line bg-white'
+                    }`}
+                  >
+                    <div className={`border-b pb-6 ${plan.featured ? 'border-brand-primary/15' : 'border-brand-line'}`}>
+                      <p className={`text-[11px] font-semibold uppercase tracking-[0.22em] ${plan.featured ? 'text-brand-primary' : 'text-brand-green'}`}>
+                        {plan.subtitle}
+                      </p>
+                      <h2 className="mt-4 text-3xl font-serif font-semibold text-brand-ink">{plan.name}</h2>
+                      <p className="mt-4 text-sm leading-relaxed text-brand-muted">{plan.text}</p>
+                    </div>
+
+                    <div className="pt-6">
+                      <p className="text-5xl font-serif font-semibold text-brand-ink">{plan.price}</p>
+                      <p className="mt-2 text-sm text-brand-muted">/mês</p>
+                    </div>
+
+                    <ul className="mt-8 flex-grow space-y-4">
+                      {plan.features.map((feature) => (
+                        <li key={feature} className="flex items-start gap-3 text-sm leading-relaxed text-brand-muted">
+                          <Check className="mt-0.5 h-4 w-4 shrink-0 text-brand-green" />
+                          <span>{feature}</span>
+                        </li>
+                      ))}
+                    </ul>
+
+                    <div className="mt-8">
+                      <Button
+                        href={demoWhatsappUrl}
+                        variant={plan.featured ? 'primary' : 'outline'}
+                        className="w-full sm:w-full"
+                        trackEventName="click_trial"
+                        trackPayload={{ source: `pricing_page_${plan.name.toLowerCase()}` }}
+                      >
+                        Solicitar demonstração
+                      </Button>
+                    </div>
+                  </article>
+                ))}
               </div>
-              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-serif font-medium leading-[1.1] text-brand-graphite mb-6 md:mb-8 text-balance">
-                Menos caos na recepção. <span className="text-brand-green italic">Mais controle</span> para a sua clínica.
-              </h1>
-              <p className="text-base sm:text-lg md:text-xl text-brand-graphite/70 mb-8 md:mb-10 max-w-xl leading-relaxed">
-                Centralize agenda, pacientes, prontuário, financeiro e automações no WhatsApp em uma única plataforma.
-              </p>
 
-              <div className="flex flex-col sm:flex-row gap-4 mb-10 md:mb-12">
+              <div className="mt-12 overflow-x-auto rounded-[24px] border border-brand-line bg-white shadow-sm">
+                <table className="min-w-full text-sm">
+                  <thead>
+                    <tr className="border-b border-brand-line text-left text-brand-muted">
+                      <th className="px-5 py-4 font-semibold">Comparativo</th>
+                      <th className="px-5 py-4 font-semibold">Medainer Solo</th>
+                      <th className="px-5 py-4 font-semibold">Medainer Clínica</th>
+                      <th className="px-5 py-4 font-semibold">Medainer Automação</th>
+                    </tr>
+                  </thead>
+                  <tbody className="text-brand-ink/80">
+                    {LANDING_PLAN_COMPARISON.map((row) => (
+                      <tr key={row[0]} className="border-b border-brand-line last:border-b-0">
+                        {row.map((cell) => (
+                          <td key={cell} className="px-5 py-4">
+                            {cell}
+                          </td>
+                        ))}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+        ) : (
+        <>
+        <section className="relative overflow-hidden bg-[linear-gradient(180deg,#f8fbff_0%,#ffffff_100%)] pt-28 sm:pt-32 lg:pt-36">
+          <div className="absolute left-0 top-0 h-64 w-64 rounded-full bg-brand-primary-soft blur-3xl" />
+          <div className="absolute bottom-8 right-0 h-56 w-56 rounded-full bg-brand-green-soft blur-3xl" />
+
+          <div className="mx-auto grid w-full max-w-[1240px] gap-14 px-4 pb-16 sm:px-6 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:items-center lg:pb-24">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7 }}
+              className="relative z-10 max-w-xl"
+            >
+              <div className="inline-flex items-center gap-2 px-1 py-1 text-[11px] font-semibold uppercase tracking-[0.22em] text-brand-green">
+                <ShieldCheck className="h-4 w-4" />
+                Sistema para clínicas
+              </div>
+              <h1 className="mt-6 text-4xl font-serif font-semibold leading-[1.02] text-brand-ink sm:text-5xl lg:text-6xl">
+                Organize sua clínica de forma simples e clara
+              </h1>
+              <p className="mt-6 text-base leading-relaxed text-brand-muted sm:text-lg">
+                O Medainer centraliza agenda, pacientes, prontuários, financeiro e equipe para sua rotina ficar mais organizada, leve e fácil de acompanhar.
+              </p>
+              <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center">
                 <Button
+                  href={demoWhatsappUrl}
                   variant="primary"
-                  href={trialUrl}
-                  className="px-8 sm:px-10 py-4 text-base sm:text-lg"
+                  className="px-8 py-4 text-base"
                   trackEventName="click_trial"
                   trackPayload={{ source: 'hero_primary' }}
                 >
-                  Testar o Medainer por 7 dias
+                  Solicitar demonstração
                 </Button>
                 <Button
-                  variant="outline"
-                  href="#planos"
-                  className="px-8 sm:px-10 py-4 text-base sm:text-lg"
-                  trackEventName="view_pricing"
-                  trackPayload={{ source: 'hero_secondary_signup' }}
+                  href="#como-funciona"
+                  variant="link"
+                  className="text-base font-medium"
+                  trackEventName="view_product"
+                  trackPayload={{ source: 'hero_secondary' }}
                 >
-                  Assinar agora
+                  Ver como funciona
                 </Button>
               </div>
+            </motion.div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
-                {[
-                  { icon: Calendar, text: 'Teste assistido de 7 dias' },
-                  { icon: Users, text: 'Implantação guiada para a equipe' },
-                  { icon: ClipboardList, text: 'Suporte humano no uso inicial' }
-                ].map((item, i) => (
-                  <div key={i} className="flex items-center gap-3 text-sm font-medium text-brand-graphite/60">
-                    <div className="w-8 h-8 rounded-full bg-white shadow-sm flex items-center justify-center text-brand-green">
-                      <item.icon className="w-4 h-4" />
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.1 }}
+              className="relative"
+            >
+              <div className="rounded-[24px] border border-brand-line bg-white p-3 shadow-[0_32px_80px_rgba(59,130,246,0.10)] sm:p-4">
+                <div className="mb-3 flex items-center justify-between rounded-[18px] bg-brand-panel px-4 py-3 text-sm text-brand-muted">
+                  <span>Toque para ver o Medainer</span>
+                  {/* <span className="text-brand-primary">video</span> */}
+                </div>
+                <div className="overflow-hidden rounded-[18px] border border-brand-line">
+                  <div className="aspect-video w-full bg-brand-panel">
+                    <iframe
+                      src={HERO_YOUTUBE_EMBED_URL}
+                      title="Apresentação do Medainer"
+                      className="h-full w-full"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      referrerPolicy="strict-origin-when-cross-origin"
+                      allowFullScreen
+                    />
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+
+          <div className="mx-auto w-full max-w-[1240px] px-4 pb-4 sm:px-6 lg:pb-6">
+            <div className="hero-marquee overflow-hidden bg-white/70 py-4 backdrop-blur-sm">
+              <div className="hero-marquee-track flex w-max items-center gap-8">
+                {[...HERO_MARQUEE_ITEMS, ...HERO_MARQUEE_ITEMS].map((item, index) => (
+                  <div key={`${item.text}-${index}`} className="flex items-center gap-3 text-sm text-brand-muted">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-brand-primary-soft text-brand-primary">
+                      <item.icon className="h-5 w-5" />
                     </div>
-                    {item.text}
+                    <span className="whitespace-nowrap">{item.text}</span>
                   </div>
                 ))}
               </div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 1, delay: 0.2 }}
-              className="relative mx-auto w-full max-w-xl lg:max-w-none"
-            >
-              <div className="relative z-10 overflow-hidden rounded-[28px] border-4 border-white bg-brand-graphite shadow-2xl sm:border-8">
-                <div className="aspect-video w-full">
-                  <iframe
-                    src={HERO_YOUTUBE_EMBED_URL}
-                    title="Apresentacao do Medainer"
-                    className="h-full w-full"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    referrerPolicy="strict-origin-when-cross-origin"
-                    allowFullScreen
-                  />
-                </div>
-              </div>
-              <motion.div
-                animate={{ y: [0, -10, 0] }}
-                transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-                className="absolute -top-6 right-4 lg:-top-10 lg:-right-10 z-20 glass-card p-4 sm:p-6 rounded-2xl hidden md:block"
-              >
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-brand-green/20 rounded-full flex items-center justify-center text-brand-green">
-                    <TrendingUp className="w-6 h-6" />
-                  </div>
-                  <div>
-                    <p className="text-xs text-brand-graphite/50 font-bold uppercase tracking-wider">Visão operacional</p>
-                    <p className="text-xl font-serif font-bold text-brand-petroleum">em tempo real</p>
-                  </div>
-                </div>
-              </motion.div>
-              <motion.div
-                animate={{ y: [0, 10, 0] }}
-                transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
-                className="absolute -bottom-6 left-4 lg:-bottom-10 lg:-left-10 z-20 glass-card p-4 sm:p-6 rounded-2xl hidden md:block"
-              >
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-brand-accent/20 rounded-full flex items-center justify-center text-brand-accent">
-                    <Clock className="w-6 h-6" />
-                  </div>
-                  <div>
-                    <p className="text-xs text-brand-graphite/50 font-bold uppercase tracking-wider">Atendimento</p>
-                    <p className="text-xl font-serif font-bold text-brand-petroleum">mais rápido</p>
-                  </div>
-                </div>
-              </motion.div>
-            </motion.div>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section className="section-padding bg-brand-graphite text-white overflow-hidden">
-        <div className="container mx-auto px-4 sm:px-6">
-          <SectionHeading
-            subtitle="Dor da Operação"
-            title="O caos da recepção trava a rotina da clínica."
-            centered={true}
-            dark={true}
-          />
+        <section className="bg-brand-panel py-20 sm:py-20">
+          <div className="mx-auto w-full max-w-[1240px] px-4 sm:px-6">
+            <SectionHeading
+              eyebrow="Rotina desorganizada"
+              title="Quando a rotina fica espalhada, a clínica perde clareza."
+              text="A desorganização não aparece só no atendimento. Ela também pesa na recepção, no acompanhamento dos pacientes e nas decisões do dia a dia."
+              centered={true}
+            />
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[
-              {
-                title: 'Agenda desorganizada',
-                desc: 'Encaixes, faltas e mudanças de horário viram correria e conflito de agenda.'
-              },
-              {
-                title: 'WhatsApp sobrecarregado',
-                desc: 'A recepção perde tempo com confirmação manual e mensagens repetidas.'
-              },
-              {
-                title: 'Retrabalho diário',
-                desc: 'A mesma informação é lançada em planilha, papel e conversa separada.'
-              },
-              {
-                title: 'Falta de visão operacional',
-                desc: 'Sem dados consolidados, decisões de rotina e financeiro ficam no escuro.'
-              },
-              {
-                title: 'Informação descentralizada',
-                desc: 'Recepção, profissionais e gestão consultam fontes diferentes e perdem contexto.'
-              },
-              {
-                title: 'Crescimento sem padrão',
-                desc: 'Com mais pacientes e equipe, a operação fica mais pesada e menos previsível.'
-              }
-            ].map((item, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                className="p-6 sm:p-8 rounded-3xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all duration-300 group"
-              >
-                <div className="w-12 h-12 rounded-2xl bg-brand-accent/20 flex items-center justify-center text-brand-accent mb-6 group-hover:scale-110 transition-transform">
-                  <X className="w-6 h-6" />
-                </div>
-                <h3 className="text-xl font-serif font-medium mb-4">{item.title}</h3>
-                <p className="text-white/60 leading-relaxed">{item.desc}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="section-padding bg-brand-sand/20">
-        <div className="container mx-auto px-4 sm:px-6">
-          <SectionHeading
-            subtitle="Produto na Prática"
-            title="Tudo da clínica em um só lugar."
-            centered={true}
-          />
-
-          <div className="grid gap-6 xl:grid-cols-12 xl:items-stretch">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="rounded-[32px] bg-brand-petroleum p-4 sm:p-6 shadow-2xl shadow-brand-petroleum/10 xl:col-span-7"
-            >
-              <div className="mb-4">
-                <p className="text-[11px] uppercase tracking-[0.22em] text-brand-accent font-bold">Visão de gestão</p>
-                <h3 className="mt-2 text-2xl sm:text-3xl font-serif text-white">Dashboard geral da clínica</h3>
-              </div>
-              <div className="mb-4 rounded-2xl border border-white/10 bg-white/5 p-4 text-sm text-white/75">
-                Acompanhe ocupação, pendências e indicadores operacionais em tempo real para tomar decisões com mais clareza.
-              </div>
-              <div className="overflow-hidden rounded-[24px] border border-white/10 xl:h-[540px]">
-                <img src={dashboardGeralImage} alt="Dashboard geral do Medainer" className="h-full w-full object-cover object-top" />
-              </div>
-            </motion.div>
-
-            <div className="grid gap-6 xl:col-span-5 xl:grid-rows-2">
-              {[
-                {
-                  title: 'Agenda e recepção',
-                  text: 'Organize encaixes, confirmações e reagendamentos com visão completa da agenda e menos conflito de horários.',
-                  image: agendaImage
-                },
-                {
-                  title: 'Pacientes e cadastro',
-                  text: 'Centralize dados e histórico para recepção, gestão e equipe clínica trabalharem com o mesmo contexto.',
-                  image: pacientesImage
-                }
-              ].map((item, i) => (
+            <div className="mt-12 grid gap-5 md:grid-cols-3">
+              {PAIN_POINTS.map((item, index) => (
                 <motion.div
-                  key={item.title}
-                  initial={{ opacity: 0, y: 20 }}
+                  key={item}
+                  initial={{ opacity: 0, y: 18 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ delay: i * 0.08 }}
-                  className="rounded-[32px] border border-brand-graphite/8 bg-white p-4 sm:p-5 shadow-sm xl:flex xl:flex-col"
+                  transition={{ delay: index * 0.08 }}
+                  className="rounded-[20px] border border-brand-line bg-white p-7 shadow-sm"
                 >
-                  <div className="mb-4">
-                    <h3 className="mt-2 text-2xl font-serif text-brand-graphite">{item.title}</h3>
-                  </div>
-                  <div className="mb-4 rounded-2xl bg-brand-offwhite p-4 text-sm text-brand-graphite/70">{item.text}</div>
-                  <div className="overflow-hidden rounded-[22px] border border-brand-graphite/8 bg-brand-offwhite xl:mt-auto xl:h-[220px]">
-                    <img src={item.image} alt={item.title} className="h-full w-full object-cover object-top" />
-                  </div>
+                  <p className="text-sm font-semibold text-brand-primary">0{index + 1}</p>
+                  <p className="mt-4 text-base leading-relaxed text-brand-muted">{item}</p>
                 </motion.div>
               ))}
             </div>
           </div>
+        </section>
 
-          <div className="mt-6 grid gap-6 lg:grid-cols-2">
-            {[
-              {
-                title: 'Prontuário digital',
-                text: 'Registro clínico disponível no atendimento, sem perda de informação e sem depender de anotações soltas.',
-                image: prontuarioImage
-              },
-              {
-                title: 'Financeiro integrado',
-                text: 'Receitas e despesas no mesmo sistema da operação, com visão clara do que está entrando, saindo e pendente.',
-                image: financeiroImage
-              }
-            ].map((item) => (
-              <div key={item.title} className="rounded-[28px] border border-brand-graphite/8 bg-white p-5 sm:p-6 shadow-sm">
-                <p className="mt-3 text-xl font-serif text-brand-graphite">{item.title}</p>
-                <p className="mt-4 text-sm text-brand-graphite/70">{item.text}</p>
-                <div className="mt-4 overflow-hidden rounded-[22px] border border-brand-graphite/8 bg-brand-offwhite lg:h-[300px]">
-                  <img src={item.image} alt={item.title} className="h-full w-full object-cover object-top" />
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="section-padding bg-brand-petroleum text-white">
-        <div className="container mx-auto px-4 sm:px-6">
-          <SectionHeading
-            subtitle="Teste Assistido"
-            title="Teste o Medainer por 7 dias."
-            centered={true}
-            dark={true}
-          />
-
-          <p className="mx-auto mb-14 max-w-3xl text-center text-lg text-white/70">
-            Entendemos sua rotina, configuramos o essencial e ajudamos a equipe a testar o sistema no dia a dia.
-          </p>
-
-          <div className="grid sm:grid-cols-2 xl:grid-cols-4 gap-8 md:gap-12 relative">
-            <div className="absolute top-1/4 left-0 right-0 h-0.5 bg-white/10 hidden xl:block" />
-
-            {[
-              { step: '01', title: 'Solicite o teste', desc: 'Você envia o contexto da clínica e entendemos se o Medainer faz sentido para seu cenário.' },
-              { step: '02', title: 'Configuramos o essencial', desc: 'Agenda, serviços, acessos e fluxo inicial ficam alinhados à operação que sua equipe já usa.' },
-              { step: '03', title: 'Treinamos por função', desc: 'Recepção, profissionais e gestão entram no sistema sabendo o que fazer desde o primeiro acesso.' },
-              { step: '04', title: 'Valide com suporte humano', desc: 'Nos primeiros dias, acompanhamos dúvidas e ajustes para a clínica avaliar com segurança.' }
-            ].map((item, i) => (
-              <motion.div
-                key={item.step}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                className="relative z-10 text-center"
-              >
-                <div className="w-16 h-16 rounded-full bg-brand-accent text-brand-petroleum flex items-center justify-center text-2xl font-serif font-bold mx-auto mb-8 shadow-lg shadow-brand-accent/20">
-                  {item.step}
-                </div>
-                <h3 className="text-xl font-serif font-medium mb-4">{item.title}</h3>
-                <p className="text-white/70 leading-relaxed">{item.desc}</p>
-              </motion.div>
-            ))}
-          </div>
-
-          <div className="mt-14 md:mt-20 flex flex-col sm:flex-row gap-4 justify-center">
-            <Button
-              variant="secondary"
-              href={trialUrl}
-              className="px-10 md:px-12 py-4 text-base sm:text-lg"
-              trackEventName="click_trial"
-              trackPayload={{ source: 'trial_section' }}
-            >
-              Solicitar teste de 7 dias
-            </Button>
-            <Button
-              variant="outline"
-              href="#planos"
-              className="px-10 md:px-12 py-4 text-base sm:text-lg border-white text-white hover:bg-white hover:text-brand-graphite"
-              trackEventName="view_pricing"
-              trackPayload={{ source: 'trial_section_signup' }}
-            >
-              Assinar agora
-            </Button>
-          </div>
-        </div>
-      </section>
-
-      <section id="planos" className="section-padding bg-white">
-        <div className="container mx-auto px-4 sm:px-6">
-          <SectionHeading subtitle="Oferta" title="Escolha seu plano." centered={true} />
-
-          <p className="text-center max-w-3xl mx-auto -mt-4 mb-10 text-base md:text-lg text-brand-graphite/60 leading-relaxed">
-            Escolha o plano que faz sentido para o momento da sua clinica: sair do improviso, estruturar a operacao ou automatizar o WhatsApp.
-          </p>
-
-          <div className="grid gap-8 max-w-6xl mx-auto lg:grid-cols-[0.95fr_1.1fr_0.95fr]">
-            {LANDING_PLANS.map((plan, index) => (
-              <motion.div
-                key={plan.name}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-                className={`p-8 sm:p-10 rounded-[32px] sm:rounded-[40px] flex flex-col ${
-                  plan.featured
-                    ? 'bg-brand-petroleum text-white shadow-2xl shadow-brand-petroleum/20 z-10 lg:-my-4'
-                    : 'bg-brand-offwhite border border-brand-graphite/5'
-                }`}
-              >
-                <div className="mb-8">
-                  <p
-                    className={`text-[11px] uppercase tracking-[0.22em] font-bold mb-4 ${
-                      plan.featured ? 'text-brand-accent' : 'text-brand-green'
-                    }`}
-                  >
-                    {plan.subtitle}
-                  </p>
-                  <h3 className="text-2xl font-serif font-medium mb-2">{plan.name}</h3>
-                  <p className={plan.featured ? 'text-white/60 text-sm' : 'text-brand-graphite/50 text-sm'}>{plan.text}</p>
-                </div>
-                <div className="mb-8">
-                  <span className={`text-4xl font-serif font-bold ${plan.featured ? 'text-brand-accent' : 'text-brand-petroleum'}`}>
-                    {plan.price}
-                  </span>
-                  <span className={plan.featured ? 'text-white/60 ml-2' : 'text-brand-graphite/50 ml-2'}>/mes</span>
-                  <p className={`mt-3 text-sm ${plan.featured ? 'text-white/70' : 'text-brand-graphite/60'}`}>{plan.promise}</p>
-                </div>
-                <ul className="space-y-4 mb-10 flex-grow">
-                  {plan.features.map((item) => (
-                    <li key={item} className={`flex items-start gap-3 text-sm ${plan.featured ? 'text-white/80' : 'text-brand-graphite/70'}`}>
-                      <Check className={`w-5 h-5 shrink-0 ${plan.featured ? 'text-brand-accent' : 'text-brand-green'}`} />
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-                <div className="space-y-4">
-                  <Button
-                    variant={plan.featured ? 'secondary' : 'primary'}
-                    href={trialUrl}
-                    className="w-full sm:w-full"
-                    trackEventName="click_trial"
-                    trackPayload={{ source: `plan_trial_${plan.name.toLowerCase()}` }}
-                  >
-                    Testar gratis
-                  </Button>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-
-          <div className="mt-12 overflow-x-auto rounded-2xl border border-brand-graphite/10 bg-brand-offwhite/40">
-            <table className="min-w-full text-sm">
-              <thead>
-                <tr className="border-b border-brand-graphite/10 text-left text-brand-graphite/70">
-                  <th className="px-5 py-4 font-semibold">Comparativo</th>
-                  <th className="px-5 py-4 font-semibold">Medainer Solo</th>
-                  <th className="px-5 py-4 font-semibold">Medainer Clinica</th>
-                  <th className="px-5 py-4 font-semibold">Medainer Automacao</th>
-                </tr>
-              </thead>
-              <tbody className="text-brand-graphite/80">
-                {LANDING_PLAN_COMPARISON.map((row) => (
-                  <tr key={row[0]} className="border-b border-brand-graphite/10 last:border-b-0">
-                    {row.map((cell) => (
-                      <td key={cell} className="px-5 py-4">
-                        {cell}
-                      </td>
-                    ))}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </section>
-
-      <section id="beneficios" className="section-padding bg-white">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="flex flex-col lg:flex-row gap-12 md:gap-16 lg:gap-20 items-center">
-            <div className="w-full lg:w-1/2">
+        <section id="como-funciona" className="bg-white py-20 sm:py-24">
+          <div className="mx-auto grid w-full max-w-[1240px] gap-14 px-4 sm:px-6 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:items-center">
+            <div>
               <SectionHeading
-                subtitle="Resultados na Rotina"
-                title="Mais controle para quem atende e para quem decide."
-                centered={false}
+              eyebrow="Tudo centralizado"
+              title="Tudo que sua clínica precisa, organizado em um só lugar."
+              text="Com o Medainer, a equipe consulta as mesmas informações e trabalha com mais previsibilidade, sem precisar alternar entre vários processos soltos."
               />
 
-              <div className="space-y-8">
-                {[
-                  {
-                    title: 'Agenda com menos conflito e mais produtividade',
-                    desc: 'Visualize horários, encaixes e ocupação em poucos cliques para reduzir correria e retrabalho na recepção.',
-                    icon: Calendar
-                  },
-                  {
-                    title: 'Atendimento com histórico do paciente no mesmo fluxo',
-                    desc: 'Recepção e equipe clínica acessam as mesmas informações sem depender de memória, papel ou conversa solta.',
-                    icon: HeartPulse
-                  },
-                  {
-                    title: 'Financeiro conectado à operação da clínica',
-                    desc: 'Receitas e despesas ficam integradas à rotina de atendimento para leitura real de resultado.',
-                    icon: LayoutDashboard
-                  },
-                  {
-                    title: 'Automações de WhatsApp no Medainer Automacao',
-                    desc: 'Confirmacao, remarcacao e lembretes automaticos reduzem trabalho manual e liberam tempo da recepcao.',
-                    icon: TrendingUp
-                  }
-                ].map((benefit, i) => (
-                  <motion.div
-                    key={benefit.title}
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: i * 0.1 }}
-                    className="flex gap-4 sm:gap-6"
-                  >
-                    <div className="flex-shrink-0 w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-brand-green/10 flex items-center justify-center text-brand-green">
-                      <benefit.icon className="w-7 h-7" />
-                    </div>
-                    <div>
-                      <h4 className="text-xl font-serif font-medium text-brand-graphite mb-2">{benefit.title}</h4>
-                      <p className="text-brand-graphite/60 leading-relaxed">{benefit.desc}</p>
-                    </div>
-                  </motion.div>
+              <div className="mt-8 grid gap-3 sm:grid-cols-2">
+                {CENTRALIZATION_AREAS.map((item) => (
+                <div key={item} className="flex items-center gap-3 rounded-xl border border-brand-line bg-brand-panel px-4 py-4 text-sm text-brand-ink">
+                    <Check className="h-4 w-4 text-brand-green" />
+                    <span>{item}</span>
+                  </div>
                 ))}
               </div>
             </div>
 
-            <div className="w-full lg:w-1/2 relative max-w-xl lg:max-w-none">
-              <div className="absolute -inset-3 sm:-inset-4 bg-brand-sand/50 rounded-[32px] sm:rounded-[40px] -z-10 rotate-3" />
-              <img src={clinicTeamImage} alt="Equipe clínica usando o Medainer" className="rounded-[32px] sm:rounded-[40px] shadow-2xl w-full object-cover aspect-[4/5]" />
-              <div className="absolute bottom-4 right-4 lg:bottom-10 lg:-right-10 glass-card p-5 sm:p-8 rounded-3xl shadow-xl max-w-[280px] sm:max-w-sm hidden md:block">
-                <p className="text-xs font-bold uppercase tracking-[0.2em] text-brand-green mb-4">Começo assistido</p>
-                <p className="text-brand-graphite font-serif text-2xl leading-tight mb-5">Sua equipe valida o fluxo real com apoio humano.</p>
-                <div className="space-y-3 text-sm text-brand-graphite/70">
-                  {['Agenda e acessos configurados', 'Treinamento por função', 'Apoio nos primeiros dias'].map((item) => (
-                    <div key={item} className="flex items-start gap-3">
-                      <Check className="w-4 h-4 text-brand-green shrink-0 mt-0.5" />
-                      <span>{item}</span>
-                    </div>
-                  ))}
+            <div className="grid gap-5">
+              <div className="grid gap-5 md:grid-cols-[1.05fr_0.95fr]">
+                <div className="rounded-[24px] border border-brand-line bg-white p-4 shadow-sm">
+                  <img src={prontuarioImage} alt="Prontuários organizados no Medainer" className="aspect-[16/11] w-full rounded-[18px] object-cover" />
+                </div>
+                <div className="rounded-[24px] border border-brand-line bg-brand-panel p-6">
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-brand-green">Visão única</p>
+                  <h3 className="mt-4 text-2xl font-serif font-semibold text-brand-ink">Menos troca de contexto. Mais clareza no trabalho diário.</h3>
+                  <p className="mt-4 text-sm leading-relaxed text-brand-muted">
+                    Recepção, atendimento e gestão deixam de depender de informações espalhadas para acompanhar a rotina da clínica.
+                  </p>
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
-      <section className="section-padding bg-brand-offwhite">
-        <div className="container mx-auto px-4 sm:px-6">
-          <SectionHeading subtitle="Confiança" title="Comece com segurança." centered={true} />
-
-          <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-            {[
-              {
-                label: 'Teste assistido',
-                desc: 'Você não precisa decidir no escuro: a clínica valida aderência e rotina antes de avançar.'
-              },
-              {
-                label: 'Implantação guiada',
-                desc: 'Configuração e treinamento são alinhados ao fluxo real de recepção, gestão e equipe clínica.'
-              },
-              {
-                label: 'Segurança e controle',
-                desc: 'Acesso por perfil, isolamento por clínica e informações públicas de privacidade e LGPD.'
-              }
-            ].map((item) => (
-              <div key={item.label} className="rounded-3xl bg-white p-7 border border-brand-graphite/5 shadow-sm">
-                <h4 className="text-xl font-serif text-brand-petroleum mb-3">{item.label}</h4>
-                <p className="text-sm text-brand-graphite/65 leading-relaxed">{item.desc}</p>
+              <div className="rounded-[24px] border border-brand-line bg-white p-4 shadow-sm">
+                <img src={financeiroImage} alt="Financeiro da clínica organizado no Medainer" className="aspect-[16/8] w-full rounded-[18px] object-cover" />
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="section-padding bg-white">
-        <div className="container mx-auto px-4 sm:px-6">
-          <SectionHeading subtitle="Perfil de Clínica" title="Para quem o Medainer faz sentido." centered={true} />
-
-          <div className="grid lg:grid-cols-2 gap-6 max-w-5xl mx-auto">
-            <div className="rounded-3xl border border-brand-green/20 bg-brand-green/5 p-7">
-              <h3 className="text-2xl font-serif text-brand-graphite mb-4">Faz sentido para sua clínica quando você:</h3>
-              <ul className="space-y-3 text-brand-graphite/80">
-                {[
-                  'Precisa centralizar agenda, pacientes, prontuário e financeiro em um único sistema.',
-                  'Tem recepção e equipe clínica trabalhando no mesmo fluxo diário.',
-                  'Quer reduzir retrabalho e ganhar controle operacional.',
-                  'Quer validar a adoção com apoio humano antes de escalar o uso.'
-                ].map((item) => (
-                  <li key={item} className="flex items-start gap-3">
-                    <Check className="w-5 h-5 text-brand-green shrink-0 mt-0.5" />
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div className="rounded-3xl border border-brand-graphite/10 bg-brand-offwhite p-7">
-              <h3 className="text-2xl font-serif text-brand-graphite mb-4">Não é a melhor escolha quando você:</h3>
-              <ul className="space-y-3 text-brand-graphite/80">
-                {[
-                  'Busca apenas uma agenda simples sem gestão de operação.',
-                  'Prefere manter recepção, atendimento e financeiro em ferramentas separadas.',
-                  'Não quer padronizar processo de equipe e atendimento.',
-                  'Não tem disponibilidade para participar do início da implantação.'
-                ].map((item) => (
-                  <li key={item} className="flex items-start gap-3">
-                    <X className="w-5 h-5 text-brand-petroleum shrink-0 mt-0.5" />
-                    {item}
-                  </li>
-                ))}
-              </ul>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section id="faq" className="section-padding bg-white">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-3xl mx-auto">
-            <SectionHeading subtitle="Perguntas Frequentes" title="Dúvidas antes de começar." centered={true} />
+        <section id="beneficios" className="bg-brand-page py-20 sm:py-24">
+          <div className="mx-auto w-full max-w-[1240px] px-4 sm:px-6">
+            <SectionHeading
+              eyebrow="Benefícios"
+              title="Mais organização para a rotina inteira da clínica."
+              text="Cada parte do sistema existe para deixar o trabalho mais simples de acompanhar e mais fácil de executar."
+              centered={true}
+            />
 
-            <div className="mt-12">
-              {[
-                {
-                  q: 'Como funciona o teste assistido de 7 dias?',
-                  a: 'Entendemos o cenário da clínica, configuramos o essencial e acompanhamos o uso inicial para sua equipe validar a aderência do Medainer na rotina real.'
-                },
-                {
-                  q: 'Em quanto tempo minha clínica entra em operação?',
-                  a: 'Em geral, em poucos dias com implantação guiada, dependendo do volume de dados, da migração necessária e da disponibilidade da equipe.'
-                },
-                {
-                  q: 'Minha equipe vai conseguir usar no dia a dia?',
-                  a: 'Sim. O treinamento é feito por função, com foco no fluxo real de recepção, profissionais e gestão.'
-                },
-                {
-                  q: 'Posso migrar dados que já tenho?',
-                  a: 'Sim. Avaliamos seu cenário e definimos a melhor estratégia de migração para a clínica.'
-                },
-                {
-                  q: 'Como funciona suporte?',
-                  a: 'O suporte é humano e varia conforme o plano contratado, com apoio na implantação e na rotina operacional.'
-                },
-                {
-                  q: 'Qual a diferenca entre Medainer Solo, Clinica e Automacao?',
-                  a: 'O Medainer Solo organiza a base da clinica com agenda, pacientes e prontuario basico. O Medainer Clinica adiciona financeiro, equipe e visao operacional. O Medainer Automacao inclui tudo do Clinica e soma automacoes no WhatsApp para reduzir retrabalho.'
-                },
-                {
-                  q: 'Como funciona segurança e LGPD?',
-                  a: 'A plataforma opera com isolamento por clínica e controle de acesso por perfil. Termos, privacidade e informações de tratamento de dados são apresentados no processo comercial e no ambiente publicado.'
-                }
-              ].map((item) => (
-                <React.Fragment key={item.q}>
-                  <FAQItem question={item.q} answer={item.a} />
-                </React.Fragment>
+            <div className="mt-12 grid gap-5 md:grid-cols-2 xl:grid-cols-5">
+              {BENEFITS.map((item, index) => (
+                <motion.div
+                  key={item.title}
+                  initial={{ opacity: 0, y: 18 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.06 }}
+                  className="rounded-[20px] border border-brand-line bg-white p-6 shadow-sm"
+                >
+                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-primary-soft text-brand-primary">
+                    <item.icon className="h-6 w-6" />
+                  </div>
+                  <h3 className="mt-5 text-xl font-serif font-semibold text-brand-ink">{item.title}</h3>
+                  <p className="mt-3 text-sm leading-relaxed text-brand-muted">{item.text}</p>
+                </motion.div>
               ))}
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section className="section-padding bg-brand-graphite text-white relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-brand-accent/10 blur-[100px] rounded-full" />
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-brand-green/10 blur-[120px] rounded-full" />
+        <section id="automacao" className="bg-white py-20 sm:py-24">
+          <div className="mx-auto grid w-full max-w-[1240px] gap-12 px-4 sm:px-6 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] lg:items-center">
+            <div className="rounded-[28px] border border-brand-line bg-[linear-gradient(180deg,#f5fbff_0%,#f7fffa_100%)] p-8 sm:p-10">
+              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white text-brand-primary shadow-sm">
+                <Bot className="h-7 w-7" />
+              </div>
+              <p className="mt-6 text-[11px] font-semibold uppercase tracking-[0.22em] text-brand-green">Automação com IA</p>
+              <h2 className="mt-4 text-3xl font-serif font-semibold leading-tight text-brand-ink sm:text-4xl">
+                Automações simples para reduzir tarefas repetitivas.
+              </h2>
+              <p className="mt-5 text-base leading-relaxed text-brand-muted">
+                O Medainer pode apoiar confirmações, lembretes e fluxos de atendimento com mais consistência, sem deixar a comunicação pesada ou impessoal.
+              </p>
+              <div className="mt-8 space-y-4">
+                {[
+                  'Ajuda a reduzir trabalho manual no WhatsApp',
+                  'Apoia confirmações e lembretes com mais regularidade',
+                  'Mantém a rotina mais organizada conforme a clínica cresce'
+                ].map((item) => (
+                  <div key={item} className="flex items-start gap-3 rounded-xl bg-white px-4 py-4 text-sm text-brand-muted shadow-sm">
+                    <Check className="mt-0.5 h-4 w-4 shrink-0 text-brand-green" />
+                    <span>{item}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
 
-        <div className="container mx-auto px-4 sm:px-6 relative z-10">
-          <div className="max-w-3xl mx-auto text-center mb-10">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif font-medium mb-6 md:mb-8 leading-tight">
-              Teste ou assine agora.
+            <div className="grid gap-5">
+              <div className="rounded-[24px] border border-brand-line bg-white p-4 shadow-sm">
+                <img src={agendaImage} alt="Fluxos automatizados de agenda no Medainer" className="aspect-[16/10] w-full rounded-[18px] object-cover" />
+              </div>
+              <div className="rounded-[24px] border border-brand-line bg-brand-panel p-6 sm:p-8">
+                <p className="text-lg leading-relaxed text-brand-muted">
+                  A ideia não é substituir o cuidado humano da clínica. É dar mais fluidez para tarefas que hoje consomem tempo demais da equipe.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="bg-brand-panel py-20 sm:py-24">
+          <div className="mx-auto grid w-full max-w-[1240px] gap-14 px-4 sm:px-6 lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] lg:items-center">
+            <div className="relative">
+              <div className="absolute -left-2 top-6 hidden h-[84%] w-[88%] rounded-[24px] bg-brand-green-soft lg:block" />
+              <img
+                src={profissionalImage}
+                alt="Gestora de clínica em ambiente moderno"
+                className="relative z-10 aspect-[4/5] w-full rounded-[24px] object-cover shadow-[0_24px_60px_rgba(15,23,42,0.08)]"
+              />
+            </div>
+
+            <div>
+              <SectionHeading
+                eyebrow="Onboarding simples"
+                title="Um começo organizado para a equipe usar com segurança."
+                text="A implantação foi pensada para ser clara, acompanhada e adequada à rotina da clínica desde o início."
+              />
+
+              <div className="mt-10 grid gap-5">
+                {ONBOARDING_STEPS.map((item, index) => (
+                  <motion.div
+                    key={item.step}
+                    initial={{ opacity: 0, y: 18 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: index * 0.08 }}
+                    className="rounded-[20px] border border-brand-line bg-white p-6 shadow-sm"
+                  >
+                    <div className="flex items-center gap-4">
+                      <div className="flex h-11 w-11 items-center justify-center rounded-full bg-brand-primary-soft text-sm font-semibold text-brand-primary">
+                        {item.step}
+                      </div>
+                      <h3 className="text-xl font-serif font-semibold text-brand-ink">{item.title}</h3>
+                    </div>
+                    <p className="mt-4 text-sm leading-relaxed text-brand-muted">{item.text}</p>
+                  </motion.div>
+                ))}
+              </div>
+
+              <div className="mt-8 rounded-[20px] border border-brand-line bg-white px-6 py-5 text-sm leading-relaxed text-brand-muted shadow-sm">
+                Sua equipe aprende usando o que faz sentido para a rotina real da clínica, com apoio no início e mais clareza na adoção.
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="bg-white py-20 sm:py-24">
+          <div className="mx-auto w-full max-w-[980px] px-4 text-center sm:px-6">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-brand-green">CTA final</p>
+            <h2 className="mt-4 text-4xl font-serif font-semibold leading-tight text-brand-ink sm:text-5xl">
+              Mais clareza para a rotina da sua clínica começa aqui.
             </h2>
-            <p className="text-lg md:text-xl text-white/70">
-              Comece pelo teste de 7 dias ou siga direto para o plano ideal da sua clínica.
+            <p className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-brand-muted sm:text-lg">
+              Veja como o Medainer pode ajudar sua equipe a organizar agenda, pacientes, prontuários, financeiro e atendimento em um fluxo mais simples.
             </p>
-          </div>
-
-          <div className="max-w-3xl mx-auto flex flex-col sm:flex-row gap-4 justify-center">
-            <Button
-              variant="secondary"
-              href={trialUrl}
-              className="px-10 md:px-12 py-4 text-base sm:text-lg"
-              trackEventName="click_trial"
-              trackPayload={{ source: 'final_cta_primary' }}
-            >
-              Solicitar teste de 7 dias
-            </Button>
-            <Button
-              variant="outline"
-              href="#planos"
-              className="px-10 md:px-12 py-4 text-base sm:text-lg border-white text-white hover:bg-white hover:text-brand-graphite"
-              trackEventName="view_pricing"
-              trackPayload={{ source: 'final_cta_secondary_signup' }}
-            >
-              Assinar agora
-            </Button>
-          </div>
-        </div>
-      </section>
-
-      <footer className="py-12 bg-white border-t border-brand-graphite/5">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-8">
-            <div className="flex items-center gap-2">
-              <img src={symbolMedainerImage} alt="Símbolo Medainer" className="w-8 h-8 rounded-lg object-contain" />
-              <span className="text-xl font-serif font-bold tracking-tight text-brand-petroleum">Medainer</span>
+            <div className="mt-8 flex flex-col justify-center gap-4 sm:flex-row">
+              <Button
+                href={demoWhatsappUrl}
+                variant="primary"
+                className="px-8 py-4 text-base"
+                trackEventName="click_trial"
+                trackPayload={{ source: 'final_cta_primary' }}
+              >
+                Solicitar demonstração
+              </Button>
+              <Button
+                href="#como-funciona"
+                variant="outline"
+                className="px-8 py-4 text-base"
+                trackEventName="view_product"
+                trackPayload={{ source: 'final_cta_secondary' }}
+              >
+                Rever a solução
+              </Button>
             </div>
-
-            <div className="flex flex-wrap justify-center gap-x-6 gap-y-3 text-sm text-brand-graphite/50">
-              <a href={TERMS_URL} className="hover:text-brand-petroleum transition-colors">
-                Termos de Uso
-              </a>
-              <a href={PRIVACY_URL} className="hover:text-brand-petroleum transition-colors">
-                Privacidade
-              </a>
-              <a href={LGPD_URL} className="hover:text-brand-petroleum transition-colors">
-                LGPD
-              </a>
-            </div>
-
-            <p className="text-sm text-brand-graphite/40">© {new Date().getFullYear()} Medainer. Todos os direitos reservados.</p>
           </div>
+        </section>
+        </>
+        )}
+      </main>
+
+      <footer className="border-t border-brand-line bg-white py-10">
+        <div className="mx-auto flex w-full max-w-[1240px] flex-col items-center justify-between gap-6 px-4 text-center sm:px-6 md:flex-row md:text-left">
+          <div className="flex items-center gap-3">
+            <img src={symbolMedainerImage} alt="Símbolo Medainer" className="h-8 w-8 rounded-xl object-contain" />
+            <span className="text-lg font-serif font-semibold text-brand-ink">Medainer</span>
+          </div>
+
+          <div className="flex flex-wrap justify-center gap-x-6 gap-y-3 text-sm text-brand-muted">
+            <a href={TERMS_URL} className="hover:text-brand-primary transition-colors">
+              Termos de Uso
+            </a>
+            <a href={PRIVACY_URL} className="hover:text-brand-primary transition-colors">
+              Privacidade
+            </a>
+            <a href={LGPD_URL} className="hover:text-brand-primary transition-colors">
+              LGPD
+            </a>
+          </div>
+
+          <p className="text-sm text-brand-muted">© {new Date().getFullYear()} Medainer. Todos os direitos reservados.</p>
         </div>
       </footer>
 
       <motion.a
-        href={trialUrl}
+        href={demoWhatsappUrl}
         initial={{ scale: 0, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
-        whileHover={{ scale: 1.1 }}
+        whileHover={{ scale: 1.06 }}
         onClick={() => trackEvent('click_trial', { source: 'floating_button' })}
-        className="fixed bottom-5 right-4 sm:bottom-8 sm:right-8 z-50 w-14 h-14 sm:w-16 sm:h-16 bg-[#25D366] text-white rounded-full flex items-center justify-center shadow-2xl shadow-[#25D366]/40 group"
+        className="fixed bottom-5 right-4 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-[0_18px_40px_rgba(37,211,102,0.35)] sm:bottom-8 sm:right-8 sm:h-16 sm:w-16"
       >
-        <MessageCircle className="w-7 h-7 sm:w-8 sm:h-8" />
-        <span className="absolute right-full mr-4 bg-white text-brand-graphite px-4 py-2 rounded-xl text-sm font-bold shadow-xl opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none border border-brand-graphite/5 hidden sm:block">
-          Pedir teste
-        </span>
+        <MessageCircle className="h-7 w-7 sm:h-8 sm:w-8" />
       </motion.a>
     </div>
   );
 }
+
+
 
 
