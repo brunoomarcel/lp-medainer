@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { Menu, X } from 'lucide-react';
+import { AnimatePresence, motion } from 'motion/react';
 import symbolMedainerImage from '../assets/images/symbol-medainer.png';
 import { buildTrackedUrl } from '../analytics';
 
@@ -12,6 +14,13 @@ const WHATSAPP_MESSAGE = 'Oi! Quero solicitar uma demonstração do Medainer.';
 const WHATSAPP_URL = `https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`;
 
 type TrackEventFn = (eventName: string, payload?: Record<string, unknown>) => void;
+const MOBILE_MENU_LINKS = [
+  { type: 'anchor', href: '/#como-funciona', label: 'Como funciona' },
+  { type: 'anchor', href: '/#beneficios', label: 'Benefícios' },
+  { type: 'anchor', href: '/#automacao', label: 'Automação' },
+  { type: 'route', href: PRICING_PATH, label: 'Planos' },
+  { type: 'anchor', href: TRIAL_PATH, label: 'Teste grátis' },
+] as const;
 
 function isExternalHref(href: string) {
   return /^(https?:|mailto:|tel:)/.test(href);
@@ -63,7 +72,29 @@ export function LandingHeader({
   navigationMode?: 'spa' | 'browser';
   trackEvent: TrackEventFn;
 }) {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const demoWhatsappUrl = buildTrackedUrl(WHATSAPP_URL);
+
+  useEffect(() => {
+    setIsMobileMenuOpen(false);
+  }, [navigationMode]);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    const handleClose = () => setIsMobileMenuOpen(false);
+    window.addEventListener('popstate', handleClose);
+
+    return () => window.removeEventListener('popstate', handleClose);
+  }, []);
+
+  const handleMobileMenuToggle = () => {
+    setIsMobileMenuOpen((current) => !current);
+  };
+
+  const handleMobileMenuClose = () => {
+    setIsMobileMenuOpen(false);
+  };
 
   return (
     <header
@@ -104,7 +135,7 @@ export function LandingHeader({
           </a>
         </nav>
 
-        <div className="hidden sm:flex">
+        <div className="hidden lg:flex">
           <a
             href={demoWhatsappUrl}
             className="inline-flex w-full items-center justify-center rounded-xl bg-brand-primary px-5 py-3 text-center text-sm font-semibold text-white shadow-[0_16px_32px_rgba(59,130,246,0.18)] transition-all duration-300 hover:bg-brand-primary-strong sm:w-auto"
@@ -113,7 +144,84 @@ export function LandingHeader({
             Solicitar demonstração
           </a>
         </div>
+
+        <button
+          type="button"
+          onClick={handleMobileMenuToggle}
+          className="inline-flex h-11 w-11 items-center justify-center rounded-xl border border-brand-line bg-white/90 text-brand-ink shadow-sm backdrop-blur-sm lg:hidden"
+          aria-label={isMobileMenuOpen ? 'Fechar menu' : 'Abrir menu'}
+          aria-expanded={isMobileMenuOpen}
+        >
+          {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+        </button>
       </div>
+
+      <AnimatePresence>
+        {isMobileMenuOpen ? (
+          <motion.div
+            initial={{ opacity: 0, y: -12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.22, ease: 'easeOut' }}
+            className="mx-auto mt-3 w-full max-w-[1240px] px-4 sm:px-6 lg:hidden"
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.98 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.985 }}
+              transition={{ duration: 0.24, ease: 'easeOut' }}
+              className="overflow-hidden rounded-[20px] border border-brand-line bg-white/95 p-4 shadow-[0_18px_40px_rgba(15,23,42,0.08)] backdrop-blur-xl"
+            >
+              <nav className="flex flex-col gap-2 text-sm text-brand-ink">
+                {MOBILE_MENU_LINKS.map((item, index) => {
+                  const motionProps = {
+                    initial: { opacity: 0, x: -10 },
+                    animate: { opacity: 1, x: 0 },
+                    exit: { opacity: 0, x: -8 },
+                    transition: { duration: 0.2, delay: index * 0.035 },
+                    className:
+                      'rounded-xl px-4 py-3 transition-colors duration-200 hover:bg-brand-panel hover:text-brand-primary active:scale-[0.99]',
+                  };
+
+                  if (item.type === 'route') {
+                    return (
+                      <motion.div key={item.label} {...motionProps}>
+                        <HeaderLink
+                          href={item.href}
+                          navigationMode={navigationMode}
+                          className="block"
+                          onClick={() => {
+                            trackEvent('view_pricing', { source: 'header_menu_mobile' });
+                            handleMobileMenuClose();
+                          }}
+                        >
+                          {item.label}
+                        </HeaderLink>
+                      </motion.div>
+                    );
+                  }
+
+                  return (
+                    <motion.a
+                      key={item.label}
+                      href={item.href}
+                      {...motionProps}
+                      onClick={() => {
+                        if (item.href === TRIAL_PATH) {
+                          trackEvent('click_trial', { source: 'header_menu_mobile' });
+                        }
+                        handleMobileMenuClose();
+                      }}
+                    >
+                      {item.label}
+                    </motion.a>
+                  );
+                })}
+              </nav>
+            </motion.div>
+          </motion.div>
+        ) : null}
+      </AnimatePresence>
     </header>
   );
 }

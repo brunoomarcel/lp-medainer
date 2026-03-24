@@ -375,16 +375,16 @@ export default function App() {
               transition={{ duration: 0.7 }}
               className="relative z-10 max-w-xl"
             >
-              <div className="inline-flex items-center gap-2 px-1 py-1 text-[11px] font-semibold uppercase tracking-[0.22em] text-brand-green">
+              {/* <div className="inline-flex items-center gap-2 px-1 py-1 text-[11px] font-semibold uppercase tracking-[0.22em] text-brand-green">
                 <ShieldCheck className="h-4 w-4" />
                 Gestão para clínicas e consultórios de saúde
-              </div>
+              </div> */}
               
               <h1 className="mt-6 text-4xl font-serif font-semibold leading-[1.02] text-brand-ink sm:text-5xl lg:text-6xl">
-                Organize sua clínica ou consultório sem papel ou planilha
+                Clínica lotada, organizada e sem depender de você para cada detalhe
               </h1>
               <p className="mt-6 text-base leading-relaxed text-brand-muted sm:text-lg">
-                Agenda, pacientes, prontuários, financeiro e operação no mesmo lugar para reduzir correria, ganhar clareza e deixar a rotina mais leve.
+                Agenda, pacientes, prontuários, financeiro e operação no mesmo lugar para reduzir correria e organizar o dia a dia com mais leveza.
               </p>
               <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center">
                 <Button
