@@ -6,19 +6,18 @@ import {
   ClipboardList,
   Clock,
   MessageCircle,
-  ShieldCheck,
   TrendingUp,
   UserCheck,
 } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 import clinicTeamImage from '../assets/images/clinic-team.png';
-import symbolMedainerImage from '../assets/images/symbol-medainer.png';
 import dashboardGeralImage from '../assets/images/dash-geral.png';
 import agendaImage from '../assets/images/agenda.jpg';
 import pacientesImage from '../assets/images/pacientes.jpg';
 import prontuarioImage from '../assets/images/prontuario.jpg';
 import financeiroImage from '../assets/images/financeiro.jpg';
 import { buildTrackedUrl } from '../analytics';
+import { LandingFooter, LandingHeader } from '../components/LandingChrome';
 
 declare global {
   interface Window {
@@ -31,12 +30,9 @@ function buildWhatsAppUrl(message: string) {
   return `https://wa.me/5579996018591?text=${encodeURIComponent(message)}`;
 }
 
-const WHATSAPP_URL = buildWhatsAppUrl('Olá, quero tirar uma dúvida antes de ativar os 7 dias grátis do Medainer Solo');
+const WHATSAPP_URL = buildWhatsAppUrl('Olá, quero tirar uma dúvida antes de ativar os 7 dias grátis do Medainer');
 const APP_REGISTER_URL =
   (import.meta.env.VITE_APP_REGISTER_URL as string | undefined)?.trim() || 'https://app.medainer.com.br/register';
-const TERMS_URL = (import.meta.env.VITE_TERMS_URL as string | undefined)?.trim() || '/termos';
-const PRIVACY_URL = (import.meta.env.VITE_PRIVACY_URL as string | undefined)?.trim() || '/privacidade';
-const LGPD_URL = (import.meta.env.VITE_LGPD_URL as string | undefined)?.trim() || '/lgpd';
 
 const HERO_HIGHLIGHTS = [
   { icon: Calendar, text: '7 dias grátis e sem cartão de crédito' },
@@ -67,16 +63,16 @@ const EVALUATION_FEATURES = [
 
 const FLOW_STEPS = [
   {
-    title: '1. Crie seu acesso em poucos minutos',
-    text: 'Você ativa os 7 dias grátis do Medainer Solo sem cartão e já entra na plataforma.',
+    title: '1. Crie seu acesso e comece sem travar a agenda',
+    text: 'Você ativa os 7 dias grátis do Medainer Solo e já entra na plataforma para testar sem parar sua rotina.',
   },
   {
-    title: '2. Coloque a rotina real para rodar',
-    text: 'Cadastre pacientes, organize a agenda e teste o fluxo da clínica do jeito que ele acontece hoje.',
+    title: '2. Coloque consultas, pacientes e prontuários para rodar no mesmo lugar',
+    text: 'Organize agenda, cadastros e registros do dia a dia para atender sem depender de papel, recado solto ou informação espalhada.',
   },
   {
-    title: '3. Veja se a clínica respira melhor',
-    text: 'Se fizer sentido, continue no Solo por R$ 99/mês ou avance depois para mais controle e automação.',
+    title: '3. Veja se sua rotina fica mais leve entre um atendimento e outro',
+    text: 'Perceba na prática se o consultório ganha mais clareza para confirmar horários, encontrar informações rápido e trabalhar com menos correria.',
   },
 ] as const;
 
@@ -111,8 +107,8 @@ const PLAN_CARDS = [
       'Alertas operacionais e pacientes sem retorno',
       'Onboarding ao vivo e suporte em horário comercial',
     ],
-    cta: 'Entender plano Clínica',
-    href: 'whatsapp',
+    cta: 'Começar 7 dias grátis',
+    href: 'register',
     featured: true,
   },
   {
@@ -127,8 +123,8 @@ const PLAN_CARDS = [
       'Reativação de pacientes e fila de encaixe',
       'Suporte prioritário',
     ],
-    cta: 'Entender automação',
-    href: 'whatsapp',
+    cta: 'Começar 7 dias grátis',
+    href: 'register',
     featured: false,
   },
 ] as const;
@@ -186,12 +182,12 @@ const Button = ({
   trackPayload?: Record<string, unknown>;
 }) => {
   const baseStyles =
-    'inline-flex w-full sm:w-auto items-center justify-center rounded-full px-6 py-3 text-center font-medium transition-all duration-300 active:scale-95 cursor-pointer';
+    'inline-flex w-full sm:w-auto items-center justify-center rounded-xl px-6 py-3.5 text-center text-sm font-semibold transition-all duration-300';
   const variants = {
-    primary: 'bg-brand-petroleum text-white hover:bg-brand-petroleum/90 shadow-lg shadow-brand-petroleum/20',
-    secondary: 'bg-brand-accent text-white hover:bg-brand-accent/90 shadow-lg shadow-brand-accent/20',
-    outline: 'border-2 border-brand-petroleum text-brand-petroleum hover:bg-brand-petroleum hover:text-white',
-    ghost: 'text-brand-petroleum hover:bg-brand-petroleum/5',
+    primary: 'bg-brand-primary text-white shadow-[0_16px_32px_rgba(59,130,246,0.18)] hover:bg-brand-primary-strong',
+    secondary: 'bg-brand-green text-white shadow-[0_16px_32px_rgba(82,163,127,0.18)] hover:bg-brand-green-strong',
+    outline: 'border border-brand-line bg-white text-brand-primary hover:border-brand-primary hover:bg-brand-primary-soft',
+    ghost: 'text-brand-primary hover:bg-brand-primary-soft',
   };
 
   const handleClick = () => {
@@ -218,14 +214,14 @@ const SectionHeading = ({
   centered?: boolean;
   dark?: boolean;
 }) => (
-  <div className={`mb-12 md:mb-16 ${centered ? 'mx-auto text-center' : 'text-left'} max-w-3xl`}>
+  <div className={`max-w-3xl ${centered ? 'mx-auto text-center' : ''}`}>
     {subtitle ? (
       <motion.span
         initial={{ opacity: 0, y: 10 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        className={`mb-4 inline-block text-[11px] font-bold uppercase tracking-[0.2em] md:text-xs ${
-          dark ? 'text-brand-accent' : 'text-brand-green'
+        className={`inline-block text-[11px] font-semibold uppercase tracking-[0.22em] ${
+          dark ? 'text-white/75' : 'text-brand-green'
         }`}
       >
         {subtitle}
@@ -236,8 +232,8 @@ const SectionHeading = ({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ delay: 0.1 }}
-      className={`font-serif text-3xl font-medium leading-tight sm:text-4xl md:text-5xl ${
-        dark ? 'text-white' : 'text-brand-graphite'
+      className={`mt-4 font-serif text-3xl font-semibold leading-tight sm:text-4xl lg:text-5xl ${
+        dark ? 'text-white' : 'text-brand-ink'
       }`}
     >
       {title}
@@ -249,9 +245,9 @@ const FAQItem = ({ question, answer }: { question: string; answer: string }) => 
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="border-b border-brand-graphite/10 py-6">
+    <div className="border-b border-brand-line py-6">
       <button onClick={() => setIsOpen(!isOpen)} className="group flex w-full items-center justify-between text-left">
-        <span className="text-lg font-medium text-brand-graphite transition-colors group-hover:text-brand-petroleum">
+        <span className="text-lg font-medium text-brand-ink transition-colors group-hover:text-brand-primary">
           {question}
         </span>
         <div className={`transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}>
@@ -267,7 +263,7 @@ const FAQItem = ({ question, answer }: { question: string; answer: string }) => 
             transition={{ duration: 0.3 }}
             className="overflow-hidden"
           >
-            <p className="pt-4 leading-relaxed text-brand-graphite/70">{answer}</p>
+            <p className="pt-4 leading-relaxed text-brand-muted">{answer}</p>
           </motion.div>
         ) : null}
       </AnimatePresence>
@@ -286,136 +282,67 @@ export function TrialPage() {
   }, []);
 
   return (
-    <div className="min-h-screen font-sans selection:bg-brand-petroleum selection:text-white">
-      <header
-        className={`fixed left-0 right-0 top-0 z-50 transition-all duration-500 ${
-          isScrolled ? 'bg-white/90 py-4 shadow-sm backdrop-blur-lg' : 'bg-transparent py-6'
-        }`}
-      >
-        <div className="container mx-auto flex items-center justify-between gap-4 px-4 sm:px-6">
-          <div className="flex items-center gap-2">
-            <img src={symbolMedainerImage} alt="Símbolo Medainer" className="h-9 w-9 rounded-xl object-contain sm:h-10 sm:w-10" />
-            <span className="font-serif text-xl font-bold tracking-tight text-brand-petroleum sm:text-2xl">Medainer</span>
-          </div>
+    <div className="min-h-screen bg-brand-page font-sans text-brand-ink selection:bg-brand-primary selection:text-white">
+      <LandingHeader isScrolled={isScrolled} trackEvent={trackEvent} />
 
-          <div className="hidden sm:flex">
-            <Button
-              variant="secondary"
-              href={appRegisterUrl}
-              className="px-6 py-2.5"
-              trackEventName="click_checkout"
-              trackPayload={{ source: 'header_trial', plan: 'medainer solo' }}
-            >
-              Começar 7 dias grátis
-            </Button>
-          </div>
-        </div>
-      </header>
+      <section className="relative overflow-hidden bg-[linear-gradient(180deg,#f8fbff_0%,#ffffff_100%)] pt-28 sm:pt-32 lg:pt-36">
+        <div className="absolute left-0 top-0 h-64 w-64 rounded-full bg-brand-primary-soft blur-3xl" />
+        <div className="absolute bottom-8 right-0 h-56 w-56 rounded-full bg-brand-green-soft blur-3xl" />
 
-      <section className="relative overflow-hidden pt-28 pb-16 sm:pt-32 md:pt-36 lg:pt-40 md:pb-24 lg:pb-32">
-        <div className="absolute right-0 top-0 -z-10 hidden h-full w-1/2 rounded-l-[100px] bg-brand-sand/30 lg:block" />
-        <div className="absolute left-4 top-1/4 -z-10 h-48 w-48 rounded-full bg-brand-green/5 blur-3xl sm:left-10 sm:h-64 sm:w-64" />
-
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
-            <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8 }}>
-              <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-brand-green/10 px-4 py-2 text-[11px] font-bold uppercase tracking-wider text-brand-green sm:text-xs md:mb-8">
-                <ShieldCheck className="h-4 w-4" />
-                TESTE GRÁTIS O MEDAINER SOLO
-              </div>
-
-              <h1 className="text-balance mb-6 font-serif text-4xl font-medium leading-[1.06] text-brand-graphite sm:text-5xl md:mb-8 md:text-6xl lg:text-7xl">
+        <div className="mx-auto grid w-full max-w-[1240px] gap-14 px-4 pb-16 sm:px-6 lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] lg:items-center lg:pb-24">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="relative z-10 max-w-xl">
+              <h1 className="text-balance font-serif text-4xl font-semibold leading-[1.02] text-brand-ink sm:text-5xl lg:text-6xl">
                 Teste o Medainer por 7 dias e pare de tocar a clínica no improviso.
               </h1>
 
-              <p className="mb-8 max-w-xl text-base leading-relaxed text-brand-graphite/70 sm:text-lg md:mb-10 md:text-xl">
+              <p className="mt-6 max-w-xl text-base leading-relaxed text-brand-muted sm:text-lg">
                 Organize agenda, pacientes e prontuário em um só lugar para reduzir recado solto, informação perdida e correria no dia a dia.
               </p>
 
-              <div className="mb-10 flex flex-col gap-4 sm:flex-row md:mb-12">
+              <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center">
                 <Button
                   variant="primary"
                   href={appRegisterUrl}
-                  className="px-8 py-4 text-base sm:px-10 sm:text-lg"
+                  className="px-8 py-4 text-base"
                   trackEventName="click_checkout"
                   trackPayload={{ source: 'hero_primary', plan: 'medainer solo' }}
                 >
                   Começar 7 dias grátis
                 </Button>
-                <Button
-                  variant="outline"
-                  href={WHATSAPP_URL}
-                  className="px-8 py-4 text-base sm:px-10 sm:text-lg"
-                  trackEventName="click_whatsapp"
-                  trackPayload={{ source: 'hero_secondary' }}
-                >
-                  Tirar dúvida antes de testar
-                </Button>
               </div>
 
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 sm:gap-6">
+              <div className="mt-8 grid gap-3 sm:grid-cols-3">
                 {HERO_HIGHLIGHTS.map((item) => (
-                  <div key={item.text} className="flex items-center gap-3 text-sm font-medium text-brand-graphite/60">
-                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-white text-brand-green shadow-sm">
+                  <div key={item.text} className="flex items-center gap-3 rounded-xl border border-brand-line bg-white/90 px-4 py-4 text-sm text-brand-muted shadow-sm">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-brand-primary-soft text-brand-primary">
                       <item.icon className="h-4 w-4" />
                     </div>
-                    {item.text}
+                    <span>{item.text}</span>
                   </div>
                 ))}
               </div>
-            </motion.div>
+          </motion.div>
 
-            <motion.div
-              initial={{ opacity: 0, scale: 0.92 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.9, delay: 0.2 }}
-              className="relative mx-auto w-full max-w-xl lg:max-w-none"
-            >
-              <div className="overflow-hidden rounded-[28px] border-4 border-white bg-brand-graphite shadow-2xl sm:border-8">
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.1 }}
+            className="relative mx-auto w-full max-w-xl lg:max-w-none"
+          >
+            <div className="rounded-[24px] border border-brand-line bg-white p-3 shadow-[0_32px_80px_rgba(59,130,246,0.10)] sm:p-4">
+              <div className="overflow-hidden rounded-[18px] border border-brand-line bg-brand-panel">
                 <img src={dashboardGeralImage} alt="Dashboard do Medainer" className="aspect-[16/10] w-full object-cover object-top" />
               </div>
-
-              <motion.div
-                animate={{ y: [0, -10, 0] }}
-                transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-                className="glass-card absolute -right-6 -top-6 hidden rounded-2xl p-5 md:block"
-              >
-                <div className="flex items-center gap-4">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-brand-green/20 text-brand-green">
-                    <TrendingUp className="h-6 w-6" />
-                  </div>
-                  <div>
-                    <p className="text-xs font-bold uppercase tracking-wider text-brand-graphite/50">Depois do teste</p>
-                    <p className="font-serif text-xl font-bold text-brand-petroleum">R$ 99/mês</p>
-                  </div>
-                </div>
-              </motion.div>
-
-              <motion.div
-                animate={{ y: [0, 10, 0] }}
-                transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
-                className="glass-card absolute -bottom-6 -left-6 hidden rounded-2xl p-5 md:block"
-              >
-                <div className="flex items-center gap-4">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-brand-accent/20 text-brand-accent">
-                    <Clock className="h-6 w-6" />
-                  </div>
-                  <div>
-                    <p className="text-xs font-bold uppercase tracking-wider text-brand-graphite/50">Teste gratuito</p>
-                    <p className="font-serif text-xl font-bold text-brand-petroleum">7 dias</p>
-                  </div>
-                </div>
-              </motion.div>
-            </motion.div>
-          </div>
+            </div>
+          </motion.div>
         </div>
       </section>
 
-      <section className="section-padding bg-white">
-        <div className="container mx-auto px-4 sm:px-6">
+      <section className="bg-brand-panel py-20 sm:py-24">
+        <div className="mx-auto w-full max-w-[1240px] px-4 sm:px-6">
           <SectionHeading
             subtitle="O que você ativa hoje"
-            title="Você testa o que mais pesa na rotina da clínica."
+            title="Você elimina o que mais pesa na rotina da clínica"
           />
 
           <div className="grid gap-6 lg:grid-cols-3">
@@ -425,14 +352,14 @@ export function TrialPage() {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                className="rounded-[32px] border border-brand-graphite/8 bg-brand-offwhite p-5 shadow-sm"
+                className="rounded-[20px] border border-brand-line bg-white p-6 shadow-sm"
               >
-                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-petroleum/8 text-brand-petroleum">
+                <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-primary-soft text-brand-primary">
                   <item.icon className="h-6 w-6" />
                 </div>
-                <h3 className="text-2xl font-serif text-brand-graphite">{item.title}</h3>
-                <p className="mt-3 text-sm leading-relaxed text-brand-graphite/70">{item.text}</p>
-                <div className="mt-5 overflow-hidden rounded-[24px] border border-brand-graphite/8 bg-white">
+                <h3 className="text-2xl font-serif font-semibold text-brand-ink">{item.title}</h3>
+                <p className="mt-3 text-sm leading-relaxed text-brand-muted">{item.text}</p>
+                <div className="mt-5 overflow-hidden rounded-[18px] border border-brand-line bg-brand-panel">
                   <img src={item.image} alt={item.title} className="aspect-[4/3] w-full object-cover object-top" />
                 </div>
               </motion.article>
@@ -441,11 +368,11 @@ export function TrialPage() {
         </div>
       </section>
 
-      <section className="section-padding bg-brand-offwhite">
-        <div className="container mx-auto px-4 sm:px-6">
+      <section className="bg-white py-20 sm:py-24">
+        <div className="mx-auto w-full max-w-[1240px] px-4 sm:px-6">
           <SectionHeading
-            subtitle="Como funciona hoje"
-            title="Você ativa os 7 dias grátis e valida na rotina da clínica."
+            subtitle="Como funciona na prática"
+            title="Você testa 7 dias grátis no ritmo real dos seus atendimentos"
           />
 
           <div className="grid gap-6 md:grid-cols-3">
@@ -456,25 +383,25 @@ export function TrialPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.08 }}
-                className="rounded-[28px] border border-brand-graphite/8 bg-white p-6 shadow-sm"
+                className="rounded-[20px] border border-brand-line bg-brand-panel p-7 shadow-sm"
               >
                 <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-brand-green">Passo {index + 1}</p>
-                <h3 className="mt-4 font-serif text-2xl text-brand-graphite">{item.title}</h3>
-                <p className="mt-3 text-sm leading-relaxed text-brand-graphite/70">{item.text}</p>
+                <h3 className="mt-4 font-serif text-2xl font-semibold text-brand-ink">{item.title}</h3>
+                <p className="mt-3 text-sm leading-relaxed text-brand-muted">{item.text}</p>
               </motion.article>
             ))}
           </div>
         </div>
       </section>
 
-      <section id="planos" className="section-padding bg-white">
-        <div className="container mx-auto px-4 sm:px-6">
+      <section id="planos" className="bg-brand-page py-20 sm:py-24">
+        <div className="mx-auto w-full max-w-[1240px] px-4 sm:px-6">
           <SectionHeading
             subtitle="Depois do trial"
-            title="Se fizer sentido continuar, você já sabe por onde evoluir."
+            title="Escolha o plano para testar grátis"
           />
 
-          <div className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-[0.95fr_1.1fr_0.95fr]">
+          <div className="mx-auto mt-12 grid max-w-6xl gap-6 lg:grid-cols-[0.95fr_1.1fr_0.95fr]">
             {PLAN_CARDS.map((plan) => {
               const href = plan.href === 'register' ? appRegisterUrl : WHATSAPP_URL;
               const trackEventName = plan.href === 'register' ? 'click_checkout' : 'click_whatsapp';
@@ -485,29 +412,27 @@ export function TrialPage() {
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  className={`flex flex-col rounded-[36px] p-8 sm:p-10 ${
+                  className={`flex flex-col rounded-[24px] border p-8 shadow-sm ${
                     plan.featured
-                      ? 'bg-brand-petroleum text-white shadow-2xl shadow-brand-petroleum/15 lg:-my-4'
-                      : 'border border-brand-graphite/8 bg-brand-offwhite'
+                      ? 'border-brand-primary bg-white shadow-[0_24px_60px_rgba(59,130,246,0.10)]'
+                      : 'border-brand-line bg-white'
                   }`}
                 >
-                  <div className="mb-8">
+                  <div className={`mb-8 border-b pb-6 ${plan.featured ? 'border-brand-primary/15' : 'border-brand-line'}`}>
                     <p
-                      className={`mb-4 text-[11px] font-bold uppercase tracking-[0.22em] ${
-                        plan.featured ? 'text-brand-accent' : 'text-brand-green'
+                      className={`text-[11px] font-semibold uppercase tracking-[0.22em] ${
+                        plan.featured ? 'text-brand-primary' : 'text-brand-green'
                       }`}
                     >
                       {plan.subtitle}
                     </p>
-                    <h3 className="font-serif text-2xl font-medium">{plan.name}</h3>
-                    <p className={`mt-2 text-sm ${plan.featured ? 'text-white/70' : 'text-brand-graphite/55'}`}>{plan.text}</p>
+                    <h3 className="mt-4 font-serif text-2xl font-semibold text-brand-ink">{plan.name}</h3>
+                    <p className="mt-3 text-sm leading-relaxed text-brand-muted">{plan.text}</p>
                   </div>
 
-                  <div className="mb-8">
-                    <span className={`font-serif text-4xl font-bold ${plan.featured ? 'text-brand-accent' : 'text-brand-petroleum'}`}>
-                      {plan.price}
-                    </span>
-                    <p className={`mt-2 text-sm ${plan.featured ? 'text-white/70' : 'text-brand-graphite/60'}`}>
+                  <div className="mb-8 pt-1">
+                    <span className="font-serif text-4xl font-semibold text-brand-ink">{plan.price}</span>
+                    <p className="mt-3 text-sm text-brand-muted">
                       {plan.featured
                         ? 'Faz sentido quando o trial mostrar que a clínica já precisa de mais estrutura.'
                         : plan.name === 'Medainer Solo'
@@ -518,8 +443,8 @@ export function TrialPage() {
 
                   <ul className="mb-10 flex-grow space-y-4">
                     {plan.features.map((item) => (
-                      <li key={item} className={`flex items-start gap-3 text-sm ${plan.featured ? 'text-white/80' : 'text-brand-graphite/70'}`}>
-                        <Check className={`mt-0.5 h-5 w-5 shrink-0 ${plan.featured ? 'text-brand-accent' : 'text-brand-green'}`} />
+                      <li key={item} className="flex items-start gap-3 text-sm leading-relaxed text-brand-muted">
+                        <Check className={`mt-0.5 h-5 w-5 shrink-0 ${plan.featured ? 'text-brand-primary' : 'text-brand-green'}`} />
                         {item}
                       </li>
                     ))}
@@ -527,7 +452,7 @@ export function TrialPage() {
 
                   <div className="space-y-4">
                     <Button
-                      variant={plan.featured ? 'secondary' : 'primary'}
+                      variant={plan.featured ? 'primary' : 'outline'}
                       href={href}
                       className="w-full"
                       trackEventName={trackEventName}
@@ -538,7 +463,7 @@ export function TrialPage() {
                     <Button
                       variant="ghost"
                       href={WHATSAPP_URL}
-                      className={`w-full text-xs ${plan.featured ? 'text-white/75 hover:text-white' : ''}`}
+                      className="w-full text-xs"
                       trackEventName="click_whatsapp"
                       trackPayload={{ source: `plan_support_${plan.name.toLowerCase()}` }}
                     >
@@ -552,10 +477,10 @@ export function TrialPage() {
         </div>
       </section>
 
-      <section className="section-padding bg-brand-offwhite">
-        <div className="container mx-auto px-4 sm:px-6">
+      {/* <section className="bg-brand-panel py-20 sm:py-24">
+        <div className="mx-auto w-full max-w-[1240px] px-4 sm:px-6">
           <div className="grid items-center gap-10 lg:grid-cols-[0.95fr_1.05fr]">
-            <div className="overflow-hidden rounded-[32px] border border-brand-graphite/8 bg-white shadow-sm">
+            <div className="overflow-hidden rounded-[24px] border border-brand-line bg-white p-4 shadow-sm">
               <img src={financeiroImage} alt="Financeiro do Medainer Clínica" className="w-full object-cover" />
             </div>
 
@@ -565,7 +490,7 @@ export function TrialPage() {
                 title="O Solo tira do improviso. O Clínica entra quando a operação pede recepção, equipe e financeiro."
                 centered={false}
               />
-              <div className="space-y-4 text-brand-graphite/75">
+              <div className="mt-5 space-y-4 text-brand-muted">
                 <p>
                   Se a clínica já tem recepção, mais de um profissional ou precisa enxergar melhor receita, faltas e pacientes sem retorno, o melhor encaixe passa a ser o Medainer Clínica.
                 </p>
@@ -586,19 +511,19 @@ export function TrialPage() {
                     desc: 'Alertas operacionais, saúde da clínica e pacientes sem retorno para agir mais rápido.',
                   },
                 ].map((item) => (
-                  <div key={item.title} className="rounded-2xl border border-brand-graphite/10 bg-white p-4">
-                    <p className="font-semibold text-brand-graphite">{item.title}</p>
-                    <p className="mt-2 text-sm text-brand-graphite/65">{item.desc}</p>
+                  <div key={item.title} className="rounded-xl border border-brand-line bg-white p-4">
+                    <p className="font-semibold text-brand-ink">{item.title}</p>
+                    <p className="mt-2 text-sm text-brand-muted">{item.desc}</p>
                   </div>
                 ))}
               </div>
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
 
-      <section className="section-padding bg-white">
-        <div className="container mx-auto px-4 sm:px-6">
+      {/* <section className="bg-white py-20 sm:py-24">
+        <div className="mx-auto w-full max-w-[1240px] px-4 sm:px-6">
           <div className="grid items-center gap-10 lg:grid-cols-[1.05fr_0.95fr]">
             <div>
               <SectionHeading
@@ -613,7 +538,7 @@ export function TrialPage() {
                   'Pacientes sem retorno e agenda com janelas ociosas.',
                   'No-show alto e muito retrabalho para responder mensagens.',
                 ].map((item) => (
-                  <div key={item} className="rounded-2xl border border-brand-graphite/10 bg-brand-offwhite p-4 text-sm text-brand-graphite/70">
+                  <div key={item} className="rounded-xl border border-brand-line bg-brand-panel p-4 text-sm text-brand-muted">
                     <div className="flex items-start gap-3">
                       <TrendingUp className="mt-0.5 h-5 w-5 shrink-0 text-brand-green" />
                       <span>{item}</span>
@@ -622,20 +547,20 @@ export function TrialPage() {
                 ))}
               </div>
 
-              <p className="mt-6 text-sm leading-relaxed text-brand-graphite/70">
+              <p className="mt-6 text-sm leading-relaxed text-brand-muted">
                 Nessa fase, o Medainer Automação passa a fazer sentido porque reduz confirmação manual, remarcações, lembretes e esforço da recepção no WhatsApp.
               </p>
             </div>
 
-            <div className="overflow-hidden rounded-[32px] border border-brand-graphite/8 shadow-sm">
+            <div className="overflow-hidden rounded-[24px] border border-brand-line bg-white p-4 shadow-sm">
               <img src={clinicTeamImage} alt="Equipe clínica usando o Medainer" className="aspect-[4/5] w-full object-cover" />
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
 
-      <section id="faq" className="section-padding bg-brand-sand/20">
-        <div className="container mx-auto px-4 sm:px-6">
+      <section id="faq" className="bg-brand-panel py-20 sm:py-24">
+        <div className="mx-auto w-full max-w-[1240px] px-4 sm:px-6">
           <div className="mx-auto max-w-3xl">
             <SectionHeading subtitle="FAQ" title="O que a clínica normalmente quer saber antes de ativar os 7 dias grátis." />
 
@@ -648,24 +573,22 @@ export function TrialPage() {
         </div>
       </section>
 
-      <section className="relative overflow-hidden bg-brand-graphite text-white section-padding">
-        <div className="absolute right-0 top-0 h-64 w-64 rounded-full bg-brand-accent/10 blur-[100px]" />
-        <div className="absolute bottom-0 left-0 h-96 w-96 rounded-full bg-brand-green/10 blur-[120px]" />
-
-        <div className="container relative z-10 mx-auto px-4 sm:px-6">
+      <section className="bg-white py-20 sm:py-24">
+        <div className="mx-auto w-full max-w-[980px] px-4 text-center sm:px-6">
           <div className="mx-auto max-w-3xl text-center">
-            <h2 className="font-serif text-3xl font-medium leading-tight sm:text-4xl md:text-5xl">
-              Ative os 7 dias grátis e veja a clínica funcionar com menos improviso.
+            <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-brand-green">Está preparado?</p>
+            <h2 className="mt-4 font-serif text-4xl font-semibold leading-tight text-brand-ink sm:text-5xl">
+              Ative os 7 dias grátis e veja a clínica funcionar com menos improviso
             </h2>
-            <p className="mt-6 text-lg text-white/70 md:text-xl">
-              Sem cartão de crédito. Você testa na rotina real e decide depois se continua no Solo por R$ 99/mês.
+            <p className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-brand-muted sm:text-lg">
+              Sem cartão de crédito. Você testa na rotina real e cancela a qualquer momento.
             </p>
 
-            <div className="mx-auto mt-10 flex max-w-3xl flex-col justify-center gap-4 sm:flex-row">
+            <div className="mt-8 flex flex-col justify-center gap-4 sm:flex-row">
               <Button
-                variant="secondary"
+                variant="primary"
                 href={appRegisterUrl}
-                className="px-10 py-4 text-base sm:text-lg md:px-12"
+                className="px-8 py-4 text-base"
                 trackEventName="click_checkout"
                 trackPayload={{ source: 'final_cta', plan: 'medainer solo' }}
               >
@@ -674,7 +597,7 @@ export function TrialPage() {
               <Button
                 variant="outline"
                 href={WHATSAPP_URL}
-                className="border-white px-10 py-4 text-base text-white hover:bg-white hover:text-brand-graphite sm:text-lg md:px-12"
+                className="px-8 py-4 text-base"
                 trackEventName="click_whatsapp"
                 trackPayload={{ source: 'final_cta' }}
               >
@@ -686,24 +609,7 @@ export function TrialPage() {
         </div>
       </section>
 
-      <footer className="border-t border-brand-graphite/5 bg-white py-12">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="flex flex-col items-center justify-between gap-8 md:flex-row">
-            <div className="flex items-center gap-2">
-              <img src={symbolMedainerImage} alt="Símbolo Medainer" className="h-8 w-8 rounded-lg object-contain" />
-              <span className="font-serif text-xl font-bold tracking-tight text-brand-petroleum">Medainer</span>
-            </div>
-
-            <div className="flex flex-wrap justify-center gap-x-6 gap-y-3 text-sm text-brand-graphite/50">
-              <a href={TERMS_URL} className="transition-colors hover:text-brand-petroleum">Termos de Uso</a>
-              <a href={PRIVACY_URL} className="transition-colors hover:text-brand-petroleum">Privacidade</a>
-              <a href={LGPD_URL} className="transition-colors hover:text-brand-petroleum">LGPD</a>
-            </div>
-
-            <p className="text-sm text-brand-graphite/40">© {new Date().getFullYear()} Medainer. Todos os direitos reservados.</p>
-          </div>
-        </div>
-      </footer>
+      <LandingFooter />
 
       <motion.a
         href={WHATSAPP_URL}
@@ -714,7 +620,7 @@ export function TrialPage() {
         className="group fixed bottom-5 right-4 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-2xl shadow-[#25D366]/40 sm:bottom-8 sm:right-8 sm:h-16 sm:w-16"
       >
         <MessageCircle className="h-7 w-7 sm:h-8 sm:w-8" />
-        <span className="pointer-events-none absolute right-full mr-4 hidden whitespace-nowrap rounded-xl border border-brand-graphite/5 bg-white px-4 py-2 text-sm font-bold text-brand-graphite opacity-0 shadow-xl transition-opacity group-hover:opacity-100 sm:block">
+        <span className="pointer-events-none absolute right-full mr-4 hidden whitespace-nowrap rounded-xl border border-brand-line bg-white px-4 py-2 text-sm font-bold text-brand-ink opacity-0 shadow-xl transition-opacity group-hover:opacity-100 sm:block">
           Tirar dúvida antes de testar
         </span>
       </motion.a>
