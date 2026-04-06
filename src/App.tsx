@@ -436,14 +436,14 @@ export default function App() {
                   Ver como funciona
                 </Button>
               </div>
-              <div className="interactive-card mt-5 hidden items-center gap-3 rounded-full border border-brand-line bg-white/85 px-4 py-2 text-xs font-medium text-brand-muted shadow-sm backdrop-blur-sm sm:inline-flex">
+              {/* <div className="interactive-card mt-5 hidden items-center gap-3 rounded-full border border-brand-line bg-white/85 px-4 py-2 text-xs font-medium text-brand-muted shadow-sm backdrop-blur-sm sm:inline-flex">
                 <div className="flex items-center gap-1.5">
                   <span className="h-2.5 w-2.5 rounded-full bg-brand-primary" />
                   <span className="h-2.5 w-2.5 rounded-full bg-brand-green" />
                   <span className="h-2.5 w-2.5 rounded-full bg-brand-primary-soft border border-brand-line" />
                 </div>
                 <span>Para clínicas com equipe e profissionais com consultório</span>
-              </div>
+              </div> */}
             </motion.div>
 
             <motion.div
@@ -538,7 +538,7 @@ export default function App() {
             <SectionHeading
               eyebrow="Para quem é"
               title="O Medainer faz sentido para clínicas e consultórios que querem mais clareza na rotina"
-              text="Não importa se você opera com recepção e equipe ou atende no próprio consultório. A ideia é eliminar o improviso e colocar tudo em um fluxo mais simples de acompanhar."
+              // text="Não importa se você opera com recepção e equipe ou atende no próprio consultório. A ideia é eliminar o improviso e colocar tudo em um fluxo mais simples de acompanhar."
               centered={true}
             />
 
@@ -621,20 +621,11 @@ export default function App() {
             </div>
 
             <div className="grid gap-5">
-              <div className="grid gap-5 md:grid-cols-[1.05fr_0.95fr]">
-                <div className="interactive-card rounded-[24px] border border-brand-line bg-white p-4 shadow-sm">
-                  <img src={prontuarioImage} alt="Prontuários organizados no Medainer" className="aspect-[16/11] w-full rounded-[18px] object-cover" />
-                </div>
-                <div className="interactive-card rounded-[24px] border border-brand-line bg-brand-panel p-6">
-                  <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-brand-green">Visão única</p>
-                  <h3 className="mt-4 text-2xl font-serif font-semibold text-brand-ink">Menos troca de contexto. Mais clareza no trabalho diário.</h3>
-                  <p className="mt-4 text-sm leading-relaxed text-brand-muted">
-                    Recepção, atendimento e gestão deixam de depender de informações espalhadas para acompanhar a rotina da clínica.
-                  </p>
-                </div>
+              <div className="interactive-card w-full rounded-[24px] border border-brand-line bg-white p-4 shadow-sm">
+                <img src={prontuarioImage} alt="Prontuários organizados no Medainer" className="aspect-[16/10] w-full rounded-[18px] object-cover" />
               </div>
 
-              <div className="interactive-card rounded-[24px] border border-brand-line bg-white p-4 shadow-sm">
+              <div className="interactive-card w-full rounded-[24px] border border-brand-line bg-white p-4 shadow-sm">
                 <img src={financeiroImage} alt="Financeiro da clínica organizado no Medainer" className="aspect-[16/8] w-full rounded-[18px] object-cover" />
               </div>
             </div>
@@ -702,11 +693,11 @@ export default function App() {
               <div className="interactive-card rounded-[24px] border border-brand-line bg-white p-4 shadow-sm">
                 <img src={agendaImage} alt="Fluxos automatizados de agenda no Medainer" className="aspect-[16/10] w-full rounded-[18px] object-cover" />
               </div>
-              <div className="interactive-card rounded-[24px] border border-brand-line bg-brand-panel p-6 sm:p-8">
+              {/* <div className="interactive-card rounded-[24px] border border-brand-line bg-brand-panel p-6 sm:p-8">
                 <p className="text-lg leading-relaxed text-brand-muted">
                   Não substitui o cuidado humano da clínica. Dá mais fluidez para tarefas que hoje consomem tempo demais da equipe.
                 </p>
-              </div>
+              </div> */}
             </div>
           </div>
         </section>
