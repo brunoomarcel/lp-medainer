@@ -16,6 +16,9 @@ export default defineConfig(({mode}) => {
             if (req.url === '/teste-gratuito') {
               req.url = '/teste-gratuito/index.html';
             }
+            if (req.url === '/planos') {
+              req.url = '/planos/index.html';
+            }
             next();
           });
         },
@@ -33,6 +36,7 @@ export default defineConfig(({mode}) => {
       rollupOptions: {
         input: {
           main: path.resolve(__dirname, 'index.html'),
+          pricing: path.resolve(__dirname, 'planos/index.html'),
           trial: path.resolve(__dirname, 'teste-gratuito/index.html'),
         },
       },
