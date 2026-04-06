@@ -411,7 +411,7 @@ export default function App() {
               </div> */}
               
               <h1 className="text-4xl font-serif font-semibold leading-[1.02] text-brand-ink sm:text-5xl lg:text-6xl">
-                Clínica organizada e sem depender de você para cada detalhe
+                Sua clínica organizada e sem depender de você para cada detalhe
               </h1>
               <p className="mt-6 text-base leading-relaxed text-brand-muted sm:text-lg">
                 Agenda, pacientes, prontuários, financeiro e operação no mesmo lugar para reduzir correria e organizar o dia a dia com mais leveza.
