@@ -18,7 +18,6 @@ import {
 } from 'lucide-react';
 import { motion } from 'motion/react';
 import clinicTeamImage from './assets/images/clinic-team.png';
-import dashboardGeralImage from './assets/images/dash-geral.png';
 import agendaImage from './assets/images/agenda.jpg';
 import pacientesImage from './assets/images/pacientes.jpg';
 import prontuarioImage from './assets/images/prontuario.jpg';
@@ -36,11 +35,6 @@ declare global {
 
 const HERO_YOUTUBE_VIDEO_ID = '1K2zYpofJUk';
 const HERO_YOUTUBE_EMBED_URL = `https://www.youtube-nocookie.com/embed/${HERO_YOUTUBE_VIDEO_ID}?autoplay=1&rel=0&modestbranding=1&playsinline=1&iv_load_policy=3`;
-const HERO_YOUTUBE_THUMBNAIL_SOURCES = [
-  `https://i.ytimg.com/vi/${HERO_YOUTUBE_VIDEO_ID}/maxresdefault.jpg`,
-  `https://i.ytimg.com/vi/${HERO_YOUTUBE_VIDEO_ID}/hqdefault.jpg`,
-  dashboardGeralImage,
-] as const;
 const PRICING_PATH = '/planos';
 const WHATSAPP_PHONE = '5579996018591';
 const WHATSAPP_MESSAGE = 'Oi! Quero solicitar uma demonstração do Medainer.';
@@ -295,10 +289,8 @@ export default function App() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [{ pathname, hash }, setLocationState] = useState(getCurrentLocationState);
   const [isHeroVideoPlaying, setIsHeroVideoPlaying] = useState(false);
-  const [heroThumbnailIndex, setHeroThumbnailIndex] = useState(0);
   const demoWhatsappUrl = buildTrackedUrl(WHATSAPP_URL);
   const isPricingPage = pathname === PRICING_PATH;
-  const heroThumbnailSrc = HERO_YOUTUBE_THUMBNAIL_SOURCES[heroThumbnailIndex] ?? dashboardGeralImage;
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 24);
@@ -321,12 +313,6 @@ export default function App() {
     const frameId = window.requestAnimationFrame(() => scrollToHash(hash));
     return () => window.cancelAnimationFrame(frameId);
   }, [hash, isPricingPage, pathname]);
-
-  const handleHeroThumbnailError = () => {
-    setHeroThumbnailIndex((currentIndex) =>
-      currentIndex < HERO_YOUTUBE_THUMBNAIL_SOURCES.length - 1 ? currentIndex + 1 : currentIndex,
-    );
-  };
 
   return (
     <div className="min-h-screen bg-brand-page font-sans text-brand-ink selection:bg-brand-primary selection:text-white">
@@ -488,22 +474,12 @@ export default function App() {
                       <button
                         type="button"
                         onClick={() => setIsHeroVideoPlaying(true)}
-                        className="group relative block h-full w-full cursor-pointer overflow-hidden"
+                        className="group grid h-full w-full cursor-pointer place-items-center bg-brand-panel"
                         aria-label="Reproduzir apresentação do Medainer"
                       >
-                        <img
-                          src={heroThumbnailSrc}
-                          alt="Preview da apresentação do Medainer"
-                          onError={handleHeroThumbnailError}
-                          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
-                          loading="eager"
-                        />
-                        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(15,23,42,0.08)_0%,rgba(15,23,42,0.28)_100%)]" />
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          <span className="flex h-18 w-18 items-center justify-center rounded-full bg-white text-brand-primary shadow-[0_18px_40px_rgba(15,23,42,0.18)] transition-transform duration-300 group-hover:scale-105">
-                            <Play className="ml-1 h-8 w-8 fill-current" />
-                          </span>
-                        </div>
+                        <span className="flex h-18 w-18 items-center justify-center rounded-full bg-white text-brand-primary shadow-[0_18px_40px_rgba(15,23,42,0.18)] transition-transform duration-300 group-hover:scale-105">
+                          <Play className="ml-1 h-8 w-8 fill-current" />
+                        </span>
                       </button>
                     )}
                   </div>
