@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   Bot,
   Calendar,
@@ -12,12 +12,14 @@ import {
   HeartPulse,
   LayoutDashboard,
   MessageCircle,
+  Pause,
   Play,
   ShieldCheck,
   Users
 } from 'lucide-react';
 import { motion } from 'motion/react';
 import clinicTeamImage from './assets/images/clinic-team.png';
+import dashboardGeralImage from './assets/images/dash-geral.png';
 import agendaImage from './assets/images/agenda.jpg';
 import pacientesImage from './assets/images/pacientes.jpg';
 import prontuarioImage from './assets/images/prontuario.jpg';
@@ -34,7 +36,6 @@ declare global {
 }
 
 const HERO_YOUTUBE_VIDEO_ID = '1K2zYpofJUk';
-const HERO_YOUTUBE_EMBED_URL = `https://www.youtube-nocookie.com/embed/${HERO_YOUTUBE_VIDEO_ID}?autoplay=1&rel=0&modestbranding=1&playsinline=1&iv_load_policy=3`;
 const PRICING_PATH = '/planos';
 const WHATSAPP_PHONE = '5579996018591';
 const WHATSAPP_MESSAGE = 'Oi! Quero solicitar uma demonstração do Medainer.';
@@ -224,6 +225,25 @@ function scrollToHash(hash: string) {
   window.scrollTo({ top: Math.max(0, targetTop), behavior: 'auto' });
 }
 
+function getHeroYoutubeEmbedUrl() {
+  const url = new URL(`https://www.youtube-nocookie.com/embed/${HERO_YOUTUBE_VIDEO_ID}`);
+  url.searchParams.set('autoplay', '1');
+  url.searchParams.set('controls', '0');
+  url.searchParams.set('disablekb', '1');
+  url.searchParams.set('enablejsapi', '1');
+  url.searchParams.set('fs', '0');
+  url.searchParams.set('iv_load_policy', '3');
+  url.searchParams.set('modestbranding', '1');
+  url.searchParams.set('playsinline', '1');
+  url.searchParams.set('rel', '0');
+
+  if (typeof window !== 'undefined') {
+    url.searchParams.set('origin', window.location.origin);
+  }
+
+  return url.toString();
+}
+
 function trackEvent(eventName: string, payload: Record<string, unknown> = {}) {
   if (typeof window === 'undefined' || typeof window.gtag !== 'function') return;
 
@@ -289,8 +309,11 @@ export default function App() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [{ pathname, hash }, setLocationState] = useState(getCurrentLocationState);
   const [isHeroVideoPlaying, setIsHeroVideoPlaying] = useState(false);
+  const [isHeroVideoPaused, setIsHeroVideoPaused] = useState(false);
+  const heroVideoRef = useRef<HTMLIFrameElement | null>(null);
   const demoWhatsappUrl = buildTrackedUrl(WHATSAPP_URL);
   const isPricingPage = pathname === PRICING_PATH;
+  const heroYoutubeEmbedUrl = getHeroYoutubeEmbedUrl();
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 24);
@@ -313,6 +336,33 @@ export default function App() {
     const frameId = window.requestAnimationFrame(() => scrollToHash(hash));
     return () => window.cancelAnimationFrame(frameId);
   }, [hash, isPricingPage, pathname]);
+
+  const sendHeroVideoCommand = (command: 'pauseVideo' | 'playVideo') => {
+    heroVideoRef.current?.contentWindow?.postMessage(
+      JSON.stringify({
+        event: 'command',
+        func: command,
+        args: [],
+      }),
+      '*',
+    );
+  };
+
+  const handleHeroVideoStart = () => {
+    setIsHeroVideoPlaying(true);
+    setIsHeroVideoPaused(false);
+  };
+
+  const handleHeroVideoToggle = () => {
+    if (isHeroVideoPaused) {
+      sendHeroVideoCommand('playVideo');
+      setIsHeroVideoPaused(false);
+      return;
+    }
+
+    sendHeroVideoCommand('pauseVideo');
+    setIsHeroVideoPaused(true);
+  };
 
   return (
     <div className="min-h-screen bg-brand-page font-sans text-brand-ink selection:bg-brand-primary selection:text-white">
@@ -462,24 +512,58 @@ export default function App() {
                 <div className="overflow-hidden rounded-[18px] border border-brand-line">
                   <div className="aspect-video w-full bg-brand-panel">
                     {isHeroVideoPlaying ? (
-                      <iframe
-                        src={HERO_YOUTUBE_EMBED_URL}
-                        title="Apresentação do Medainer"
-                        className="h-full w-full"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        referrerPolicy="strict-origin-when-cross-origin"
-                        allowFullScreen
-                      />
+                      <div className="relative h-full w-full">
+                        <iframe
+                          ref={heroVideoRef}
+                          src={heroYoutubeEmbedUrl}
+                          title="Apresentação do Medainer"
+                          className="h-full w-full pointer-events-none"
+                          allow="autoplay; encrypted-media; picture-in-picture"
+                          referrerPolicy="strict-origin-when-cross-origin"
+                          tabIndex={-1}
+                        />
+
+                        {isHeroVideoPaused ? (
+                          <button
+                            type="button"
+                            onClick={handleHeroVideoToggle}
+                            className="absolute inset-0 grid place-items-center bg-[linear-gradient(180deg,rgba(15,23,42,0.08)_0%,rgba(15,23,42,0.28)_100%)]"
+                            aria-label="Retomar apresentação do Medainer"
+                          >
+                            <span className="flex h-18 w-18 items-center justify-center rounded-full bg-white text-brand-primary shadow-[0_18px_40px_rgba(15,23,42,0.18)] transition-transform duration-300 hover:scale-105">
+                              <Play className="ml-1 h-8 w-8 fill-current" />
+                            </span>
+                          </button>
+                        ) : (
+                          <button
+                            type="button"
+                            onClick={handleHeroVideoToggle}
+                            className="absolute bottom-4 right-4 inline-flex h-12 w-12 items-center justify-center rounded-full bg-white/95 text-brand-primary shadow-[0_18px_40px_rgba(15,23,42,0.18)] transition-transform duration-300 hover:scale-105"
+                            aria-label="Pausar apresentação do Medainer"
+                          >
+                            <Pause className="h-5 w-5 fill-current" />
+                          </button>
+                        )}
+                      </div>
                     ) : (
                       <button
                         type="button"
-                        onClick={() => setIsHeroVideoPlaying(true)}
-                        className="group grid h-full w-full cursor-pointer place-items-center bg-brand-panel"
+                        onClick={handleHeroVideoStart}
+                        className="group relative block h-full w-full cursor-pointer overflow-hidden"
                         aria-label="Reproduzir apresentação do Medainer"
                       >
-                        <span className="flex h-18 w-18 items-center justify-center rounded-full bg-white text-brand-primary shadow-[0_18px_40px_rgba(15,23,42,0.18)] transition-transform duration-300 group-hover:scale-105">
-                          <Play className="ml-1 h-8 w-8 fill-current" />
-                        </span>
+                        <img
+                          src={dashboardGeralImage}
+                          alt="Preview da apresentação do Medainer"
+                          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+                          loading="eager"
+                        />
+                        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(15,23,42,0.08)_0%,rgba(15,23,42,0.28)_100%)]" />
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <span className="flex h-18 w-18 items-center justify-center rounded-full bg-white text-brand-primary shadow-[0_18px_40px_rgba(15,23,42,0.18)] transition-transform duration-300 group-hover:scale-105">
+                            <Play className="ml-1 h-8 w-8 fill-current" />
+                          </span>
+                        </div>
                       </button>
                     )}
                   </div>
