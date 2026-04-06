@@ -679,7 +679,7 @@ export default function App() {
               </div>
               <p className="mt-6 text-[11px] font-semibold uppercase tracking-[0.22em] text-brand-green">Automação com IA</p>
               <h2 className="mt-4 text-3xl font-serif font-semibold leading-tight text-brand-ink sm:text-4xl">
-                Automações simples para reduzir tarefas repetitivas.
+                Automações para reduzir tarefas repetitivas.
               </h2>
               <p className="mt-5 text-base leading-relaxed text-brand-muted">
                 O Medainer pode apoiar confirmações, lembretes e fluxos de atendimento com mais consistência, sem deixar a comunicação pesada ou impessoal.
