@@ -12,7 +12,6 @@ import {
   HeartPulse,
   LayoutDashboard,
   MessageCircle,
-  Pause,
   Play,
   ShieldCheck,
   Users
@@ -523,27 +522,16 @@ export default function App() {
                           tabIndex={-1}
                         />
 
-                        {isHeroVideoPaused ? (
-                          <button
-                            type="button"
-                            onClick={handleHeroVideoToggle}
-                            className="absolute inset-0 grid place-items-center bg-[linear-gradient(180deg,rgba(15,23,42,0.08)_0%,rgba(15,23,42,0.28)_100%)]"
-                            aria-label="Retomar apresentação do Medainer"
-                          >
-                            <span className="flex h-18 w-18 items-center justify-center rounded-full bg-white text-brand-primary shadow-[0_18px_40px_rgba(15,23,42,0.18)] transition-transform duration-300 hover:scale-105">
-                              <Play className="ml-1 h-8 w-8 fill-current" />
-                            </span>
-                          </button>
-                        ) : (
-                          <button
-                            type="button"
-                            onClick={handleHeroVideoToggle}
-                            className="absolute bottom-4 right-4 inline-flex h-12 w-12 items-center justify-center rounded-full bg-white/95 text-brand-primary shadow-[0_18px_40px_rgba(15,23,42,0.18)] transition-transform duration-300 hover:scale-105"
-                            aria-label="Pausar apresentação do Medainer"
-                          >
-                            <Pause className="h-5 w-5 fill-current" />
-                          </button>
-                        )}
+                        <button
+                          type="button"
+                          onClick={handleHeroVideoToggle}
+                          className="absolute inset-0 z-10 block h-full w-full cursor-pointer bg-transparent"
+                          aria-label={
+                            isHeroVideoPaused
+                              ? 'Retomar apresentação do Medainer'
+                              : 'Pausar apresentação do Medainer'
+                          }
+                        />
                       </div>
                     ) : (
                       <button
