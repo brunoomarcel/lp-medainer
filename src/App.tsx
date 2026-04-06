@@ -200,6 +200,32 @@ const HERO_MARQUEE_ITEMS = [
   { icon: LayoutDashboard, text: 'Mais clareza desde o início' }
 ] as const;
 
+function normalizePathname(pathname: string) {
+  return pathname.replace(/\/index\.html$/, '').replace(/\/$/, '') || '/';
+}
+
+function getCurrentLocationState() {
+  if (typeof window === 'undefined') {
+    return { pathname: '/', hash: '' };
+  }
+
+  return {
+    pathname: normalizePathname(window.location.pathname),
+    hash: window.location.hash,
+  };
+}
+
+function scrollToHash(hash: string) {
+  if (!hash || typeof window === 'undefined') return;
+
+  const targetElement = document.getElementById(hash.slice(1));
+  if (!targetElement) return;
+
+  const headerOffset = 112;
+  const targetTop = targetElement.getBoundingClientRect().top + window.scrollY - headerOffset;
+  window.scrollTo({ top: Math.max(0, targetTop), behavior: 'auto' });
+}
+
 function trackEvent(eventName: string, payload: Record<string, unknown> = {}) {
   if (typeof window === 'undefined' || typeof window.gtag !== 'function') return;
 
@@ -263,23 +289,32 @@ const SectionHeading = ({
 
 export default function App() {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [pathname, setPathname] = useState(() => (typeof window === 'undefined' ? '/' : window.location.pathname));
+  const [{ pathname, hash }, setLocationState] = useState(getCurrentLocationState);
   const [isHeroVideoPlaying, setIsHeroVideoPlaying] = useState(false);
   const demoWhatsappUrl = buildTrackedUrl(WHATSAPP_URL);
   const isPricingPage = pathname === PRICING_PATH;
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 24);
-    const handlePopState = () => setPathname(window.location.pathname);
+    const handleLocationChange = () => setLocationState(getCurrentLocationState());
 
     window.addEventListener('scroll', handleScroll);
-    window.addEventListener('popstate', handlePopState);
+    window.addEventListener('popstate', handleLocationChange);
+    window.addEventListener('hashchange', handleLocationChange);
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
-      window.removeEventListener('popstate', handlePopState);
+      window.removeEventListener('popstate', handleLocationChange);
+      window.removeEventListener('hashchange', handleLocationChange);
     };
   }, []);
+
+  useEffect(() => {
+    if (isPricingPage || !hash) return;
+
+    const frameId = window.requestAnimationFrame(() => scrollToHash(hash));
+    return () => window.cancelAnimationFrame(frameId);
+  }, [hash, isPricingPage, pathname]);
 
   return (
     <div className="min-h-screen bg-brand-page font-sans text-brand-ink selection:bg-brand-primary selection:text-white">
