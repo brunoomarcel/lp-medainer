@@ -42,15 +42,31 @@ jobs:
           FTP_HOST: ${{ secrets.FTP_HOST }}
           FTP_PORT: ${{ secrets.FTP_PORT }}
           FTP_PATH: ${{ secrets.FTP_PATH }}
+          FTP_PROTOCOL: ${{ secrets.FTP_PROTOCOL }}
         run: |
           set -euo pipefail
 
           RAW_TARGET="${FTP_HOST:?Missing secret FTP_HOST}"
           TARGET="$RAW_TARGET"
-          PROTOCOL="ftp"
+          PROTOCOL_FROM_HOST=""
 
-          case "$TARGET" in
-            *://*) TARGET="${TARGET#*://}" ;;
+          case "$RAW_TARGET" in
+            ftps-legacy://*)
+              PROTOCOL_FROM_HOST="ftps-legacy"
+              TARGET="${RAW_TARGET#ftps-legacy://}"
+              ;;
+            ftps://*)
+              PROTOCOL_FROM_HOST="ftps"
+              TARGET="${RAW_TARGET#ftps://}"
+              ;;
+            ftp://*)
+              PROTOCOL_FROM_HOST="ftp"
+              TARGET="${RAW_TARGET#ftp://}"
+              ;;
+            *://*)
+              echo "Unsupported protocol in FTP_HOST. Use ftp://, ftps:// or ftps-legacy://."
+              exit 1
+              ;;
           esac
 
           case "$TARGET" in
@@ -75,22 +91,42 @@ jobs:
               ;;
           esac
 
-          if [ -n "${FTP_PORT:-}" ]; then
-            PORT="$FTP_PORT"
-          elif [ -n "$PORT_FROM_HOST" ]; then
-            PORT="$PORT_FROM_HOST"
-          else
-            PORT="21"
-          fi
-
           if [ -z "$HOST" ]; then
             echo "Could not determine FTP host from FTP_HOST"
             exit 1
           fi
 
-          if [ "$PORT" = "990" ]; then
-            echo "FTP_PORT=990 indica FTPS implicito, mas este deploy foi configurado para FTP comum."
-            echo "Use a porta 21 para FTP ou ajuste a hospedagem para FTPS."
+          if [ -n "${FTP_PROTOCOL:-}" ]; then
+            PROTOCOL="$FTP_PROTOCOL"
+          elif [ -n "$PROTOCOL_FROM_HOST" ]; then
+            PROTOCOL="$PROTOCOL_FROM_HOST"
+          elif [ -n "$PORT_FROM_HOST" ] && [ "$PORT_FROM_HOST" = "990" ]; then
+            PROTOCOL="ftps-legacy"
+          else
+            PROTOCOL="ftp"
+          fi
+
+          case "$PROTOCOL" in
+            ftp|ftps|ftps-legacy) ;;
+            *)
+              echo "Unsupported FTP_PROTOCOL '$PROTOCOL'. Use ftp, ftps or ftps-legacy."
+              exit 1
+              ;;
+          esac
+
+          if [ -n "${FTP_PORT:-}" ]; then
+            PORT="$FTP_PORT"
+          elif [ -n "$PORT_FROM_HOST" ]; then
+            PORT="$PORT_FROM_HOST"
+          elif [ "$PROTOCOL" = "ftps-legacy" ]; then
+            PORT="990"
+          else
+            PORT="21"
+          fi
+
+          if [ "$PORT" = "990" ] && [ "$PROTOCOL" = "ftp" ]; then
+            echo "Porta 990 normalmente exige FTPS implicito."
+            echo "Ajuste FTP_PROTOCOL para ftps-legacy ou use uma porta/protocolo compatível."
             exit 1
           fi
 
