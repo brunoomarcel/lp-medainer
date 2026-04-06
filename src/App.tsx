@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Bot,
   Calendar,
@@ -12,13 +12,12 @@ import {
   HeartPulse,
   LayoutDashboard,
   MessageCircle,
-  Play,
   ShieldCheck,
   Users
 } from 'lucide-react';
 import { motion } from 'motion/react';
 import clinicTeamImage from './assets/images/clinic-team.png';
-import dashboardGeralImage from './assets/images/dash-geral.png';
+import dashMainImage from './assets/images/dash-main.jpg';
 import agendaImage from './assets/images/agenda.jpg';
 import pacientesImage from './assets/images/pacientes.jpg';
 import prontuarioImage from './assets/images/prontuario.jpg';
@@ -34,7 +33,6 @@ declare global {
   }
 }
 
-const HERO_YOUTUBE_VIDEO_ID = '1K2zYpofJUk';
 const PRICING_PATH = '/planos';
 const WHATSAPP_PHONE = '5579996018591';
 const WHATSAPP_MESSAGE = 'Oi! Quero solicitar uma demonstração do Medainer.';
@@ -224,25 +222,6 @@ function scrollToHash(hash: string) {
   window.scrollTo({ top: Math.max(0, targetTop), behavior: 'auto' });
 }
 
-function getHeroYoutubeEmbedUrl() {
-  const url = new URL(`https://www.youtube-nocookie.com/embed/${HERO_YOUTUBE_VIDEO_ID}`);
-  url.searchParams.set('autoplay', '1');
-  url.searchParams.set('controls', '0');
-  url.searchParams.set('disablekb', '1');
-  url.searchParams.set('enablejsapi', '1');
-  url.searchParams.set('fs', '0');
-  url.searchParams.set('iv_load_policy', '3');
-  url.searchParams.set('modestbranding', '1');
-  url.searchParams.set('playsinline', '1');
-  url.searchParams.set('rel', '0');
-
-  if (typeof window !== 'undefined') {
-    url.searchParams.set('origin', window.location.origin);
-  }
-
-  return url.toString();
-}
-
 function trackEvent(eventName: string, payload: Record<string, unknown> = {}) {
   if (typeof window === 'undefined' || typeof window.gtag !== 'function') return;
 
@@ -307,12 +286,8 @@ const SectionHeading = ({
 export default function App() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [{ pathname, hash }, setLocationState] = useState(getCurrentLocationState);
-  const [isHeroVideoPlaying, setIsHeroVideoPlaying] = useState(false);
-  const [isHeroVideoPaused, setIsHeroVideoPaused] = useState(false);
-  const heroVideoRef = useRef<HTMLIFrameElement | null>(null);
   const demoWhatsappUrl = buildTrackedUrl(WHATSAPP_URL);
   const isPricingPage = pathname === PRICING_PATH;
-  const heroYoutubeEmbedUrl = getHeroYoutubeEmbedUrl();
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 24);
@@ -335,33 +310,6 @@ export default function App() {
     const frameId = window.requestAnimationFrame(() => scrollToHash(hash));
     return () => window.cancelAnimationFrame(frameId);
   }, [hash, isPricingPage, pathname]);
-
-  const sendHeroVideoCommand = (command: 'pauseVideo' | 'playVideo') => {
-    heroVideoRef.current?.contentWindow?.postMessage(
-      JSON.stringify({
-        event: 'command',
-        func: command,
-        args: [],
-      }),
-      '*',
-    );
-  };
-
-  const handleHeroVideoStart = () => {
-    setIsHeroVideoPlaying(true);
-    setIsHeroVideoPaused(false);
-  };
-
-  const handleHeroVideoToggle = () => {
-    if (isHeroVideoPaused) {
-      sendHeroVideoCommand('playVideo');
-      setIsHeroVideoPaused(false);
-      return;
-    }
-
-    sendHeroVideoCommand('pauseVideo');
-    setIsHeroVideoPaused(true);
-  };
 
   return (
     <div className="min-h-screen bg-brand-page font-sans text-brand-ink selection:bg-brand-primary selection:text-white">
@@ -462,7 +410,7 @@ export default function App() {
                 Gestão para clínicas e consultórios de saúde
               </div> */}
               
-              <h1 className="mt-6 text-4xl font-serif font-semibold leading-[1.02] text-brand-ink sm:text-5xl lg:text-6xl">
+              <h1 className="text-4xl font-serif font-semibold leading-[1.02] text-brand-ink sm:text-5xl lg:text-6xl">
                 Clínica lotada, organizada e sem depender de você para cada detalhe
               </h1>
               <p className="mt-6 text-base leading-relaxed text-brand-muted sm:text-lg">
@@ -504,9 +452,11 @@ export default function App() {
               transition={{ duration: 0.8, delay: 0.1 }}
               className="relative"
             >
+              {/* Hero antigo com video mantido aqui para referencia futura. */}
+              {/*
               <div className="hero-frame rounded-[24px] border border-brand-line bg-white p-3 shadow-[0_32px_80px_rgba(59,130,246,0.10)] sm:p-4">
                 <div className="mb-3 flex items-center justify-between rounded-[18px] px-4 py-3 text-sm text-brand-muted">
-                  <span>Toque para ver o Medainer</span>
+                  <span>Visão principal do Medainer</span>
                 </div>
                 <div className="overflow-hidden rounded-[18px] border border-brand-line">
                   <div className="aspect-video w-full bg-brand-panel">
@@ -557,6 +507,13 @@ export default function App() {
                   </div>
                 </div>
               </div>
+              */}
+              <img
+                src={dashMainImage}
+                alt="Painel principal do Medainer"
+                className="block h-auto w-full rounded-[24px]"
+                loading="eager"
+              />
             </motion.div>
           </div>
 
