@@ -16,7 +16,6 @@ import {
   Users
 } from 'lucide-react';
 import { motion } from 'motion/react';
-import clinicTeamImage from './assets/images/clinic-team.png';
 import dashMainImage from './assets/images/dash-main.jpg';
 import agendaImage from './assets/images/agenda.jpg';
 import pacientesImage from './assets/images/pacientes.jpg';
@@ -25,6 +24,7 @@ import financeiroImage from './assets/images/financeiro.jpg';
 import profissionalImage from './assets/images/profissional.png';
 import { buildTrackedUrl } from './analytics';
 import { LandingFooter, LandingHeader } from './components/LandingChrome';
+import { PLAN_COMPARISON_ROWS, PRODUCT_PLANS } from './constants/plans';
 
 declare global {
   interface Window {
@@ -37,63 +37,6 @@ const PRICING_PATH = '/planos';
 const WHATSAPP_PHONE = '5579996018591';
 const WHATSAPP_MESSAGE = 'Oi! Quero solicitar uma demonstração do Medainer.';
 const WHATSAPP_URL = `https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`;
-
-const LANDING_PLANS = [
-  {
-    name: 'Medainer Solo',
-    price: 'R$ 99',
-    subtitle: 'Para começar',
-    text: 'Para profissionais que querem sair do improviso e organizar a base da clínica com mais clareza.',
-    features: [
-      'Até 1 profissional',
-      'Até 2 usuários',
-      'Agenda da clínica',
-      'Pacientes e prontuário básico',
-      'Confirmação por link',
-      'Suporte por chat ou e-mail'
-    ],
-    featured: false
-  },
-  {
-    name: 'Medainer Clínica',
-    price: 'R$ 297',
-    subtitle: 'Mais completo',
-    text: 'Para clínicas que precisam reunir recepção, equipe, agenda, pacientes e financeiro no mesmo fluxo.',
-    features: [
-      'Tudo do Medainer Solo',
-      'Financeiro integrado',
-      'Equipe e permissões',
-      'Dashboard da clínica',
-      'Mais visão operacional',
-      'Onboarding acompanhado'
-    ],
-    featured: true
-  },
-  {
-    name: 'Medainer Automação',
-    price: 'R$ 497',
-    subtitle: 'Para ganhar escala',
-    text: 'Para clínicas que querem reduzir trabalho manual e automatizar partes da comunicação e da rotina.',
-    features: [
-      'Tudo do Medainer Clínica',
-      'Automações no WhatsApp',
-      'Lembretes e confirmações',
-      'Reativação de pacientes',
-      'Fila de encaixe',
-      'Suporte prioritário'
-    ],
-    featured: false
-  }
-] as const;
-
-const LANDING_PLAN_COMPARISON = [
-  ['Melhor momento', 'Organizar a base', 'Estruturar a operação', 'Ganhar escala com automação'],
-  ['Profissionais', 'Até 1', 'Equipe completa', 'Equipe completa'],
-  ['Usuários', 'Até 2', 'Equipe e permissões', 'Equipe e permissões'],
-  ['Financeiro', 'Não incluído', 'Incluído', 'Incluído'],
-  ['Automações', 'Não incluído', 'Fluxos básicos', 'Fluxos mais completos'],
-  ['Onboarding', 'Remoto', 'Acompanhado', 'Acompanhado e prioritário']
-] as const;
 
 const PAIN_POINTS = [
   'A agenda muda o tempo todo e a recepção precisa resolver tudo ao mesmo tempo.',
@@ -319,52 +262,96 @@ export default function App() {
         {isPricingPage ? (
           <section className="bg-[linear-gradient(180deg,#f8fbff_0%,#ffffff_100%)] pt-28 sm:pt-32 lg:pt-36">
             <div className="mx-auto w-full max-w-[1240px] px-4 pb-20 sm:px-6 lg:pb-24">
+              <SectionHeading
+                eyebrow="Planos"
+                title="Escolha o plano que acompanha o momento da sua clínica"
+                text="O Medainer Clínica é o plano principal para clínicas em crescimento. O Automação é desenhado com o comercial conforme a operação e o volume no WhatsApp."
+                centered={true}
+              />
 
               <div className="mt-14 grid gap-6 lg:grid-cols-[0.95fr_1.08fr_0.95fr]">
-                {LANDING_PLANS.map((plan) => (
-                  <article
-                    key={plan.name}
-                    className={`flex h-full flex-col rounded-[24px] border p-8 shadow-sm ${
-                      plan.featured
-                        ? 'border-brand-primary bg-white shadow-[0_24px_60px_rgba(59,130,246,0.10)]'
-                        : 'border-brand-line bg-white'
-                    }`}
-                  >
-                    <div className={`border-b pb-6 ${plan.featured ? 'border-brand-primary/15' : 'border-brand-line'}`}>
-                      <p className={`text-[11px] font-semibold uppercase tracking-[0.22em] ${plan.featured ? 'text-brand-primary' : 'text-brand-green'}`}>
-                        {plan.subtitle}
-                      </p>
-                      <h2 className="mt-4 text-3xl font-serif font-semibold text-brand-ink">{plan.name}</h2>
-                      <p className="mt-4 text-sm leading-relaxed text-brand-muted">{plan.text}</p>
-                    </div>
+                {PRODUCT_PLANS.map((plan) => {
+                  const isCustomPlan = plan.id === 'automacao';
+                  const footerNote = isCustomPlan
+                    ? 'Plano personalizado com escopo alinhado pelo WhatsApp.'
+                    : plan.featured
+                      ? 'Recomendado para clínicas que já precisam de equipe, financeiro e painel da clínica.'
+                      : 'Entrada enxuta para organizar agenda, pacientes e prontuário essencial.';
+                  const capacityItems = [
+                    { label: 'Administrativos', value: plan.admins },
+                    { label: 'Profissionais de saúde', value: plan.practitioners },
+                  ] as const;
 
-                    <div className="pt-6">
-                      <p className="text-5xl font-serif font-semibold text-brand-ink">{plan.price}</p>
-                      <p className="mt-2 text-sm text-brand-muted">/mês</p>
-                    </div>
+                  return (
+                    <article
+                      key={plan.name}
+                      className={`flex h-full flex-col rounded-[24px] border p-8 shadow-sm ${
+                        plan.featured
+                          ? 'border-brand-primary bg-white shadow-[0_24px_60px_rgba(59,130,246,0.10)]'
+                          : 'border-brand-line bg-white'
+                      }`}
+                    >
+                      <div className={`border-b pb-6 ${plan.featured ? 'border-brand-primary/15' : 'border-brand-line'}`}>
+                        <div className="flex flex-wrap items-center gap-3">
+                          <p
+                            className={`rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.22em] ${
+                              plan.featured ? 'bg-brand-primary-soft text-brand-primary' : 'bg-brand-panel text-brand-green'
+                            }`}
+                          >
+                            {plan.badge}
+                          </p>
+                          {plan.featured ? (
+                            <span className="rounded-full border border-brand-primary/20 bg-white px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-brand-primary">
+                              Recomendado
+                            </span>
+                          ) : null}
+                        </div>
+                        <h2 className="mt-4 text-3xl font-serif font-semibold text-brand-ink">{plan.name}</h2>
+                        <p className="mt-4 text-sm leading-relaxed text-brand-muted">{plan.description}</p>
+                      </div>
 
-                    <ul className="mt-8 flex-grow space-y-4">
-                      {plan.features.map((feature) => (
-                        <li key={feature} className="flex items-start gap-3 text-sm leading-relaxed text-brand-muted">
-                          <Check className="mt-0.5 h-4 w-4 shrink-0 text-brand-green" />
-                          <span>{feature}</span>
-                        </li>
-                      ))}
-                    </ul>
+                      <div className="pt-6">
+                        {plan.pricePrefix ? (
+                          <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-brand-green">{plan.pricePrefix}</p>
+                        ) : null}
+                        <p className="mt-2 flex items-end gap-2 text-brand-ink">
+                          <span className="text-5xl font-serif font-semibold">{plan.price}</span>
+                          <span className="pb-1 text-sm text-brand-muted">/mês</span>
+                        </p>
+                      </div>
 
-                    <div className="mt-8">
-                      <Button
-                        href={demoWhatsappUrl}
-                        variant={plan.featured ? 'primary' : 'outline'}
+                      <ul className="mt-8 flex-grow space-y-4">
+                        {capacityItems.map((item) => (
+                          <li key={item.label} className="flex items-start gap-3 text-sm leading-relaxed text-brand-muted">
+                            <Check className="mt-0.5 h-4 w-4 shrink-0 text-brand-green" />
+                            <span>
+                              <span className="font-semibold text-brand-ink">{item.label}:</span> {item.value}
+                            </span>
+                          </li>
+                        ))}
+                        {plan.features.map((feature) => (
+                          <li key={feature} className="flex items-start gap-3 text-sm leading-relaxed text-brand-muted">
+                            <Check className="mt-0.5 h-4 w-4 shrink-0 text-brand-green" />
+                            <span>{feature}</span>
+                          </li>
+                        ))}
+                      </ul>
+
+                      <div className="mt-8">
+                        <Button
+                          href={demoWhatsappUrl}
+                          variant={plan.featured ? 'primary' : 'outline'}
                         className="w-full sm:w-full"
                         trackEventName="click_trial"
-                        trackPayload={{ source: `pricing_page_${plan.name.toLowerCase()}` }}
+                        trackPayload={{ source: `pricing_page_${plan.id}` }}
                       >
-                        Solicitar demonstração
-                      </Button>
-                    </div>
-                  </article>
-                ))}
+                          Solicitar demonstração
+                        </Button>
+                        <p className="mt-3 text-xs leading-relaxed text-brand-muted">{footerNote}</p>
+                      </div>
+                    </article>
+                  );
+                })}
               </div>
 
               <div className="mt-12 overflow-x-auto rounded-[24px] border border-brand-line bg-white shadow-sm">
@@ -378,13 +365,12 @@ export default function App() {
                     </tr>
                   </thead>
                   <tbody className="text-brand-ink/80">
-                    {LANDING_PLAN_COMPARISON.map((row) => (
-                      <tr key={row[0]} className="border-b border-brand-line last:border-b-0">
-                        {row.map((cell) => (
-                          <td key={cell} className="px-5 py-4">
-                            {cell}
-                          </td>
-                        ))}
+                    {PLAN_COMPARISON_ROWS.map((row) => (
+                      <tr key={row.label} className="border-b border-brand-line last:border-b-0">
+                        <td className="px-5 py-4 font-medium">{row.label}</td>
+                        <td className="px-5 py-4">{row.solo}</td>
+                        <td className="px-5 py-4">{row.clinica}</td>
+                        <td className="px-5 py-4">{row.automacao}</td>
                       </tr>
                     ))}
                   </tbody>

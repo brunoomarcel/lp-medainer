@@ -10,14 +10,13 @@ import {
   UserCheck,
 } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
-import clinicTeamImage from '../assets/images/clinic-team.png';
 import dashboardGeralImage from '../assets/images/dash-geral.png';
 import agendaImage from '../assets/images/agenda.jpg';
 import pacientesImage from '../assets/images/pacientes.jpg';
 import prontuarioImage from '../assets/images/prontuario.jpg';
-import financeiroImage from '../assets/images/financeiro.jpg';
 import { buildTrackedUrl } from '../analytics';
 import { LandingFooter, LandingHeader } from '../components/LandingChrome';
+import { PRODUCT_PLANS } from '../constants/plans';
 
 declare global {
   interface Window {
@@ -76,67 +75,41 @@ const FLOW_STEPS = [
   },
 ] as const;
 
-const PLAN_CARDS = [
-  {
-    name: 'Medainer Solo',
-    price: 'R$ 99/mês',
-    subtitle: 'Plano de entrada',
-    text: 'Para sair do papel, organizar a base da clínica e continuar depois do trial sem pesar no caixa.',
-    features: [
-      'Até 1 profissional e até 2 usuários',
-      'Agenda da clínica e dos profissionais',
-      'Pacientes e prontuário básico',
-      'Confirmação e remarcação por link',
-      'Dashboard simples',
-      'Onboarding self-service e suporte por chat ou e-mail',
-    ],
-    cta: 'Começar 7 dias grátis',
-    href: 'register',
-    featured: false,
-  },
-  {
-    name: 'Medainer Clínica',
-    price: 'R$ 297/mês',
-    subtitle: 'Próximo passo',
-    text: 'Para clínicas que já precisam de recepção, equipe, agenda, pacientes e financeiro funcionando no mesmo fluxo.',
-    features: [
-      'Tudo do Medainer Solo',
-      'Financeiro básico',
-      'Equipe e permissões',
-      'Dashboard Saúde da Clínica',
-      'Alertas operacionais e pacientes sem retorno',
-      'Onboarding ao vivo e suporte em horário comercial',
-    ],
-    cta: 'Começar 7 dias grátis',
-    href: 'register',
-    featured: true,
-  },
-  {
-    name: 'Medainer Automação',
-    price: 'R$ 497/mês',
-    subtitle: 'Upgrade natural',
-    text: 'Para clínicas em que o WhatsApp já virou gargalo e o time precisa reduzir trabalho manual, no-show e remarcações.',
-    features: [
-      'Tudo do Medainer Clínica',
-      'Agente no WhatsApp',
-      'Confirmação, remarcação e lembretes automáticos',
-      'Reativação de pacientes e fila de encaixe',
-      'Suporte prioritário',
-    ],
-    cta: 'Começar 7 dias grátis',
-    href: 'register',
-    featured: false,
-  },
-] as const;
+const PLAN_CARDS = PRODUCT_PLANS.map((plan) => {
+  if (plan.id === 'solo') {
+    return {
+      ...plan,
+      cta: 'Solicitar demonstração',
+      href: 'whatsapp' as const,
+      helperText: 'Você ativa o trial no Solo e continua depois só se fizer sentido.',
+    };
+  }
+
+  if (plan.id === 'clinica') {
+    return {
+      ...plan,
+      cta: 'Solicitar demonstração',
+      href: 'whatsapp' as const,
+      helperText: 'Plano principal para quando a clínica já precisa de equipe, financeiro e painel da clínica.',
+    };
+  }
+
+  return {
+    ...plan,
+    cta: 'Solicitar demonstração',
+    href: 'whatsapp' as const,
+    helperText: 'Plano personalizado com escopo inicial alinhado com o time comercial.',
+  };
+});
 
 const FAQ_ITEMS = [
   {
     q: 'O que eu ativo hoje nesta página?',
-    a: 'Você ativa os 7 dias grátis do Medainer Solo. O objetivo desta página é colocar a sua clínica para testar a rotina real sem cartão e sem depender de demo.',
+    a: 'Você ativa os 7 dias grátis do Medainer Solo. Medainer Clínica e Medainer Automação entram com apoio do time comercial, conforme o momento da operação.',
   },
   {
     q: 'O que minha clínica testa nesse período?',
-    a: 'Agenda, pacientes, prontuário básico, confirmações por link e dashboard simples. A ideia é sentir se a clínica sai do improviso no dia a dia, não apenas assistir a uma apresentação.',
+    a: 'Agenda, pacientes, prontuário essencial, confirmações por link e visão operacional básica. A ideia é sentir se a clínica sai do improviso no dia a dia, não apenas assistir a uma apresentação.',
   },
   {
     q: 'O financeiro faz parte da avaliação?',
@@ -144,7 +117,7 @@ const FAQ_ITEMS = [
   },
   {
     q: 'Quanto custa continuar depois da avaliação?',
-    a: 'Medainer Solo custa R$ 99/mês. Se a clínica precisar de financeiro, equipe e mais visão operacional, o Medainer Clínica custa R$ 297/mês. O Medainer Automação custa R$ 497/mês.',
+    a: 'Medainer Solo custa R$ 99/mês. Se a clínica precisar de financeiro, equipe e mais visão operacional, o Medainer Clínica custa R$ 297/mês. O Medainer Automação é personalizado e parte de R$ 497/mês.',
   },
   {
     q: 'Quando vale subir para Clínica ou Automação?',
@@ -398,13 +371,20 @@ export function TrialPage() {
         <div className="mx-auto w-full max-w-[1240px] px-4 sm:px-6">
           <SectionHeading
             subtitle="Depois do trial"
-            title="Escolha o plano para testar grátis"
+            title="Veja o plano que acompanha a próxima fase da clínica"
           />
+          <p className="mx-auto mt-5 max-w-2xl text-center text-sm leading-relaxed text-brand-muted">
+            O trial ativa o Medainer Solo. Medainer Clínica e Medainer Automação são apresentados pelo comercial conforme o porte da operação.
+          </p>
 
           <div className="mx-auto mt-12 grid max-w-6xl gap-6 lg:grid-cols-[0.95fr_1.1fr_0.95fr]">
             {PLAN_CARDS.map((plan) => {
-              const href = plan.href === 'register' ? appRegisterUrl : WHATSAPP_URL;
-              const trackEventName = plan.href === 'register' ? 'click_checkout' : 'click_whatsapp';
+              const href = WHATSAPP_URL;
+              const trackEventName = 'click_whatsapp';
+              const capacityItems = [
+                { label: 'Administrativos da clínica', value: plan.admins },
+                { label: 'Profissionais de saúde ativos', value: plan.practitioners },
+              ] as const;
 
               return (
                 <motion.article
@@ -419,29 +399,44 @@ export function TrialPage() {
                   }`}
                 >
                   <div className={`mb-8 border-b pb-6 ${plan.featured ? 'border-brand-primary/15' : 'border-brand-line'}`}>
-                    <p
-                      className={`text-[11px] font-semibold uppercase tracking-[0.22em] ${
-                        plan.featured ? 'text-brand-primary' : 'text-brand-green'
-                      }`}
-                    >
-                      {plan.subtitle}
-                    </p>
+                    <div className="flex flex-wrap items-center gap-3">
+                      <p
+                        className={`rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.22em] ${
+                          plan.featured ? 'bg-brand-primary-soft text-brand-primary' : 'bg-brand-panel text-brand-green'
+                        }`}
+                      >
+                        {plan.badge}
+                      </p>
+                      {plan.featured ? (
+                        <span className="rounded-full border border-brand-primary/20 bg-white px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-brand-primary">
+                          Recomendado
+                        </span>
+                      ) : null}
+                    </div>
                     <h3 className="mt-4 font-serif text-2xl font-semibold text-brand-ink">{plan.name}</h3>
-                    <p className="mt-3 text-sm leading-relaxed text-brand-muted">{plan.text}</p>
+                    <p className="mt-3 text-sm leading-relaxed text-brand-muted">{plan.description}</p>
                   </div>
 
                   <div className="mb-8 pt-1">
-                    <span className="font-serif text-4xl font-semibold text-brand-ink">{plan.price}</span>
-                    <p className="mt-3 text-sm text-brand-muted">
-                      {plan.featured
-                        ? 'Faz sentido quando o trial mostrar que a clínica já precisa de mais estrutura.'
-                        : plan.name === 'Medainer Solo'
-                          ? 'Você começa com 7 dias grátis e continua só se fizer sentido.'
-                          : 'Entra quando a base já estiver organizada e o gargalo for o WhatsApp.'}
-                    </p>
+                    {plan.pricePrefix ? (
+                      <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-brand-green">{plan.pricePrefix}</p>
+                    ) : null}
+                    <div className="mt-2 flex items-end gap-2">
+                      <span className="font-serif text-4xl font-semibold text-brand-ink">{plan.price}</span>
+                      <span className="pb-1 text-sm text-brand-muted">/mês</span>
+                    </div>
+                    <p className="mt-3 text-sm text-brand-muted">{plan.helperText}</p>
                   </div>
 
                   <ul className="mb-10 flex-grow space-y-4">
+                    {capacityItems.map((item) => (
+                      <li key={item.label} className="flex items-start gap-3 text-sm leading-relaxed text-brand-muted">
+                        <Check className={`mt-0.5 h-5 w-5 shrink-0 ${plan.featured ? 'text-brand-primary' : 'text-brand-green'}`} />
+                        <span>
+                          <span className="font-semibold text-brand-ink">{item.label}:</span> {item.value}
+                        </span>
+                      </li>
+                    ))}
                     {plan.features.map((item) => (
                       <li key={item} className="flex items-start gap-3 text-sm leading-relaxed text-brand-muted">
                         <Check className={`mt-0.5 h-5 w-5 shrink-0 ${plan.featured ? 'text-brand-primary' : 'text-brand-green'}`} />
@@ -456,18 +451,9 @@ export function TrialPage() {
                       href={href}
                       className="w-full"
                       trackEventName={trackEventName}
-                      trackPayload={{ source: `plan_${plan.name.toLowerCase()}` }}
+                      trackPayload={{ source: `plan_${plan.id}` }}
                     >
                       {plan.cta}
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      href={WHATSAPP_URL}
-                      className="w-full text-xs"
-                      trackEventName="click_whatsapp"
-                      trackPayload={{ source: `plan_support_${plan.name.toLowerCase()}` }}
-                    >
-                      ou falar com um consultor
                     </Button>
                   </div>
                 </motion.article>
