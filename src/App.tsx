@@ -16,7 +16,7 @@ import {
   Users
 } from 'lucide-react';
 import { motion } from 'motion/react';
-import dashMainImage from './assets/images/dash-main.jpg';
+import dashMainImage from './assets/images/dash-main.png';
 import agendaImage from './assets/images/agenda.jpg';
 import pacientesImage from './assets/images/pacientes.jpg';
 import prontuarioImage from './assets/images/prontuario.jpg';
@@ -384,7 +384,7 @@ export default function App() {
           <div className="ambient-orb absolute left-0 top-0 h-64 w-64 rounded-full bg-brand-primary-soft blur-3xl" />
           <div className="ambient-orb-delayed absolute bottom-8 right-0 h-56 w-56 rounded-full bg-brand-green-soft blur-3xl" />
 
-          <div className="mx-auto grid w-full max-w-[1240px] gap-14 px-4 pb-16 sm:px-6 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:items-center lg:pb-24">
+          <div className="mx-auto grid w-full max-w-[1240px] gap-14 px-4 pb-16 sm:px-6 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:items-stretch lg:pb-24">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -436,7 +436,7 @@ export default function App() {
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.1 }}
-              className="relative"
+              className="relative aspect-[16/11] sm:aspect-[16/10] lg:h-full lg:min-h-[540px] lg:aspect-auto"
             >
               {/* Hero antigo com video mantido aqui para referencia futura. */}
               {/*
@@ -494,12 +494,14 @@ export default function App() {
                 </div>
               </div>
               */}
-              <img
-                src={dashMainImage}
-                alt="Painel principal do Medainer"
-                className="block h-auto w-full rounded-[24px]"
-                loading="eager"
-              />
+              <div className="h-full overflow-hidden rounded-[24px]">
+                <img
+                  src={dashMainImage}
+                  alt="Painel principal do Medainer"
+                  className="block h-full w-full object-cover object-center"
+                  loading="eager"
+                />
+              </div>
             </motion.div>
           </div>
 

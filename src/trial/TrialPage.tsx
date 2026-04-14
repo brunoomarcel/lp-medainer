@@ -259,52 +259,70 @@ export function TrialPage() {
       <LandingHeader isScrolled={isScrolled} trackEvent={trackEvent} />
 
       <section className="relative overflow-hidden bg-[linear-gradient(180deg,#f8fbff_0%,#ffffff_100%)] pt-28 sm:pt-32 lg:pt-36">
-        <div className="absolute left-0 top-0 h-64 w-64 rounded-full bg-brand-primary-soft blur-3xl" />
-        <div className="absolute bottom-8 right-0 h-56 w-56 rounded-full bg-brand-green-soft blur-3xl" />
+        <div className="ambient-orb absolute -left-12 top-6 h-64 w-64 rounded-full bg-brand-primary-soft/80 blur-3xl" />
+        <div className="ambient-orb-delayed absolute bottom-[-80px] right-[-20px] h-72 w-72 rounded-full bg-lime-300/50 blur-3xl" />
+        <div className="absolute right-0 top-24 hidden h-[520px] w-[46vw] min-w-[540px] rounded-l-[44px] bg-[linear-gradient(180deg,rgba(255,255,255,0.98)_0%,rgba(214,255,105,0.22)_100%)] lg:block" />
 
-        <div className="mx-auto grid w-full max-w-[1240px] gap-14 px-4 pb-16 sm:px-6 lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] lg:items-center lg:pb-24">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="relative z-10 max-w-xl">
-              <h1 className="text-balance font-serif text-4xl font-semibold leading-[1.02] text-brand-ink sm:text-5xl lg:text-6xl">
-                Teste o Medainer por 7 dias e pare de tocar a clínica no improviso.
-              </h1>
+        <div className="mx-auto grid w-full max-w-[1240px] gap-12 px-4 pb-16 sm:px-6 lg:grid-cols-[minmax(0,0.78fr)_minmax(0,1.22fr)] lg:items-center lg:gap-10 lg:pb-24">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="relative z-10 max-w-xl"
+          >
+            <div className="inline-flex items-center gap-2 rounded-full border border-brand-line bg-white/90 px-4 py-2 text-sm font-medium text-brand-muted shadow-sm backdrop-blur-sm">
+              <span className="h-2.5 w-2.5 rounded-full bg-brand-green" />
+              Teste com a rotina real da clínica
+            </div>
+            <h1 className="mt-6 text-balance font-serif text-4xl font-semibold leading-[1.02] text-brand-ink sm:text-5xl lg:text-6xl">
+              Teste o Medainer por 7 dias e pare de tocar a clínica no improviso.
+            </h1>
 
-              <p className="mt-6 max-w-xl text-base leading-relaxed text-brand-muted sm:text-lg">
-                Organize agenda, pacientes e prontuário em um só lugar para reduzir recado solto, informação perdida e correria no dia a dia.
-              </p>
+            <p className="mt-6 max-w-xl text-base leading-relaxed text-brand-muted sm:text-lg">
+              Organize agenda, pacientes e prontuário em um só lugar para reduzir recado solto, informação perdida e correria no dia a dia.
+            </p>
 
-              <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center">
-                <Button
-                  variant="primary"
-                  href={appRegisterUrl}
-                  className="px-8 py-4 text-base"
-                  trackEventName="click_checkout"
-                  trackPayload={{ source: 'hero_primary', plan: 'medainer solo' }}
-                >
-                  Começar 7 dias grátis
-                </Button>
-              </div>
+            <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center">
+              <Button
+                variant="primary"
+                href={appRegisterUrl}
+                className="px-8 py-4 text-base"
+                trackEventName="click_checkout"
+                trackPayload={{ source: 'hero_primary', plan: 'medainer solo' }}
+              >
+                Começar 7 dias grátis
+              </Button>
+            </div>
 
-              <div className="mt-8 grid gap-3 sm:grid-cols-3">
-                {HERO_HIGHLIGHTS.map((item) => (
-                  <div key={item.text} className="flex items-center gap-3 rounded-xl border border-brand-line bg-white/90 px-4 py-4 text-sm text-brand-muted shadow-sm">
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-brand-primary-soft text-brand-primary">
-                      <item.icon className="h-4 w-4" />
-                    </div>
-                    <span>{item.text}</span>
+            <div className="mt-8 grid gap-3 sm:grid-cols-3">
+              {HERO_HIGHLIGHTS.map((item) => (
+                <div key={item.text} className="flex items-center gap-3 rounded-xl border border-brand-line bg-white/90 px-4 py-4 text-sm text-brand-muted shadow-sm">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-brand-primary-soft text-brand-primary">
+                    <item.icon className="h-4 w-4" />
                   </div>
-                ))}
-              </div>
+                  <span>{item.text}</span>
+                </div>
+              ))}
+            </div>
           </motion.div>
 
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.1 }}
-            className="relative mx-auto w-full max-w-xl lg:max-w-none"
+            className="relative mx-auto aspect-[4/3] w-full max-w-xl sm:aspect-[16/11] lg:mr-[-2rem] lg:min-h-[560px] lg:max-w-none lg:aspect-auto xl:mr-[-4rem] xl:min-h-[620px]"
           >
-            <div className="rounded-[24px] border border-brand-line bg-white p-3 shadow-[0_32px_80px_rgba(59,130,246,0.10)] sm:p-4">
-              <div className="overflow-hidden rounded-[18px] border border-brand-line bg-brand-panel">
-                <img src={dashboardGeralImage} alt="Dashboard do Medainer" className="aspect-[16/10] w-full object-cover object-top" />
+            <div className="absolute inset-x-[14%] bottom-[-28px] h-32 rounded-full bg-[radial-gradient(circle,rgba(190,255,84,0.65)_0%,rgba(190,255,84,0)_72%)] blur-3xl" />
+            <div className="relative isolate h-full overflow-hidden rounded-[32px] border border-white/70 bg-white/80 shadow-[0_40px_120px_rgba(59,130,246,0.16)] backdrop-blur-sm">
+              <div className="absolute inset-x-0 top-0 z-10 h-24 bg-[linear-gradient(180deg,rgba(255,255,255,0.72)_0%,rgba(255,255,255,0)_100%)]" />
+              <div className="absolute inset-y-0 right-0 hidden w-24 bg-[linear-gradient(270deg,rgba(209,255,103,0.30)_0%,rgba(209,255,103,0)_100%)] lg:block" />
+              <div className="h-full overflow-hidden rounded-[32px]">
+                <img
+                  src={dashboardGeralImage}
+                  alt="Dashboard do Medainer"
+                  className="h-full w-full object-cover object-center lg:scale-[1.08]"
+                  loading="eager"
+                />
               </div>
             </div>
           </motion.div>
