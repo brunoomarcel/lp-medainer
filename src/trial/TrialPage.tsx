@@ -260,15 +260,15 @@ export function TrialPage() {
 
       <section className="relative overflow-hidden bg-[linear-gradient(180deg,#f8fbff_0%,#ffffff_100%)] pt-28 sm:pt-32 lg:pt-36">
         <div className="ambient-orb absolute -left-12 top-6 h-64 w-64 rounded-full bg-brand-primary-soft/80 blur-3xl" />
-        <div className="ambient-orb-delayed absolute bottom-[-80px] right-[-20px] h-72 w-72 rounded-full bg-lime-300/50 blur-3xl" />
-        <div className="absolute right-0 top-24 hidden h-[520px] w-[46vw] min-w-[540px] rounded-l-[44px] bg-[linear-gradient(180deg,rgba(255,255,255,0.98)_0%,rgba(214,255,105,0.22)_100%)] lg:block" />
+        <div className="ambient-orb-delayed absolute bottom-[-80px] right-[-20px] h-72 w-72 rounded-full bg-[rgba(219,234,254,0.72)] blur-3xl" />
+        <div className="absolute right-0 top-20 hidden h-[430px] w-[42vw] min-w-[500px] rounded-l-[40px] bg-[linear-gradient(180deg,rgba(255,255,255,0.98)_0%,rgba(219,234,254,0.42)_100%)] opacity-80 lg:block" />
 
-        <div className="mx-auto grid w-full max-w-[1240px] gap-12 px-4 pb-16 sm:px-6 lg:grid-cols-[minmax(0,0.78fr)_minmax(0,1.22fr)] lg:items-center lg:gap-10 lg:pb-24">
+        <div className="mx-auto grid w-full max-w-[1240px] gap-14 px-4 pb-16 sm:px-6 lg:grid-cols-[minmax(0,0.88fr)_minmax(0,1.12fr)] lg:items-stretch lg:gap-12 lg:pb-24">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="relative z-10 max-w-xl"
+            className="relative z-10 max-w-[34rem] self-center"
           >
             <div className="inline-flex items-center gap-2 rounded-full border border-brand-line bg-white/90 px-4 py-2 text-sm font-medium text-brand-muted shadow-sm backdrop-blur-sm">
               <span className="h-2.5 w-2.5 rounded-full bg-brand-green" />
@@ -294,28 +294,28 @@ export function TrialPage() {
               </Button>
             </div>
 
-            <div className="mt-8 grid gap-3 sm:grid-cols-3">
+            <ul className="mt-8 space-y-3">
               {HERO_HIGHLIGHTS.map((item) => (
-                <div key={item.text} className="flex items-center gap-3 rounded-xl border border-brand-line bg-white/90 px-4 py-4 text-sm text-brand-muted shadow-sm">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-brand-primary-soft text-brand-primary">
+                <li key={item.text} className="flex items-center gap-3 text-[15px] leading-snug text-brand-muted sm:text-base">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-brand-primary-soft text-brand-primary">
                     <item.icon className="h-4 w-4" />
                   </div>
                   <span>{item.text}</span>
-                </div>
+                </li>
               ))}
-            </div>
+            </ul>
           </motion.div>
 
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.1 }}
-            className="relative mx-auto aspect-[4/3] w-full max-w-xl sm:aspect-[16/11] lg:mr-[-2rem] lg:min-h-[560px] lg:max-w-none lg:aspect-auto xl:mr-[-4rem] xl:min-h-[620px]"
+            className="relative mx-auto aspect-[4/3] w-full max-w-xl sm:aspect-[16/11] lg:mr-[-1.5rem] lg:h-[500px] lg:max-w-none lg:self-center lg:aspect-auto xl:mr-[-3rem] xl:h-[560px]"
           >
-            <div className="absolute inset-x-[14%] bottom-[-28px] h-32 rounded-full bg-[radial-gradient(circle,rgba(190,255,84,0.65)_0%,rgba(190,255,84,0)_72%)] blur-3xl" />
+            <div className="absolute inset-x-[18%] bottom-[-18px] h-24 rounded-full bg-[radial-gradient(circle,rgba(96,165,250,0.22)_0%,rgba(96,165,250,0)_72%)] blur-3xl" />
             <div className="relative isolate h-full overflow-hidden rounded-[32px] border border-white/70 bg-white/80 shadow-[0_40px_120px_rgba(59,130,246,0.16)] backdrop-blur-sm">
               <div className="absolute inset-x-0 top-0 z-10 h-24 bg-[linear-gradient(180deg,rgba(255,255,255,0.72)_0%,rgba(255,255,255,0)_100%)]" />
-              <div className="absolute inset-y-0 right-0 hidden w-24 bg-[linear-gradient(270deg,rgba(209,255,103,0.30)_0%,rgba(209,255,103,0)_100%)] lg:block" />
+              <div className="absolute inset-y-0 right-0 hidden w-24 bg-[linear-gradient(270deg,rgba(219,234,254,0.55)_0%,rgba(219,234,254,0)_100%)] lg:block" />
               <div className="h-full overflow-hidden rounded-[32px]">
                 <img
                   src={dashboardGeralImage}
