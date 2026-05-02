@@ -151,6 +151,29 @@ jobs:
       - name: Build project
         run: npm run build
 
+      - name: Diagnose FTP connectivity
+        env:
+          FTP_HOST: ${{ steps.target.outputs.host }}
+          FTP_PORT: ${{ steps.target.outputs.port }}
+          FTP_PROTOCOL: ${{ steps.target.outputs.protocol }}
+        run: |
+          set -euo pipefail
+
+          echo "Checking target host=$FTP_HOST port=$FTP_PORT protocol=$FTP_PROTOCOL"
+          echo "IPv4 addresses:"
+          getent ahostsv4 "$FTP_HOST" || true
+          echo "IPv6 addresses:"
+          getent ahostsv6 "$FTP_HOST" || true
+
+          echo "Testing TCP connectivity..."
+          if timeout 15 bash -c "cat < /dev/null > /dev/tcp/$FTP_HOST/$FTP_PORT"; then
+            echo "TCP connection to $FTP_HOST:$FTP_PORT succeeded."
+          else
+            echo "Could not open TCP connection to $FTP_HOST:$FTP_PORT from the GitHub runner."
+            echo "This usually means the host/port is unreachable, blocked by firewall, or the service is not listening on that protocol."
+            exit 1
+          fi
+
       - name: Deploy via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.6
         with:
