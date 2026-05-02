@@ -15,18 +15,18 @@ export function ThankYouPage() {
 
           <div className="mt-8 flex flex-wrap items-center justify-center gap-3 sm:gap-4">
             <CheckCircle2 className="h-7 w-7 text-[#16a34a] sm:h-8 sm:w-8" />
-            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-brand-primary sm:text-sm sm:tracking-[0.2em]">Cadastro enviado</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-brand-primary sm:text-sm sm:tracking-[0.2em]">Formulário enviado</p>
           </div>
 
           <h1 className="mx-auto mt-4 max-w-[20ch] text-3xl font-semibold leading-[1.04] tracking-[-0.05em] sm:text-5xl">
-            Obrigado pelo seu interesse no Medainer.
+            Obrigado!
           </h1>
           <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-brand-muted sm:mt-6 sm:text-lg">
-            Recebemos seus dados. Nosso time entrará em contato em breve para continuar o contato com mais contexto e agilidade.
+            Recebemos seus dados. Nosso time entrará em contato em algumas horas para continuar o contato.
           </p>
 
           <p className="mt-6 text-sm text-brand-muted">
-            Se quiser voltar ao site, use este link:
+            Voltar ao site:
             {' '}
             <a href="/" className="font-semibold text-brand-primary hover:text-brand-primary-strong">
               medainer.com.br
