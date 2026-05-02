@@ -36,6 +36,7 @@ const WHATSAPP_MESSAGE = 'Oi! Quero conhecer o plano Automação do Medainer.';
 const WHATSAPP_URL = `https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`;
 const APP_REGISTER_URL =
   (import.meta.env.VITE_APP_REGISTER_URL as string | undefined)?.trim() || 'https://app.medainer.com.br/register';
+const PRIMARY_CTA_LABEL = 'Quero organizar minha clínica';
 
 const HERO_PILLARS = [
   {
@@ -383,7 +384,7 @@ function Button({
 
 function HeroSection() {
   return (
-    <section className="relative overflow-hidden pt-28 sm:pt-32 lg:pt-36">
+    <section className="relative overflow-hidden pt-22 sm:pt-28 lg:pt-36">
       <div className="hero-glow hero-glow-top" />
       <div className="hero-glow hero-glow-bottom" />
 
@@ -399,7 +400,7 @@ function HeroSection() {
             Plataforma de operação clínica
           </div>
 
-          <h1 className="mt-8 text-[2.75rem] font-semibold leading-[1.04] tracking-[-0.06em] text-brand-ink sm:mt-10 sm:text-6xl sm:leading-[1] lg:text-8xl lg:leading-[0.98]">
+          <h1 className="mt-8 text-[2.25rem] font-semibold leading-[1.04] tracking-[-0.06em] text-brand-ink sm:mt-10 sm:text-6xl sm:leading-[1] lg:text-8xl lg:leading-[0.98]">
             Controle total da sua 
             <span className="block pb-[0.26em] bg-[linear-gradient(135deg,#4150dd_0%,#6783ff_100%)] bg-clip-text text-transparent">
               clínica odontológica.
@@ -409,15 +410,38 @@ function HeroSection() {
           <p className="mx-auto mt-6 max-w-3xl text-lg leading-relaxed text-brand-muted sm:mt-8 sm:text-[1.45rem]">
             Agenda, pacientes, prontuário odontológico, financeiro e confirmações automáticas no WhatsApp.
           </p>
+        </motion.div>
 
-          <div className="mt-8 flex w-full flex-col items-stretch justify-center gap-4 sm:mt-10 sm:flex-row sm:items-center">
+        <motion.div
+          initial={{ opacity: 0, y: 28 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.15 }}
+          className="relative mt-10 w-full max-w-5xl sm:mt-14"
+        >
+          <div className="hero-dashboard-shell">
+            <img
+              src={dashMainImage}
+              alt="Painel do Medainer com agenda, pacientes e indicadores da clínica"
+              className="hero-dashboard-image"
+              loading="eager"
+            />
+          </div>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.65, delay: 0.22 }}
+          className="mt-8 flex w-full max-w-4xl flex-col items-stretch justify-center gap-4 text-center sm:mt-10 sm:items-center"
+        >
+          <div className="flex w-full flex-col items-stretch justify-center gap-4 sm:flex-row sm:items-center">
             <Button
               href={getRegisterUrl()}
-              className="w-full max-w-full px-8 py-4 text-base sm:min-w-[256px] sm:w-auto"
+              className="w-full max-w-full px-8 py-4 text-base sm:min-w-[256px] sm:w-auto mb-10"
               trackEventName="click_trial"
               trackPayload={{ source: 'hero_primary' }}
             >
-              Começar 7 dias grátis
+              {PRIMARY_CTA_LABEL}
               <ArrowRight className="h-4 w-4" />
             </Button>
             {/* <Button
@@ -431,23 +455,6 @@ function HeroSection() {
             </Button> */}
           </div>
 
-          <p className="mt-6 text-sm text-brand-muted sm:mt-8">Sem cartão de crédito · Cancele quando quiser</p>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 28 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.15 }}
-          className="relative mt-18 w-full max-w-5xl"
-        >
-          <div className="hero-dashboard-shell">
-            <img
-              src={dashMainImage}
-              alt="Painel do Medainer com agenda, pacientes e indicadores da clínica"
-              className="hero-dashboard-image"
-              loading="eager"
-            />
-          </div>
         </motion.div>
       </div>
     </section>
@@ -569,7 +576,7 @@ function BeforeAfterSection() {
           trackEventName="click_trial"
           trackPayload={{ source: 'before_after_cta' }}
         >
-          Quero testar o Medainer
+          {PRIMARY_CTA_LABEL}
           <ArrowRight className="h-4 w-4" />
         </Button>
       </Reveal>
@@ -899,7 +906,7 @@ function PricingSection() {
 
       <div className="mt-12 grid gap-6 xl:mt-16 xl:grid-cols-3">
         {PRODUCT_PLANS.map((plan) => {
-          const buttonLabel = plan.id === 'automacao' ? 'Falar com vendas' : plan.featured ? 'Escolher Clínica' : 'Começar grátis';
+          const buttonLabel = PRIMARY_CTA_LABEL;
           const buttonHref = plan.id === 'automacao' ? trackedWhatsappUrl : getRegisterUrl();
           const buttonVariant = plan.featured ? 'primary' : 'secondary';
 
@@ -943,7 +950,7 @@ function FinalCtaSection() {
             trackEventName="click_trial"
             trackPayload={{ source: 'final_cta_primary' }}
           >
-            Começar agora
+            {PRIMARY_CTA_LABEL}
             <ArrowRight className="h-4 w-4" />
           </Button>
           {/* <Button
@@ -979,7 +986,7 @@ function PricingPage() {
             <PlanCard
               key={plan.id}
               plan={plan}
-              buttonLabel={plan.id === 'automacao' ? 'Falar com vendas' : 'Começar teste grátis'}
+              buttonLabel={PRIMARY_CTA_LABEL}
               buttonHref={plan.id === 'automacao' ? trackedWhatsappUrl : getRegisterUrl()}
               buttonVariant={plan.featured ? 'primary' : 'secondary'}
             />

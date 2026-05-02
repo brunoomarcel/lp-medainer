@@ -129,6 +129,7 @@
   overflow: hidden;
   border: 0;
   border-radius: 2rem;
+  aspect-ratio: 16 / 9;
   background: transparent;
   box-shadow: none;
   padding: 0;
@@ -145,10 +146,14 @@
 }
 
 .hero-dashboard-image {
-  position: relative;
+  position: absolute;
+  inset: 0;
   display: block;
   width: 100%;
-  border-radius: 1.4rem;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  border-radius: inherit;
   box-shadow: 0 24px 60px rgba(16, 29, 77, 0.1);
 }
 

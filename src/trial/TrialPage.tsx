@@ -33,6 +33,7 @@ function buildWhatsAppUrl(message: string) {
 const WHATSAPP_URL = buildWhatsAppUrl('Olá, quero tirar uma dúvida antes de ativar os 7 dias grátis do Medainer');
 const APP_REGISTER_URL =
   (import.meta.env.VITE_APP_REGISTER_URL as string | undefined)?.trim() || 'https://app.medainer.com.br/register';
+const PRIMARY_CTA_LABEL = 'Quero organizar minha clínica';
 
 const HERO_HIGHLIGHTS = [
   { icon: Calendar, text: '7 dias grátis e sem cartão de crédito' },
@@ -317,7 +318,7 @@ function TrialPageContent() {
                 trackEventName="click_checkout"
                 trackPayload={{ source: 'hero_primary', plan: 'medainer solo' }}
               >
-                Começar 7 dias grátis
+                {PRIMARY_CTA_LABEL}
               </Button>
             </div>
 
@@ -623,7 +624,7 @@ function TrialPageContent() {
                 trackEventName="click_checkout"
                 trackPayload={{ source: 'final_cta', plan: 'medainer solo' }}
               >
-                Começar 7 dias grátis
+                {PRIMARY_CTA_LABEL}
               </Button>
               <Button
                 variant="outline"
@@ -632,8 +633,7 @@ function TrialPageContent() {
                 trackEventName="click_whatsapp"
                 trackPayload={{ source: 'final_cta' }}
               >
-                <MessageCircle className="mr-2 h-5 w-5" />
-                Tirar dúvida antes de testar
+                {PRIMARY_CTA_LABEL}
               </Button>
             </div>
           </div>

@@ -13,6 +13,7 @@ const NAV_ITEMS = [
   { href: '/#automacao', label: 'WhatsApp + IA' },
   { href: PRICING_PATH, label: 'Planos' },
 ] as const;
+const PRIMARY_CTA_LABEL = 'Quero organizar minha clínica';
 
 type TrackEventFn = (eventName: string, payload?: Record<string, unknown>) => void;
 
@@ -125,10 +126,10 @@ export function LandingHeader({
             className="inline-flex items-center justify-center rounded-full bg-[linear-gradient(135deg,#4457f3_0%,#6273ff_100%)] px-5 py-3 text-base font-semibold text-white shadow-[0_16px_36px_rgba(68,87,243,0.22)] transition-all duration-300 hover:-translate-y-0.5"
             onClick={() => {
               trackEvent('click_trial', { source: 'header' });
-              openLeadForm({ source: 'header', ctaLabel: 'Criar conta', targetHref: '/' });
+              openLeadForm({ source: 'header', ctaLabel: PRIMARY_CTA_LABEL, targetHref: '/' });
             }}
           >
-            Criar conta
+            {PRIMARY_CTA_LABEL}
           </button>
           {/* <a
             href={loginUrl}
@@ -181,11 +182,11 @@ export function LandingHeader({
                   className="mt-2 inline-flex w-full items-center justify-center rounded-full bg-[linear-gradient(135deg,#4457f3_0%,#6273ff_100%)] px-5 py-3.5 text-base font-semibold text-white"
                   onClick={() => {
                     trackEvent('click_trial', { source: 'header_mobile' });
-                    openLeadForm({ source: 'header_mobile', ctaLabel: 'Criar conta', targetHref: '/' });
+                    openLeadForm({ source: 'header_mobile', ctaLabel: PRIMARY_CTA_LABEL, targetHref: '/' });
                     setIsMobileMenuOpen(false);
                   }}
                 >
-                  Criar conta
+                  {PRIMARY_CTA_LABEL}
                 </button>
                 {/* <a
                   href={loginUrl}
