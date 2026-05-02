@@ -454,12 +454,20 @@ function LeadFormModal({
                       {errorMessage ? <p className="mt-4 text-sm font-medium text-[#dc2626]">{errorMessage}</p> : null}
                     </div>
 
-                    <div className="mt-8 flex flex-col gap-3 sm:mt-10 sm:flex-row sm:items-center sm:justify-between">
+                    <div
+                      className={`mt-8 sm:mt-10 ${
+                        step.kind === 'input'
+                          ? 'grid grid-cols-2 gap-3 sm:flex sm:flex-row sm:items-center sm:justify-between'
+                          : 'flex flex-col items-center justify-center gap-3 text-center'
+                      }`}
+                    >
                       <button
                         type="button"
                         onClick={onBack}
                         disabled={stepIndex === 0 || isSubmitting}
                         className={`inline-flex items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-semibold transition-colors ${
+                          step.kind === 'input' ? 'w-full sm:w-auto' : 'w-auto'
+                        } ${
                           stepIndex === 0 || isSubmitting
                             ? 'cursor-not-allowed text-brand-muted/45'
                             : 'text-brand-muted hover:text-brand-ink'
@@ -484,7 +492,7 @@ function LeadFormModal({
                           {!isSubmitting ? <ArrowRight className="h-4 w-4" /> : null}
                         </button>
                       ) : (
-                        <div className="text-sm text-brand-muted">
+                        <div className="max-w-[18rem] text-center text-sm text-brand-muted">
                           <span>
                             {isLastStep
                               ? 'Ao escolher, enviamos seus dados e abrimos a página de obrigado.'
