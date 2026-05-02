@@ -231,7 +231,7 @@ const SectionHeading = ({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ delay: 0.1 }}
-      className={`mt-4 font-serif text-3xl font-semibold leading-tight sm:text-4xl lg:text-5xl ${
+      className={`mt-4 font-serif text-[1.85rem] font-semibold leading-tight sm:text-4xl lg:text-5xl ${
         dark ? 'text-white' : 'text-brand-ink'
       }`}
     >
@@ -297,11 +297,11 @@ function TrialPageContent() {
             transition={{ duration: 0.8 }}
             className="relative z-10 max-w-[34rem] self-center"
           >
-            <div className="inline-flex items-center gap-2 rounded-full border border-brand-line bg-white/90 px-4 py-2 text-sm font-medium text-brand-muted shadow-sm backdrop-blur-sm">
+            <div className="inline-flex max-w-full items-center gap-2 rounded-full border border-brand-line bg-white/90 px-3 py-2 text-xs font-medium text-brand-muted shadow-sm backdrop-blur-sm sm:px-4 sm:text-sm">
               <span className="h-2.5 w-2.5 rounded-full bg-brand-green" />
               Teste com a rotina real da clínica
             </div>
-            <h1 className="mt-6 text-balance font-serif text-4xl font-semibold leading-[1.02] text-brand-ink sm:text-5xl lg:text-6xl">
+            <h1 className="mt-6 text-balance font-serif text-3xl font-semibold leading-[1.04] text-brand-ink sm:text-5xl lg:text-6xl">
               Teste o Medainer por 7 dias e pare de tocar a clínica no improviso.
             </h1>
 
@@ -313,7 +313,7 @@ function TrialPageContent() {
               <Button
                 variant="primary"
                 href={appRegisterUrl}
-                className="px-8 py-4 text-base"
+                className="w-full px-8 py-4 text-base sm:w-auto"
                 trackEventName="click_checkout"
                 trackPayload={{ source: 'hero_primary', plan: 'medainer solo' }}
               >
@@ -370,12 +370,12 @@ function TrialPageContent() {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                className="rounded-[20px] border border-brand-line bg-white p-6 shadow-sm"
+                className="interactive-card-bar rounded-[20px] border border-brand-line bg-white p-6 shadow-sm"
               >
                 <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-primary-soft text-brand-primary">
                   <item.icon className="h-6 w-6" />
                 </div>
-                <h3 className="text-2xl font-serif font-semibold text-brand-ink">{item.title}</h3>
+                <h3 className="text-xl font-serif font-semibold text-brand-ink sm:text-2xl">{item.title}</h3>
                 <p className="mt-3 text-sm leading-relaxed text-brand-muted">{item.text}</p>
                 <div className="mt-5 overflow-hidden rounded-[18px] border border-brand-line bg-brand-panel">
                   <img src={item.image} alt={item.title} className="aspect-[4/3] w-full object-cover object-top" />
@@ -401,10 +401,10 @@ function TrialPageContent() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.08 }}
-                className="rounded-[20px] border border-brand-line bg-brand-panel p-7 shadow-sm"
+                className="interactive-card-bar rounded-[20px] border border-brand-line bg-brand-panel p-6 shadow-sm sm:p-7"
               >
                 <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-brand-green">Passo {index + 1}</p>
-                <h3 className="mt-4 font-serif text-2xl font-semibold text-brand-ink">{item.title}</h3>
+                <h3 className="mt-4 font-serif text-xl font-semibold text-brand-ink sm:text-2xl">{item.title}</h3>
                 <p className="mt-3 text-sm leading-relaxed text-brand-muted">{item.text}</p>
               </motion.article>
             ))}
@@ -437,7 +437,7 @@ function TrialPageContent() {
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  className={`flex flex-col rounded-[24px] border p-8 shadow-sm ${
+                  className={`interactive-card-bar flex flex-col rounded-[24px] border p-6 shadow-sm sm:p-8 ${
                     plan.featured
                       ? 'border-brand-primary bg-white shadow-[0_24px_60px_rgba(59,130,246,0.10)]'
                       : 'border-brand-line bg-white'
@@ -458,7 +458,7 @@ function TrialPageContent() {
                         </span>
                       ) : null}
                     </div>
-                    <h3 className="mt-4 font-serif text-2xl font-semibold text-brand-ink">{plan.name}</h3>
+                    <h3 className="mt-4 font-serif text-xl font-semibold text-brand-ink sm:text-2xl">{plan.name}</h3>
                     <p className="mt-3 text-sm leading-relaxed text-brand-muted">{plan.description}</p>
                   </div>
 
@@ -466,8 +466,8 @@ function TrialPageContent() {
                     {plan.pricePrefix ? (
                       <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-brand-green">{plan.pricePrefix}</p>
                     ) : null}
-                    <div className="mt-2 flex items-end gap-2">
-                      <span className="font-serif text-4xl font-semibold text-brand-ink">{plan.price}</span>
+                    <div className="mt-2 flex flex-wrap items-end gap-2">
+                      <span className="font-serif text-3xl font-semibold text-brand-ink sm:text-4xl">{plan.price}</span>
                       <span className="pb-1 text-sm text-brand-muted">/mês</span>
                     </div>
                     <p className="mt-3 text-sm text-brand-muted">{plan.helperText}</p>
@@ -608,7 +608,7 @@ function TrialPageContent() {
         <div className="mx-auto w-full max-w-[980px] px-4 text-center sm:px-6">
           <div className="mx-auto max-w-3xl text-center">
             <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-brand-green">Está preparado?</p>
-            <h2 className="mt-4 font-serif text-4xl font-semibold leading-tight text-brand-ink sm:text-5xl">
+            <h2 className="mt-4 font-serif text-3xl font-semibold leading-tight text-brand-ink sm:text-5xl">
               Ative os 7 dias grátis e veja a clínica funcionar com menos improviso
             </h2>
             <p className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-brand-muted sm:text-lg">
@@ -619,7 +619,7 @@ function TrialPageContent() {
               <Button
                 variant="primary"
                 href={appRegisterUrl}
-                className="px-8 py-4 text-base"
+                className="w-full px-8 py-4 text-base sm:w-auto"
                 trackEventName="click_checkout"
                 trackPayload={{ source: 'final_cta', plan: 'medainer solo' }}
               >
@@ -628,7 +628,7 @@ function TrialPageContent() {
               <Button
                 variant="outline"
                 href={WHATSAPP_URL}
-                className="px-8 py-4 text-base"
+                className="w-full px-8 py-4 text-base sm:w-auto"
                 trackEventName="click_whatsapp"
                 trackPayload={{ source: 'final_cta' }}
               >

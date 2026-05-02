@@ -375,22 +375,22 @@ function LeadFormModal({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 z-[80] flex items-center justify-center bg-[#09102a]/55 px-4 py-6 backdrop-blur-md sm:px-6"
+          className="fixed inset-0 z-[80] flex items-stretch justify-center bg-[#09102a]/55 px-0 py-0 backdrop-blur-md sm:items-center sm:px-4 sm:py-6 sm:px-6"
           onClick={onClose}
         >
-          <motion.div
-            initial={{ opacity: 0, y: 24, scale: 0.98 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 24, scale: 0.98 }}
-            transition={{ duration: 0.24, ease: 'easeOut' }}
-            className="relative w-full max-w-[760px] overflow-hidden rounded-[32px] border border-white/70 bg-[linear-gradient(180deg,rgba(255,255,255,0.98)_0%,rgba(247,248,253,0.98)_100%)] shadow-[0_40px_120px_rgba(9,16,42,0.28)]"
-            onClick={(event) => event.stopPropagation()}
-          >
+        <motion.div
+          initial={{ opacity: 0, y: 24, scale: 0.98 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          exit={{ opacity: 0, y: 24, scale: 0.98 }}
+          transition={{ duration: 0.24, ease: 'easeOut' }}
+          className="relative flex h-[100dvh] w-full max-w-none flex-col overflow-y-auto border-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.99)_0%,rgba(247,248,253,0.99)_100%)] shadow-none sm:h-auto sm:max-h-[min(90vh,920px)] sm:min-h-0 sm:max-w-[760px] sm:overflow-hidden sm:rounded-[32px] sm:border sm:border-white/70 sm:shadow-[0_40px_120px_rgba(9,16,42,0.28)]"
+          onClick={(event) => event.stopPropagation()}
+        >
             {isSubmitting ? (
               <div className="absolute inset-0 z-20 flex items-center justify-center bg-white/88 backdrop-blur-sm">
-                <div className="flex items-center gap-3 rounded-full bg-white px-6 py-4 shadow-[0_24px_60px_rgba(16,29,77,0.14)] ring-1 ring-brand-line">
+                <div className="flex max-w-[90%] items-center gap-3 rounded-full bg-white px-5 py-3 text-center shadow-[0_24px_60px_rgba(16,29,77,0.14)] ring-1 ring-brand-line sm:max-w-none sm:px-6 sm:py-4">
                   <LoaderCircle className="h-5 w-5 animate-spin text-brand-primary" />
-                  <span className="text-lg font-medium text-brand-ink">Enviando seus dados...</span>
+                  <span className="text-base font-medium text-brand-ink sm:text-lg">Enviando seus dados...</span>
                 </div>
               </div>
             ) : null}
@@ -408,8 +408,8 @@ function LeadFormModal({
               <X className="h-5 w-5" />
             </button>
 
-            <div className="px-5 pb-6 pt-10 sm:px-8 sm:pb-8 sm:pt-12">
-              <div className="flex flex-wrap items-center justify-between gap-3">
+            <div className="flex min-h-full flex-1 flex-col px-5 pb-8 pt-16 sm:min-h-0 sm:px-8 sm:pb-8 sm:pt-12">
+              <div className="mx-auto flex w-full max-w-[560px] flex-wrap items-center justify-between gap-3">
                 <p className="text-xs font-semibold uppercase tracking-[0.22em] text-brand-primary">
                   Formulário Medainer
                 </p>
@@ -425,32 +425,36 @@ function LeadFormModal({
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -18 }}
                   transition={{ duration: 0.2, ease: 'easeOut' }}
-                  className="mt-10"
+                  className="mt-8 flex flex-1 flex-col sm:mt-10"
                 >
-                  <h2 className="mt-4 w-full max-w-none text-4xl font-semibold leading-[1.02] tracking-[-0.06em] text-brand-ink sm:text-5xl">
-                    {step.title}
-                  </h2>
-                  {/* <p className="mt-5 max-w-2xl text-lg leading-relaxed text-brand-muted">{step.description}</p> */}
-
                   <form
-                    className="mt-10"
+                    className="mx-auto flex w-full max-w-[560px] flex-1 flex-col justify-center"
                     onSubmit={(event) => {
                       event.preventDefault();
                       if (!canAdvance || isSubmitting || step.kind === 'choice') return;
                       onAdvance();
                     }}
                   >
-                    <ModalStepField
-                      step={step}
-                      value={value}
-                      disabled={isSubmitting}
-                      onInputChange={(nextValue) => onInputChange(step.id, nextValue)}
-                      onChoiceSelect={(nextValue) => onChoiceSelect(step.id, nextValue)}
-                    />
+                    <div>
+                      <h2 className="w-full max-w-none text-3xl font-semibold leading-[1.04] tracking-[-0.06em] text-brand-ink sm:text-5xl">
+                        {step.title}
+                      </h2>
+                      {/* <p className="mt-5 max-w-2xl text-lg leading-relaxed text-brand-muted">{step.description}</p> */}
 
-                    {errorMessage ? <p className="mt-4 text-sm font-medium text-[#dc2626]">{errorMessage}</p> : null}
+                      <div className="mt-10">
+                        <ModalStepField
+                          step={step}
+                          value={value}
+                          disabled={isSubmitting}
+                          onInputChange={(nextValue) => onInputChange(step.id, nextValue)}
+                          onChoiceSelect={(nextValue) => onChoiceSelect(step.id, nextValue)}
+                        />
+                      </div>
 
-                    <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                      {errorMessage ? <p className="mt-4 text-sm font-medium text-[#dc2626]">{errorMessage}</p> : null}
+                    </div>
+
+                    <div className="mt-8 flex flex-col gap-3 sm:mt-10 sm:flex-row sm:items-center sm:justify-between">
                       <button
                         type="button"
                         onClick={onBack}
@@ -469,7 +473,7 @@ function LeadFormModal({
                         <button
                           type="submit"
                           disabled={!canAdvance || isSubmitting}
-                          className={`inline-flex min-w-[196px] items-center justify-center gap-2 rounded-full px-6 py-3.5 text-sm font-semibold transition-all duration-300 ${
+                          className={`inline-flex w-full items-center justify-center gap-2 rounded-full px-6 py-3.5 text-sm font-semibold transition-all duration-300 sm:min-w-[196px] sm:w-auto ${
                             canAdvance && !isSubmitting
                               ? 'bg-[linear-gradient(135deg,#4457f3_0%,#6273ff_100%)] text-white shadow-[0_18px_48px_rgba(68,87,243,0.24)] hover:-translate-y-0.5'
                               : 'cursor-not-allowed bg-brand-line text-white/70'

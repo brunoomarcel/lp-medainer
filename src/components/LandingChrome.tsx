@@ -95,10 +95,10 @@ export function LandingHeader({
           <img
             src={medainerSymbol}
             alt="Logo da Medainer"
-            className="h-11 w-11 rounded-full object-cover shadow-[0_12px_26px_rgba(68,87,243,0.24)]"
+            className="h-10 w-10 rounded-full object-cover shadow-[0_12px_26px_rgba(68,87,243,0.24)] sm:h-11 sm:w-11"
             loading="eager"
           />
-          <span className="text-2xl font-semibold tracking-[-0.04em] text-brand-ink">Medainer</span>
+          <span className="text-xl font-semibold tracking-[-0.04em] text-brand-ink sm:text-2xl">Medainer</span>
         </HeaderLink>
 
         <nav className="hidden items-center gap-10 lg:flex">
@@ -178,7 +178,7 @@ export function LandingHeader({
                 ))}
                 <button
                   type="button"
-                  className="mt-2 inline-flex items-center justify-center rounded-full bg-[linear-gradient(135deg,#4457f3_0%,#6273ff_100%)] px-5 py-3.5 text-base font-semibold text-white"
+                  className="mt-2 inline-flex w-full items-center justify-center rounded-full bg-[linear-gradient(135deg,#4457f3_0%,#6273ff_100%)] px-5 py-3.5 text-base font-semibold text-white"
                   onClick={() => {
                     trackEvent('click_trial', { source: 'header_mobile' });
                     openLeadForm({ source: 'header_mobile', ctaLabel: 'Criar conta', targetHref: '/' });
@@ -187,13 +187,13 @@ export function LandingHeader({
                 >
                   Criar conta
                 </button>
-                <a
+                {/* <a
                   href={loginUrl}
-                  className="rounded-2xl border border-brand-line bg-white px-4 py-3 text-base font-medium text-brand-ink transition-colors hover:bg-brand-panel"
+                  className="w-full rounded-2xl border border-brand-line bg-white px-4 py-3 text-center text-base font-medium text-brand-ink transition-colors hover:bg-brand-panel"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   Entrar
-                </a>
+                </a> */}
               </nav>
             </div>
           </motion.div>
@@ -206,13 +206,13 @@ export function LandingHeader({
 export function LandingFooter() {
   return (
     <footer className="border-t border-brand-line bg-white py-10">
-      <div className="mx-auto flex w-full max-w-[1240px] flex-col items-center justify-between gap-6 px-4 text-center sm:px-6 lg:flex-row lg:text-left">
+      <div className="mx-auto flex w-full max-w-[1240px] flex-row flex-wrap items-center justify-center gap-4 px-4 text-center sm:px-6 sm:gap-6 lg:justify-between lg:text-left">
         <div className="flex items-center gap-3">
           <img src={medainerSymbol} alt="Logo da Medainer" className="h-11 w-11 rounded-full object-cover" loading="lazy" />
-          <span className="text-2xl font-semibold tracking-[-0.04em] text-brand-ink">Medainer</span>
+          <span className="text-lg font-semibold tracking-[-0.04em] text-brand-ink sm:text-2xl">Medainer</span>
         </div>
 
-        <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-base text-brand-muted">
+        <div className="hidden flex-wrap items-center justify-center gap-x-8 gap-y-3 text-base text-brand-muted sm:flex">
           <a href="/#recursos" className="transition-colors hover:text-brand-primary">
             Recursos
           </a>

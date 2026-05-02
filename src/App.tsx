@@ -17,7 +17,8 @@ import {
   Zap,
 } from 'lucide-react';
 import { motion } from 'motion/react';
-import dashMainImage from './assets/images/dash-main.png';
+import dashMainImage from './assets/images/dash-main.gif';
+import dashMainSecondaryImage from './assets/images/dash-maink.jpg';
 import { buildTrackedUrl, trackPageView } from './analytics';
 import { LandingFooter, LandingHeader } from './components/LandingChrome';
 import { LeadFlowProvider, useLeadFlow } from './components/LeadFlow';
@@ -266,18 +267,69 @@ function SectionHeading({
     <div className={centered ? 'mx-auto max-w-4xl text-center' : 'max-w-3xl'}>
       <p className="section-eyebrow">{eyebrow}</p>
       <h2
-        className={`mt-4 text-4xl font-semibold leading-[0.98] tracking-[-0.04em] text-brand-ink sm:text-5xl lg:text-6xl ${
+        className={`mt-4 text-3xl font-semibold leading-[1.02] tracking-[-0.04em] text-brand-ink sm:text-5xl lg:text-6xl ${
           centered ? 'mx-auto max-w-[22ch]' : 'max-w-[17ch]'
         }`}
       >
         {title}
       </h2>
       {text ? (
-        <p className={`mt-5 text-lg leading-relaxed text-brand-muted ${centered ? 'mx-auto max-w-2xl' : 'max-w-2xl'}`}>
+        <p className={`mt-5 text-base leading-relaxed text-brand-muted sm:text-lg ${centered ? 'mx-auto max-w-2xl' : 'max-w-2xl'}`}>
           {text}
         </p>
       ) : null}
     </div>
+  );
+}
+
+const SCROLL_EASE = [0.22, 1, 0.36, 1] as const;
+const SCROLL_VIEWPORT = { once: true, amount: 0.18 } as const;
+const STAGGER_VIEWPORT = { once: true, amount: 0.12 } as const;
+
+const staggerGroupVariants = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.12,
+      delayChildren: 0.05,
+    },
+  },
+} as const;
+
+const staggerItemVariants = {
+  hidden: { opacity: 0, y: 28, scale: 0.985 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      duration: 0.52,
+      ease: SCROLL_EASE,
+    },
+  },
+} as const;
+
+function Reveal({
+  children,
+  className,
+  delay = 0,
+  amount = 0.18,
+}: {
+  children: React.ReactNode;
+  className?: string;
+  delay?: number;
+  amount?: number;
+}) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 32 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount }}
+      transition={{ duration: 0.58, delay, ease: SCROLL_EASE }}
+      className={className}
+    >
+      {children}
+    </motion.div>
   );
 }
 
@@ -311,7 +363,7 @@ function Button({
   return (
     <a
       href={href}
-      className={`inline-flex items-center justify-center gap-2 rounded-full px-6 py-3.5 text-sm font-semibold transition-all duration-300 ${styles[variant]} ${className}`}
+      className={`inline-flex w-full items-center justify-center gap-2 rounded-full px-6 py-3.5 text-center text-sm font-semibold transition-all duration-300 sm:w-auto ${styles[variant]} ${className}`}
       onClick={(event) => {
         event.preventDefault();
         if (trackEventName) {
@@ -340,35 +392,35 @@ function HeroSection() {
           initial={{ opacity: 0, y: 22 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="max-w-4xl"
+          className="w-full max-w-4xl"
         >
-          <div className="inline-flex items-center gap-2 rounded-full bg-brand-primary-soft px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-brand-primary">
+          <div className="inline-flex max-w-full items-center gap-2 rounded-full bg-brand-primary-soft px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-brand-primary sm:px-4 sm:text-xs sm:tracking-[0.18em]">
             <span className="h-2 w-2 rounded-full bg-brand-primary" />
             Plataforma de operação clínica
           </div>
 
-          <h1 className="mt-10 text-5xl font-semibold leading-[1.02] tracking-[-0.06em] text-brand-ink sm:text-6xl sm:leading-[1] lg:text-8xl lg:leading-[0.98]">
+          <h1 className="mt-8 text-[2.75rem] font-semibold leading-[1.04] tracking-[-0.06em] text-brand-ink sm:mt-10 sm:text-6xl sm:leading-[1] lg:text-8xl lg:leading-[0.98]">
             Controle total da sua 
             <span className="block pb-[0.26em] bg-[linear-gradient(135deg,#4150dd_0%,#6783ff_100%)] bg-clip-text text-transparent">
               clínica odontológica.
             </span>
           </h1>
 
-          <p className="mx-auto mt-8 max-w-3xl text-xl leading-relaxed text-brand-muted sm:text-[1.45rem]">
+          <p className="mx-auto mt-6 max-w-3xl text-lg leading-relaxed text-brand-muted sm:mt-8 sm:text-[1.45rem]">
             Agenda, pacientes, prontuário odontológico, financeiro e confirmações automáticas no WhatsApp.
           </p>
 
-          <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+          <div className="mt-8 flex w-full flex-col items-stretch justify-center gap-4 sm:mt-10 sm:flex-row sm:items-center">
             <Button
               href={getRegisterUrl()}
-              className="min-w-[256px] px-8 py-4 text-base"
+              className="w-full max-w-full px-8 py-4 text-base sm:min-w-[256px] sm:w-auto"
               trackEventName="click_trial"
               trackPayload={{ source: 'hero_primary' }}
             >
               Começar 7 dias grátis
               <ArrowRight className="h-4 w-4" />
             </Button>
-            <Button
+            {/* <Button
               href="#recursos"
               variant="ghost"
               className="text-base"
@@ -376,10 +428,10 @@ function HeroSection() {
               trackPayload={{ source: 'hero_secondary' }}
             >
               Ver como funciona
-            </Button>
+            </Button> */}
           </div>
 
-          <p className="mt-8 text-sm text-brand-muted">Sem cartão de crédito · Cancele quando quiser</p>
+          <p className="mt-6 text-sm text-brand-muted sm:mt-8">Sem cartão de crédito · Cancele quando quiser</p>
         </motion.div>
 
         <motion.div
@@ -405,17 +457,23 @@ function HeroSection() {
 function PillarsSection() {
   return (
     <section className="section-shell pt-20 sm:pt-24 lg:pt-28">
-      <div className="grid gap-8 md:grid-cols-3">
+      <motion.div
+        initial="hidden"
+        whileInView="visible"
+        viewport={STAGGER_VIEWPORT}
+        variants={staggerGroupVariants}
+        className="grid gap-6 md:grid-cols-3 md:gap-8"
+      >
         {HERO_PILLARS.map((pillar) => (
-          <article key={pillar.title} className="pillar-card">
+          <motion.article key={pillar.title} variants={staggerItemVariants} className="pillar-card interactive-card-bar">
             <div className="feature-icon">
               <pillar.icon className="h-5 w-5" />
             </div>
-            <h3 className="mt-7 text-3xl font-semibold tracking-[-0.04em] text-brand-ink">{pillar.title}</h3>
-            <p className="mt-4 text-lg leading-relaxed text-brand-muted">{pillar.text}</p>
-          </article>
+            <h3 className="mt-6 text-2xl font-semibold tracking-[-0.04em] text-brand-ink sm:mt-7 sm:text-3xl">{pillar.title}</h3>
+            <p className="mt-3 text-base leading-relaxed text-brand-muted sm:mt-4 sm:text-lg">{pillar.text}</p>
+          </motion.article>
         ))}
-      </div>
+      </motion.div>
     </section>
   );
 }
@@ -423,26 +481,34 @@ function PillarsSection() {
 function AudienceSection() {
   return (
     <section id="para-quem-e" className="section-shell section-spacing pt-16 sm:pt-20 lg:pt-24">
-      <SectionHeading
-        eyebrow="Para quem é"
-        title="Para clínicas odontológicas que querem crescer com controle."
-        text="Do consultório enxuto à operação com automação no WhatsApp."
-        centered={true}
-      />
+      <Reveal>
+        <SectionHeading
+          eyebrow="Para quem é"
+          title="Para clínicas odontológicas que querem crescer com controle."
+          text="Do consultório enxuto à operação com automação no WhatsApp."
+          centered={true}
+        />
+      </Reveal>
 
-      <div className="mt-14 grid gap-6 lg:grid-cols-3">
+      <motion.div
+        initial="hidden"
+        whileInView="visible"
+        viewport={STAGGER_VIEWPORT}
+        variants={staggerGroupVariants}
+        className="mt-14 grid gap-6 lg:grid-cols-3"
+      >
         {AUDIENCE_PROFILES.map((profile) => (
-          <article key={profile.title} className="audience-panel">
+          <motion.article key={profile.title} variants={staggerItemVariants} className="audience-panel interactive-card-bar">
             <div className="feature-icon">
               <profile.icon className="h-5 w-5" />
             </div>
-            <h3 className="mt-7 text-2xl font-semibold tracking-[-0.04em] text-brand-ink">
+            <h3 className="mt-6 text-xl font-semibold tracking-[-0.04em] text-brand-ink sm:mt-7 sm:text-2xl">
               {profile.title}
             </h3>
-            <p className="mt-4 text-lg leading-relaxed text-brand-muted">{profile.text}</p>
-          </article>
+            <p className="mt-3 text-base leading-relaxed text-brand-muted sm:mt-4 sm:text-lg">{profile.text}</p>
+          </motion.article>
         ))}
-      </div>
+      </motion.div>
     </section>
   );
 }
@@ -450,14 +516,22 @@ function AudienceSection() {
 function BeforeAfterSection() {
   return (
     <section className="section-shell section-spacing pt-6 sm:pt-10 lg:pt-14">
-      <SectionHeading
-        eyebrow="Antes e Depois"
-        title="A rotina da clínica antes e depois do Medainer."
-        centered={true}
-      />
+      <Reveal>
+        <SectionHeading
+          eyebrow="Antes e Depois"
+          title="A rotina da clínica antes e depois do Medainer."
+          centered={true}
+        />
+      </Reveal>
 
-      <div className="mt-14 grid gap-6 lg:grid-cols-2">
-        <article className="comparison-card">
+      <motion.div
+        initial="hidden"
+        whileInView="visible"
+        viewport={STAGGER_VIEWPORT}
+        variants={staggerGroupVariants}
+        className="mt-14 grid gap-6 lg:grid-cols-2"
+      >
+        <motion.article variants={staggerItemVariants} className="comparison-card interactive-card-bar">
           <p className="comparison-card-title text-[#ef4444]">Sem Medainer</p>
 
           <ul className="mt-8 space-y-5">
@@ -470,9 +544,9 @@ function BeforeAfterSection() {
               </li>
             ))}
           </ul>
-        </article>
+        </motion.article>
 
-        <article className="comparison-card comparison-card-positive">
+        <motion.article variants={staggerItemVariants} className="comparison-card comparison-card-positive interactive-card-bar">
           <p className="comparison-card-title text-[#16a34a]">Com Medainer</p>
 
           <ul className="mt-8 space-y-5">
@@ -485,20 +559,20 @@ function BeforeAfterSection() {
               </li>
             ))}
           </ul>
-        </article>
-      </div>
+        </motion.article>
+      </motion.div>
 
-      <div className="mt-12 flex justify-center">
+      <Reveal className="mt-12 flex w-full justify-center" delay={0.08}>
         <Button
           href={getRegisterUrl()}
-          className="min-w-[220px]"
+          className="w-full max-w-full sm:min-w-[220px] sm:w-auto"
           trackEventName="click_trial"
           trackPayload={{ source: 'before_after_cta' }}
         >
           Quero testar o Medainer
           <ArrowRight className="h-4 w-4" />
         </Button>
-      </div>
+      </Reveal>
     </section>
   );
 }
@@ -506,19 +580,38 @@ function BeforeAfterSection() {
 function ResourcesSection() {
   return (
     <section id="recursos" className="section-shell section-spacing">
-      <SectionHeading eyebrow="Recursos" title="O essencial da clínica, sem peso." centered={true} />
+      <Reveal>
+        <SectionHeading eyebrow="Recursos" title="O essencial da clínica, sem peso." centered={true} />
+      </Reveal>
 
-      <div className="resource-grid mt-14">
+      <Reveal className="mx-auto mt-14 w-full max-w-5xl" delay={0.06}>
+        <div className="hero-dashboard-shell">
+          <img
+            src={dashMainSecondaryImage}
+            alt="Visão operacional do Medainer com agenda e módulos da clínica"
+            className="hero-dashboard-image"
+            loading="lazy"
+          />
+        </div>
+      </Reveal>
+
+      <motion.div
+        initial="hidden"
+        whileInView="visible"
+        viewport={STAGGER_VIEWPORT}
+        variants={staggerGroupVariants}
+        className="resource-grid mt-10"
+      >
         {RESOURCE_CARDS.map((card) => (
-          <article key={card.title} className="resource-card">
+          <motion.article key={card.title} variants={staggerItemVariants} className="resource-card">
             <div className="feature-icon">
               <card.icon className="h-5 w-5" />
             </div>
-            <h3 className="mt-8 text-2xl font-semibold tracking-[-0.04em] text-brand-ink">{card.title}</h3>
-            <p className="mt-4 text-lg leading-relaxed text-brand-muted">{card.text}</p>
-          </article>
+            <h3 className="mt-6 text-xl font-semibold tracking-[-0.04em] text-brand-ink sm:mt-8 sm:text-2xl">{card.title}</h3>
+            <p className="mt-3 text-base leading-relaxed text-brand-muted sm:mt-4 sm:text-lg">{card.text}</p>
+          </motion.article>
         ))}
-      </div>
+      </motion.div>
     </section>
   );
 }
@@ -526,22 +619,30 @@ function ResourcesSection() {
 function HowItWorksSection() {
   return (
     <section className="section-shell section-spacing pt-8 sm:pt-12 lg:pt-16">
-      <SectionHeading
-        eyebrow="Como funciona"
-        title="Crie sua conta e configure sua clínica."
-        text="Três passos para otimizar sua rotina."
-        centered={true}
-      />
+      <Reveal>
+        <SectionHeading
+          eyebrow="Como funciona"
+          title="Crie sua conta e configure sua clínica."
+          text="Três passos para otimizar sua rotina."
+          centered={true}
+        />
+      </Reveal>
 
-      <div className="mt-14 grid gap-6 lg:grid-cols-3">
+      <motion.div
+        initial="hidden"
+        whileInView="visible"
+        viewport={STAGGER_VIEWPORT}
+        variants={staggerGroupVariants}
+        className="mt-14 grid gap-6 lg:grid-cols-3"
+      >
         {HOW_IT_WORKS_STEPS.map((item) => (
-          <article key={item.step} className="how-step-card">
+          <motion.article key={item.step} variants={staggerItemVariants} className="how-step-card interactive-card-bar">
             <span className="how-step-number">{item.step}</span>
-            <h3 className="mt-8 text-2xl font-semibold tracking-[-0.04em] text-brand-ink">{item.title}</h3>
-            <p className="mt-4 text-lg leading-relaxed text-brand-muted">{item.text}</p>
-          </article>
+            <h3 className="mt-6 text-xl font-semibold tracking-[-0.04em] text-brand-ink sm:mt-8 sm:text-2xl">{item.title}</h3>
+            <p className="mt-3 text-base leading-relaxed text-brand-muted sm:mt-4 sm:text-lg">{item.text}</p>
+          </motion.article>
         ))}
-      </div>
+      </motion.div>
     </section>
   );
 }
@@ -563,7 +664,7 @@ function FaqItem({ question, answer }: { key?: React.Key; question: string; answ
         </span>
       </button>
 
-      {isOpen ? <p className="mt-4 max-w-3xl text-lg leading-relaxed text-brand-muted">{answer}</p> : null}
+      {isOpen ? <p className="mt-4 max-w-3xl text-base leading-relaxed text-brand-muted sm:text-lg">{answer}</p> : null}
     </div>
   );
 }
@@ -571,18 +672,28 @@ function FaqItem({ question, answer }: { key?: React.Key; question: string; answ
 function FaqSection() {
   return (
     <section className="section-shell section-spacing pt-8 sm:pt-12 lg:pt-16">
-      <SectionHeading
-        eyebrow="FAQ"
-        title="O que você precisa saber antes de criar sua conta."
-        text="As dúvidas mais comuns para começar com clareza."
-        centered={true}
-      />
+      <Reveal>
+        <SectionHeading
+          eyebrow="FAQ"
+          title="O que você precisa saber antes de criar sua conta."
+          text="As dúvidas mais comuns para começar com clareza."
+          centered={true}
+        />
+      </Reveal>
 
-      <div className="mx-auto mt-14 max-w-4xl">
+      <motion.div
+        initial="hidden"
+        whileInView="visible"
+        viewport={STAGGER_VIEWPORT}
+        variants={staggerGroupVariants}
+        className="mx-auto mt-14 max-w-4xl"
+      >
         {FAQ_ITEMS.map((item) => (
-          <FaqItem key={item.question} question={item.question} answer={item.answer} />
+          <motion.div key={item.question} variants={staggerItemVariants}>
+            <FaqItem question={item.question} answer={item.answer} />
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
     </section>
   );
 }
@@ -590,24 +701,32 @@ function FaqSection() {
 function TrustSection() {
   return (
     <section className="section-shell section-spacing pt-8 sm:pt-12 lg:pt-16">
-      <SectionHeading
-        eyebrow="Segurança e confiança"
-        title="Sua rotina mais organizada, com mais controle no dia a dia."
-        text="O Medainer foi pensado para trazer clareza operacional desde o primeiro acesso."
-        centered={true}
-      />
+      <Reveal>
+        <SectionHeading
+          eyebrow="Segurança e confiança"
+          title="Sua rotina mais organizada, com mais controle no dia a dia."
+          text="O Medainer foi pensado para trazer clareza operacional desde o primeiro acesso."
+          centered={true}
+        />
+      </Reveal>
 
-      <div className="mt-14 grid gap-6 lg:grid-cols-3">
+      <motion.div
+        initial="hidden"
+        whileInView="visible"
+        viewport={STAGGER_VIEWPORT}
+        variants={staggerGroupVariants}
+        className="mt-14 grid gap-6 lg:grid-cols-3"
+      >
         {TRUST_PILLARS.map((item) => (
-          <article key={item.title} className="trust-card">
+          <motion.article key={item.title} variants={staggerItemVariants} className="trust-card interactive-card-bar">
             <div className="feature-icon">
               <item.icon className="h-5 w-5" />
             </div>
-            <h3 className="mt-7 text-2xl font-semibold tracking-[-0.04em] text-brand-ink">{item.title}</h3>
-            <p className="mt-4 text-lg leading-relaxed text-brand-muted">{item.text}</p>
-          </article>
+            <h3 className="mt-6 text-xl font-semibold tracking-[-0.04em] text-brand-ink sm:mt-7 sm:text-2xl">{item.title}</h3>
+            <p className="mt-3 text-base leading-relaxed text-brand-muted sm:mt-4 sm:text-lg">{item.text}</p>
+          </motion.article>
         ))}
-      </div>
+      </motion.div>
     </section>
   );
 }
@@ -615,26 +734,32 @@ function TrustSection() {
 function AutomationSection() {
   return (
     <section id="automacao" className="section-shell section-spacing">
-      <div className="grid gap-14 lg:grid-cols-[minmax(0,1fr)_440px] lg:items-center">
-        <div className="max-w-2xl">
+      <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_440px] lg:items-center lg:gap-14">
+        <Reveal className="max-w-2xl">
           <p className="section-eyebrow">WhatsApp + IA</p>
-          <h2 className="mt-4 text-4xl font-semibold leading-[0.98] tracking-[-0.05em] text-brand-ink sm:text-5xl lg:text-6xl">
+          <h2 className="mt-4 text-3xl font-semibold leading-[1.02] tracking-[-0.05em] text-brand-ink sm:text-5xl lg:text-6xl">
             Reduza faltas e evite buracos na agenda.
           </h2>
-          <p className="mt-6 text-lg leading-relaxed text-brand-muted">
+          <p className="mt-5 text-base leading-relaxed text-brand-muted sm:mt-6 sm:text-lg">
             Confirmações automáticas no WhatsApp, lembretes e remarcações sem esforço.
           </p>
 
-          <ul className="mt-8 space-y-4">
+          <motion.ul
+            initial="hidden"
+            whileInView="visible"
+            viewport={STAGGER_VIEWPORT}
+            variants={staggerGroupVariants}
+            className="mt-8 space-y-4"
+          >
             {AUTOMATION_BENEFITS.map((item) => (
-              <li key={item} className="flex items-center gap-3 text-lg text-brand-ink">
+              <motion.li key={item} variants={staggerItemVariants} className="flex items-center gap-3 text-base text-brand-ink sm:text-lg">
                 <span className="flex h-7 w-7 items-center justify-center rounded-full bg-brand-primary-soft text-brand-primary">
                   <Check className="h-4 w-4" />
                 </span>
                 <span>{item}</span>
-              </li>
+              </motion.li>
             ))}
-          </ul>
+          </motion.ul>
 
           {/* <div className="mt-10">
             <Button
@@ -646,9 +771,15 @@ function AutomationSection() {
               Conhecer o plano Automação
             </Button>
           </div> */}
-        </div>
+        </Reveal>
 
-        <div className="chat-showcase">
+        <motion.div
+          initial={{ opacity: 0, x: 34, y: 18 }}
+          whileInView={{ opacity: 1, x: 0, y: 0 }}
+          viewport={SCROLL_VIEWPORT}
+          transition={{ duration: 0.65, ease: SCROLL_EASE, delay: 0.08 }}
+          className="chat-showcase"
+        >
           <div className="chat-card">
             <div className="flex items-center gap-4 border-b border-brand-line pb-5">
               <div className="flex h-11 w-11 items-center justify-center rounded-full bg-brand-primary text-base font-semibold text-white">
@@ -677,7 +808,7 @@ function AutomationSection() {
 
             <p className="mt-8 text-center text-sm text-brand-muted">Respondido automaticamente pelo Medainer</p>
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );
@@ -698,7 +829,7 @@ function PlanCard({
   const isFeatured = plan.featured;
 
   return (
-    <article className={`pricing-card ${isFeatured ? 'pricing-card-featured' : ''}`}>
+    <article className={`pricing-card interactive-card-bar ${isFeatured ? 'pricing-card-featured' : ''}`}>
       <div className="flex min-h-8 items-start">
         {isFeatured ? (
           <span className="rounded-full bg-brand-primary px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-white">
@@ -707,18 +838,18 @@ function PlanCard({
         ) : null}
       </div>
 
-      <h3 className={`mt-6 text-[2.1rem] font-semibold tracking-[-0.05em] ${isFeatured ? 'text-white' : 'text-brand-ink'}`}>
+      <h3 className={`mt-6 text-[1.75rem] font-semibold tracking-[-0.05em] sm:text-[2.1rem] ${isFeatured ? 'text-white' : 'text-brand-ink'}`}>
         {plan.name.replace('Medainer ', '')}
       </h3>
-      <p className={`mt-3 text-lg leading-relaxed ${isFeatured ? 'text-white/74' : 'text-brand-muted'}`}>{plan.description}</p>
+      <p className={`mt-3 text-base leading-relaxed sm:text-lg ${isFeatured ? 'text-white/74' : 'text-brand-muted'}`}>{plan.description}</p>
 
-      <div className="mt-10 flex items-end gap-3">
+      <div className="mt-8 flex flex-wrap items-end gap-x-3 gap-y-1 sm:mt-10">
         {plan.pricePrefix ? (
           <span className={`pb-2 text-base ${isFeatured ? 'text-white/78' : 'text-brand-muted'}`}>{plan.pricePrefix}</span>
         ) : (
           <span className={`pb-2 text-base ${isFeatured ? 'text-white/78' : 'text-brand-muted'}`}>R$</span>
         )}
-        <span className={`text-6xl font-semibold tracking-[-0.06em] ${isFeatured ? 'text-white' : 'text-brand-ink'}`}>
+        <span className={`text-5xl font-semibold tracking-[-0.06em] sm:text-6xl ${isFeatured ? 'text-white' : 'text-brand-ink'}`}>
           {plan.price.replace('R$ ', '')}
         </span>
         <span className={`pb-2 text-base ${isFeatured ? 'text-white/78' : 'text-brand-muted'}`}>/mês</span>
@@ -735,16 +866,16 @@ function PlanCard({
       </Button>
 
       <ul className="mt-8 space-y-4">
-        <li className={`flex items-start gap-3 text-lg ${isFeatured ? 'text-white/86' : 'text-brand-ink'}`}>
+        <li className={`flex items-start gap-3 text-base sm:text-lg ${isFeatured ? 'text-white/86' : 'text-brand-ink'}`}>
           <Check className={`mt-1 h-4 w-4 shrink-0 ${isFeatured ? 'text-white' : 'text-brand-primary'}`} />
           <span>{plan.practitioners} profissional(is) de saúde</span>
         </li>
-        <li className={`flex items-start gap-3 text-lg ${isFeatured ? 'text-white/86' : 'text-brand-ink'}`}>
+        <li className={`flex items-start gap-3 text-base sm:text-lg ${isFeatured ? 'text-white/86' : 'text-brand-ink'}`}>
           <Check className={`mt-1 h-4 w-4 shrink-0 ${isFeatured ? 'text-white' : 'text-brand-primary'}`} />
           <span>{plan.admins} administrativo(s)</span>
         </li>
         {plan.features.slice(0, 5).map((feature) => (
-          <li key={feature} className={`flex items-start gap-3 text-lg ${isFeatured ? 'text-white/86' : 'text-brand-ink'}`}>
+          <li key={feature} className={`flex items-start gap-3 text-base sm:text-lg ${isFeatured ? 'text-white/86' : 'text-brand-ink'}`}>
             <Check className={`mt-1 h-4 w-4 shrink-0 ${isFeatured ? 'text-white' : 'text-brand-primary'}`} />
             <span>{feature}</span>
           </li>
@@ -766,7 +897,7 @@ function PricingSection() {
         centered={true}
       />
 
-      <div className="mt-16 grid gap-6 xl:grid-cols-3">
+      <div className="mt-12 grid gap-6 xl:mt-16 xl:grid-cols-3">
         {PRODUCT_PLANS.map((plan) => {
           const buttonLabel = plan.id === 'automacao' ? 'Falar com vendas' : plan.featured ? 'Escolher Clínica' : 'Começar grátis';
           const buttonHref = plan.id === 'automacao' ? trackedWhatsappUrl : getRegisterUrl();
@@ -794,38 +925,38 @@ function FinalCtaSection() {
 
   return (
     <section className="section-shell section-spacing pb-24 sm:pb-28 lg:pb-32">
-      <div className="mx-auto max-w-4xl text-center">
-        <h2 className="text-4xl font-semibold leading-[1.08] tracking-[-0.05em] text-brand-ink sm:text-5xl sm:leading-[1.05] lg:text-7xl lg:leading-[1.02]">
+      <Reveal className="mx-auto w-full max-w-4xl text-center">
+        <h2 className="text-3xl font-semibold leading-[1.08] tracking-[-0.05em] text-brand-ink sm:text-5xl sm:leading-[1.05] lg:text-7xl lg:leading-[1.02]">
           Sua clínica organizada em
           <span className="block pb-[0.08em] bg-[linear-gradient(135deg,#4457f3_0%,#6884ff_100%)] bg-clip-text text-transparent">
             clínica odontológica hoje.
           </span>
         </h2>
-        <p className="mx-auto mt-6 max-w-3xl text-xl leading-relaxed text-brand-muted">
+        <p className="mx-auto mt-5 max-w-3xl text-base leading-relaxed text-brand-muted sm:mt-6 sm:text-xl">
           Teste o Medainer por 7 dias. Sem cartão. Sem compromisso.
         </p>
 
-        <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+        <div className="mt-8 flex w-full flex-col items-stretch justify-center gap-4 sm:mt-10 sm:flex-row sm:items-center">
           <Button
             href={getRegisterUrl()}
-            className="min-w-[208px] px-8"
+            className="w-full max-w-full px-8 sm:min-w-[208px] sm:w-auto"
             trackEventName="click_trial"
             trackPayload={{ source: 'final_cta_primary' }}
           >
             Começar agora
             <ArrowRight className="h-4 w-4" />
           </Button>
-          <Button
+          {/* <Button
             href={trackedWhatsappUrl}
             variant="ghost"
-            className="text-base"
+            className="w-full justify-center text-base sm:w-auto"
             trackEventName="click_trial"
             trackPayload={{ source: 'final_cta_secondary' }}
           >
             Falar com especialista
-          </Button>
+          </Button> */}
         </div>
-      </div>
+      </Reveal>
     </section>
   );
 }
@@ -843,7 +974,7 @@ function PricingPage() {
           centered={true}
         />
 
-        <div className="mt-16 grid gap-6 xl:grid-cols-3">
+        <div className="mt-12 grid gap-6 xl:mt-16 xl:grid-cols-3">
           {PRODUCT_PLANS.map((plan) => (
             <PlanCard
               key={plan.id}
@@ -855,8 +986,8 @@ function PricingPage() {
           ))}
         </div>
 
-        <div className="mt-10 overflow-x-auto rounded-[32px] border border-brand-line bg-white shadow-[0_24px_60px_rgba(15,28,77,0.08)]">
-          <table className="min-w-full text-left">
+        <div className="mt-10 overflow-x-auto rounded-[24px] border border-brand-line bg-white shadow-[0_24px_60px_rgba(15,28,77,0.08)] sm:rounded-[32px]">
+          <table className="min-w-[720px] text-left">
             <thead>
               <tr className="border-b border-brand-line text-sm uppercase tracking-[0.14em] text-brand-muted">
                 <th className="px-6 py-5 font-semibold">Comparativo</th>
