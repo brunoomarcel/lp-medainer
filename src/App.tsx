@@ -150,7 +150,7 @@ const BEFORE_AFTER_COMPARISON = {
 const FAQ_ITEMS = [
   {
     question: 'Preciso instalar alguma coisa?',
-    answer: 'Nao. O Medainer roda online, então você cria sua conta e começa a configurar a clínica direto no navegador.',
+    answer: 'Não. O Medainer roda online, então você cria sua conta e começa a configurar a clínica direto no navegador.',
   },
   {
     question: 'Funciona para consultório pequeno?',

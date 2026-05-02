@@ -277,7 +277,7 @@ async function persistLeadSubmission(payload: Record<string, unknown>) {
   });
 
   if (!response.ok) {
-    throw new Error('Nao foi possível enviar seus dados agora. Tente novamente em instantes.');
+    throw new Error('Não foi possível enviar seus dados agora. Tente novamente em instantes.');
   }
 }
 
@@ -637,7 +637,7 @@ export function LeadFlowProvider({
       resetSubmissionState();
       window.location.assign(buildTrackedUrl(THANK_YOU_PATH));
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Nao foi possível enviar agora. Tente novamente.';
+      const message = error instanceof Error ? error.message : 'Não foi possível enviar agora. Tente novamente.';
       setErrorMessage(message);
       setIsSubmitting(false);
     }
