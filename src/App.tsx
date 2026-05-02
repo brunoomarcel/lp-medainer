@@ -1,143 +1,202 @@
-﻿/**
- * @license
- * SPDX-License-Identifier: Apache-2.0
- */
-
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
-  Bot,
-  Calendar,
+  ArrowRight,
+  CalendarDays,
+  CalendarRange,
+  ChevronDown,
   Check,
-  CircleHelp,
-  HeartPulse,
-  LayoutDashboard,
-  MessageCircle,
-  ShieldCheck,
-  Users
+  Files,
+  FolderHeart,
+  LockKeyhole,
+  MessageCircleMore,
+  Sparkles,
+  Stethoscope,
+  UserRoundCheck,
+  Wallet,
+  X,
+  Zap,
 } from 'lucide-react';
 import { motion } from 'motion/react';
 import dashMainImage from './assets/images/dash-main.png';
-import agendaImage from './assets/images/agenda.jpg';
-import pacientesImage from './assets/images/pacientes.jpg';
-import prontuarioImage from './assets/images/prontuario.jpg';
-import financeiroImage from './assets/images/financeiro.jpg';
-import profissionalImage from './assets/images/profissional.png';
-import { buildTrackedUrl } from './analytics';
+import { buildTrackedUrl, trackPageView } from './analytics';
 import { LandingFooter, LandingHeader } from './components/LandingChrome';
-import { PLAN_COMPARISON_ROWS, PRODUCT_PLANS } from './constants/plans';
+import { LeadFlowProvider, useLeadFlow } from './components/LeadFlow';
+import { PLAN_COMPARISON_ROWS, PRODUCT_PLANS, type ProductPlan } from './constants/plans';
 
 declare global {
   interface Window {
-    dataLayer?: unknown[];
     gtag?: (...args: unknown[]) => void;
   }
 }
 
 const PRICING_PATH = '/planos';
 const WHATSAPP_PHONE = '5579996018591';
-const WHATSAPP_MESSAGE = 'Oi! Quero solicitar uma demonstração do Medainer.';
+const WHATSAPP_MESSAGE = 'Oi! Quero conhecer o plano Automação do Medainer.';
 const WHATSAPP_URL = `https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`;
+const APP_REGISTER_URL =
+  (import.meta.env.VITE_APP_REGISTER_URL as string | undefined)?.trim() || 'https://app.medainer.com.br/register';
 
-const PAIN_POINTS = [
-  'A agenda muda o tempo todo e a recepção precisa resolver tudo ao mesmo tempo.',
-  'Informações importantes ficam espalhadas entre papel, WhatsApp e várias planilhas.',
-  'A equipe perde tempo procurando contexto em vez de cuidar da rotina da clínica.'
-] as const;
-
-const CENTRALIZATION_AREAS = [
-  'Agenda',
-  'Pacientes',
-  'Prontuários',
-  'Financeiro',
-  'Equipe e acessos'
-] as const;
-
-const BENEFITS = [
+const HERO_PILLARS = [
   {
-    icon: Calendar,
-    title: 'Agenda mais clara',
-    text: 'Visualize horários, encaixes e confirmações com menos retrabalho para a recepção.'
+    icon: Layers3Icon,
+    title: 'Organize',
+    text: 'Agenda, pacientes e prontuário em uma única operação fluida.'
   },
   {
-    icon: Users,
-    title: 'Pacientes em um só lugar',
-    text: 'Cadastro e histórico ficam acessíveis para a equipe sem depender de várias fontes.'
+    icon: Zap,
+    title: 'Automatize',
+    text: 'Confirmações, lembretes e remarcações no WhatsApp sem esforço.'
   },
   {
-    icon: HeartPulse,
-    title: 'Prontuários organizados',
-    text: 'As informações clínicas acompanham o atendimento com mais contexto e continuidade.'
-  },
-  {
-    icon: LayoutDashboard,
-    title: 'Financeiro conectado',
-    text: 'A operação da clínica e a leitura financeira ficam mais claras no mesmo sistema.'
-  },
-  {
-    icon: ShieldCheck,
-    title: 'Equipe com mais controle',
-    text: 'Cada pessoa acessa o que precisa, com mais segurança e menos confusão no dia a dia.'
+    icon: TrendingUpIcon,
+    title: 'Escale',
+    text: 'Mais pacientes atendidos com menos retrabalho e mais controle.'
   }
 ] as const;
 
-const IDEAL_FIT_SEGMENTS = [
+const AUDIENCE_PROFILES = [
   {
-    icon: Users,
-    title: 'Clínicas com equipe e recepção',
-    text: 'Para operações que precisam organizar agenda, pacientes, atendimento e rotina interna no mesmo fluxo.'
+    icon: ToothIcon,
+    title: 'Consultórios em início de operação',
+    text: 'Organize agenda, pacientes e evite faltas desde o início.',
   },
   {
-    icon: HeartPulse,
-    title: 'Profissionais com consultório próprio',
-    text: 'Para médicos e dentistas que querem mais clareza entre um atendimento e outro, sem depender de papel e recado solto.'
+    icon: CalendarDays,
+    title: 'Clínicas com recepção e equipe',
+    text: 'Para organizar agenda, equipe e rotina com mais clareza.',
   },
   {
-    icon: CircleHelp,
-    title: 'Rotinas que já não cabem no improviso',
-    text: 'Quando agenda, WhatsApp, planilha e memória já não dão conta da operação, o Medainer ajuda a centralizar a base.'
+    icon: MessageCircleMore,
+    title: 'Clínicas com alto volume de WhatsApp',
+    text: 'Para automatizar confirmações, lembretes e remarcações.',
+  },
+] as const;
+
+const RESOURCE_CARDS = [
+  {
+    icon: CalendarDays,
+    title: 'Agenda operacional',
+    text: 'Por clínica e profissional, com bloqueios, folgas e fluxo do atendimento.'
+  },
+  {
+    icon: FolderHeart,
+    title: 'Base de pacientes',
+    text: 'Cadastro completo, contato, responsável e histórico centralizado.'
+  },
+  {
+    icon: Files,
+    title: 'Prontuário clínico',
+    text: 'Queixa, antecedentes, conduta, anexos e linha do tempo.'
+  },
+  {
+    icon: Wallet,
+    title: 'Financeiro',
+    text: 'Receitas, despesas, recebíveis e saldo do período.'
+  },
+  {
+    icon: MessageCircleMore,
+    title: 'WhatsApp integrado',
+    text: 'Lembretes, confirmação e remarcação automatizadas.'
+  },
+  {
+    icon: CalendarRange,
+    title: 'Google Calendar',
+    text: 'Sincronização por profissional, sem agenda duplicada.'
   }
 ] as const;
 
-const PRACTITIONER_TYPES = [
-  'Médicos',
-  'Dentistas',
-  'Psicólogos',
-  'Fisioterapeutas',
-  'Clínicas multiprofissionais'
+const AUTOMATION_BENEFITS = [
+  'Confirmação automática de consultas',
+  'Lembretes com horários configuráveis',
+  'Remarcação por link',
+  'Agente de IA atendendo 24/7 (consulte plano)'
 ] as const;
 
-const ONBOARDING_STEPS = [
+const HOW_IT_WORKS_STEPS = [
   {
     step: '01',
-    title: 'Entendemos sua rotina',
-    text: 'Começamos pelo funcionamento da sua clínica para configurar o essencial com clareza.'
+    title: 'Crie sua conta',
+    text: 'Configure a rotina da clínica sem depender de instalação.',
   },
   {
     step: '02',
-    title: 'Organizamos o início',
-    text: 'Agenda, acessos e fluxo principal ficam prontos para a equipe usar sem complicação.'
+    title: 'Organize a operação',
+    text: 'Organize agenda, pacientes e prontuários.',
   },
   {
     step: '03',
-    title: 'Acompanhamos a adoção',
-    text: 'Sua equipe entra com orientação simples para ganhar segurança nos primeiros dias.'
-  }
+    title: 'Ganhe ritmo',
+    text: 'Ative confirmações automáticas e reduza faltas.',
+  },
 ] as const;
 
-const HERO_HIGHLIGHTS = [
-  { icon: Calendar, text: 'Rotina mais clara' },
-  { icon: Users, text: 'Equipe mais alinhada' },
-  { icon: CircleHelp, text: 'Informações em um só lugar' }
+const BEFORE_AFTER_COMPARISON = {
+  before: [
+    'Pacientes faltando sem aviso',
+    'Agenda bagunçada entre WhatsApp e papel',
+    'Prontuário odontológico descentralizado',
+    'Financeiro desconectado dos atendimentos',
+  ],
+  after: [
+    'Confirmações automáticas → menos faltas',
+    'Agenda organizada por profissional/cadeira',
+    'Prontuário odontológico em um só lugar',
+    'Controle financeiro ligado à operação',
+  ],
+} as const;
+
+const FAQ_ITEMS = [
+  {
+    question: 'Preciso instalar alguma coisa?',
+    answer: 'Nao. O Medainer roda online, então você cria sua conta e começa a configurar a clínica direto no navegador.',
+  },
+  {
+    question: 'Funciona para consultório pequeno?',
+    answer: 'Sim. A plataforma foi pensada para começar simples e acompanhar o crescimento da operação sem exigir uma estrutura grande desde o início.',
+  },
+  {
+    question: 'Consigo começar no mesmo dia?',
+    answer: 'Sim. Você já pode entrar, cadastrar agenda, pacientes e ajustar o fluxo principal da clínica no mesmo dia.',
+  },
+  {
+    question: 'O WhatsApp já faz parte da operação?',
+    answer: 'Sim. O Medainer foi desenhado para encaixar lembretes, confirmações e remarcações no fluxo da clínica com menos retrabalho manual.',
+  },
 ] as const;
 
-const HERO_MARQUEE_ITEMS = [
-  { icon: ShieldCheck, text: 'Demonstração guiada' },
-  { icon: Calendar, text: 'Rotina mais clara' },
-  { icon: Users, text: 'Equipe mais alinhada' },
-  { icon: CircleHelp, text: 'Informações em um só lugar' },
-  { icon: Check, text: 'Implantação acompanhada' },
-  { icon: LayoutDashboard, text: 'Mais clareza desde o início' }
+const TRUST_PILLARS = [
+  {
+    icon: UserRoundCheck,
+    title: 'Acesso por usuário',
+    text: 'Cada pessoa da clínica entra com seu próprio acesso e trabalha com mais clareza na rotina.',
+  },
+  {
+    icon: Files,
+    title: 'Informações centralizadas',
+    text: 'Agenda, pacientes e prontuário ficam no mesmo fluxo, sem depender de papel solto ou conversa perdida.',
+  },
+  {
+    icon: LockKeyhole,
+    title: 'Mais organização e controle',
+    text: 'A operação fica mais estruturada para a clínica crescer com menos retrabalho e mais previsibilidade.',
+  },
 ] as const;
+
+function Layers3Icon(props: React.ComponentProps<typeof Sparkles>) {
+  return <Sparkles {...props} />;
+}
+
+function TrendingUpIcon(props: React.ComponentProps<typeof Sparkles>) {
+  return <Stethoscope {...props} />;
+}
+
+function ToothIcon(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" {...props}>
+      <path d="M7.8 4.9c1.1 0 1.8.3 2.5.7.6.3 1.1.6 1.7.6s1.1-.3 1.7-.6c.7-.4 1.4-.7 2.5-.7 2.4 0 3.8 2.2 3.8 4.6 0 3.2-1.7 5.2-2.7 7.9-.4 1-.9 1.8-1.7 1.8-.9 0-1.2-.8-1.5-1.8l-.5-2c-.2-.8-.5-1.5-1.1-1.5s-.9.7-1.1 1.5l-.5 2c-.3 1-.6 1.8-1.5 1.8-.8 0-1.3-.8-1.7-1.8-1-2.7-2.7-4.7-2.7-7.9 0-2.4 1.4-4.6 3.8-4.6Z" />
+    </svg>
+  );
+}
 
 function normalizePathname(pathname: string) {
   return pathname.replace(/\/index\.html$/, '').replace(/\/$/, '') || '/';
@@ -160,85 +219,703 @@ function scrollToHash(hash: string) {
   const targetElement = document.getElementById(hash.slice(1));
   if (!targetElement) return;
 
-  const headerOffset = 112;
+  const headerOffset = 110;
   const targetTop = targetElement.getBoundingClientRect().top + window.scrollY - headerOffset;
   window.scrollTo({ top: Math.max(0, targetTop), behavior: 'auto' });
 }
 
 function trackEvent(eventName: string, payload: Record<string, unknown> = {}) {
   if (typeof window === 'undefined' || typeof window.gtag !== 'function') return;
-
   window.gtag('event', eventName, payload);
 }
 
-const Button = ({
-  children,
-  variant = 'primary',
-  className = '',
-  href,
-  trackEventName,
-  trackPayload
-}: {
-  children: React.ReactNode;
-  variant?: 'primary' | 'secondary' | 'outline' | 'link';
-  className?: string;
-  href: string;
-  trackEventName?: string;
-  trackPayload?: Record<string, unknown>;
-}) => {
-  const baseStyles =
-    'inline-flex w-full sm:w-auto items-center justify-center rounded-xl px-6 py-3.5 text-center text-sm font-semibold transition-all duration-300';
-  const variants = {
-    primary: 'cta-glow bg-brand-primary text-white shadow-[0_16px_32px_rgba(59,130,246,0.18)] hover:-translate-y-0.5 hover:bg-brand-primary-strong hover:shadow-[0_22px_44px_rgba(59,130,246,0.24)]',
-    secondary: 'cta-glow bg-brand-green text-white shadow-[0_16px_32px_rgba(82,163,127,0.18)] hover:-translate-y-0.5 hover:bg-brand-green-strong hover:shadow-[0_22px_44px_rgba(82,163,127,0.24)]',
-    outline: 'border border-brand-line bg-white text-brand-primary hover:-translate-y-0.5 hover:border-brand-primary hover:bg-brand-primary-soft hover:shadow-[0_18px_38px_rgba(59,130,246,0.10)]',
-    link: 'w-auto rounded-none px-0 py-0 text-brand-primary shadow-none hover:text-brand-primary-strong'
-  };
+function getRegisterUrl() {
+  return buildTrackedUrl(APP_REGISTER_URL);
+}
 
-  const handleClick = () => {
-    if (trackEventName) {
-      trackEvent(trackEventName, trackPayload);
-    }
-  };
+function getButtonLabel(children: React.ReactNode): string {
+  return React.Children.toArray(children)
+    .map((child) => {
+      if (typeof child === 'string') {
+        return child.trim();
+      }
 
-  return (
-    <a href={href} onClick={handleClick} className={`${baseStyles} ${variants[variant]} ${className}`}>
-      {children}
-    </a>
-  );
-};
+      if (React.isValidElement<{ children?: React.ReactNode }>(child) && child.props.children) {
+        return getButtonLabel(child.props.children);
+      }
 
-const SectionHeading = ({
+      return '';
+    })
+    .join(' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function SectionHeading({
   eyebrow,
   title,
   text,
-  centered = false
+  centered = false,
 }: {
   eyebrow: string;
   title: string;
   text?: string;
   centered?: boolean;
-}) => (
-  <div className={`max-w-3xl ${centered ? 'mx-auto text-center' : ''}`}>
-    <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-brand-green">{eyebrow}</p>
-    <h2 className="mt-4 text-3xl font-serif font-semibold leading-tight text-brand-ink sm:text-4xl lg:text-5xl">{title}</h2>
-    {text ? <p className="mt-5 text-base leading-relaxed text-brand-muted sm:text-lg">{text}</p> : null}
-  </div>
-);
+}) {
+  return (
+    <div className={centered ? 'mx-auto max-w-4xl text-center' : 'max-w-3xl'}>
+      <p className="section-eyebrow">{eyebrow}</p>
+      <h2
+        className={`mt-4 text-4xl font-semibold leading-[0.98] tracking-[-0.04em] text-brand-ink sm:text-5xl lg:text-6xl ${
+          centered ? 'mx-auto max-w-[22ch]' : 'max-w-[17ch]'
+        }`}
+      >
+        {title}
+      </h2>
+      {text ? (
+        <p className={`mt-5 text-lg leading-relaxed text-brand-muted ${centered ? 'mx-auto max-w-2xl' : 'max-w-2xl'}`}>
+          {text}
+        </p>
+      ) : null}
+    </div>
+  );
+}
+
+function Button({
+  children,
+  href,
+  variant = 'primary',
+  className = '',
+  trackEventName,
+  trackPayload,
+  ctaLabel,
+}: {
+  key?: React.Key;
+  children: React.ReactNode;
+  href: string;
+  variant?: 'primary' | 'secondary' | 'ghost';
+  className?: string;
+  trackEventName?: string;
+  trackPayload?: Record<string, unknown>;
+  ctaLabel?: string;
+}) {
+  const { openLeadForm } = useLeadFlow();
+  const styles = {
+    primary:
+      'button-primary bg-[linear-gradient(135deg,#4457f3_0%,#6273ff_100%)] text-white shadow-[0_18px_48px_rgba(68,87,243,0.28)] hover:-translate-y-0.5',
+    secondary:
+      'rounded-full border border-brand-line bg-white text-brand-ink shadow-[0_10px_30px_rgba(15,28,77,0.08)] hover:-translate-y-0.5 hover:border-brand-primary hover:text-brand-primary',
+    ghost: 'rounded-full px-0 text-brand-ink hover:text-brand-primary',
+  } as const;
+
+  return (
+    <a
+      href={href}
+      className={`inline-flex items-center justify-center gap-2 rounded-full px-6 py-3.5 text-sm font-semibold transition-all duration-300 ${styles[variant]} ${className}`}
+      onClick={(event) => {
+        event.preventDefault();
+        if (trackEventName) {
+          trackEvent(trackEventName, trackPayload);
+        }
+        openLeadForm({
+          source: typeof trackPayload?.source === 'string' ? trackPayload.source : 'landing_cta',
+          ctaLabel: ctaLabel || getButtonLabel(children) || 'Abrir formulário',
+          targetHref: href,
+        });
+      }}
+    >
+      {children}
+    </a>
+  );
+}
+
+function HeroSection() {
+  return (
+    <section className="relative overflow-hidden pt-28 sm:pt-32 lg:pt-36">
+      <div className="hero-glow hero-glow-top" />
+      <div className="hero-glow hero-glow-bottom" />
+
+      <div className="mx-auto flex w-full max-w-[1240px] flex-col items-center px-4 text-center sm:px-6">
+        <motion.div
+          initial={{ opacity: 0, y: 22 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="max-w-4xl"
+        >
+          <div className="inline-flex items-center gap-2 rounded-full bg-brand-primary-soft px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-brand-primary">
+            <span className="h-2 w-2 rounded-full bg-brand-primary" />
+            Plataforma de operação clínica
+          </div>
+
+          <h1 className="mt-10 text-5xl font-semibold leading-[1.02] tracking-[-0.06em] text-brand-ink sm:text-6xl sm:leading-[1] lg:text-8xl lg:leading-[0.98]">
+            Controle total da sua 
+            <span className="block pb-[0.26em] bg-[linear-gradient(135deg,#4150dd_0%,#6783ff_100%)] bg-clip-text text-transparent">
+              clínica odontológica.
+            </span>
+          </h1>
+
+          <p className="mx-auto mt-8 max-w-3xl text-xl leading-relaxed text-brand-muted sm:text-[1.45rem]">
+            Agenda, pacientes, prontuário odontológico, financeiro e confirmações automáticas no WhatsApp.
+          </p>
+
+          <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+            <Button
+              href={getRegisterUrl()}
+              className="min-w-[256px] px-8 py-4 text-base"
+              trackEventName="click_trial"
+              trackPayload={{ source: 'hero_primary' }}
+            >
+              Começar 7 dias grátis
+              <ArrowRight className="h-4 w-4" />
+            </Button>
+            <Button
+              href="#recursos"
+              variant="ghost"
+              className="text-base"
+              trackEventName="view_product"
+              trackPayload={{ source: 'hero_secondary' }}
+            >
+              Ver como funciona
+            </Button>
+          </div>
+
+          <p className="mt-8 text-sm text-brand-muted">Sem cartão de crédito · Cancele quando quiser</p>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 28 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.15 }}
+          className="relative mt-18 w-full max-w-5xl"
+        >
+          <div className="hero-dashboard-shell">
+            <img
+              src={dashMainImage}
+              alt="Painel do Medainer com agenda, pacientes e indicadores da clínica"
+              className="hero-dashboard-image"
+              loading="eager"
+            />
+          </div>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
+function PillarsSection() {
+  return (
+    <section className="section-shell pt-20 sm:pt-24 lg:pt-28">
+      <div className="grid gap-8 md:grid-cols-3">
+        {HERO_PILLARS.map((pillar) => (
+          <article key={pillar.title} className="pillar-card">
+            <div className="feature-icon">
+              <pillar.icon className="h-5 w-5" />
+            </div>
+            <h3 className="mt-7 text-3xl font-semibold tracking-[-0.04em] text-brand-ink">{pillar.title}</h3>
+            <p className="mt-4 text-lg leading-relaxed text-brand-muted">{pillar.text}</p>
+          </article>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function AudienceSection() {
+  return (
+    <section id="para-quem-e" className="section-shell section-spacing pt-16 sm:pt-20 lg:pt-24">
+      <SectionHeading
+        eyebrow="Para quem é"
+        title="Para clínicas odontológicas que querem crescer com controle."
+        text="Do consultório enxuto à operação com automação no WhatsApp."
+        centered={true}
+      />
+
+      <div className="mt-14 grid gap-6 lg:grid-cols-3">
+        {AUDIENCE_PROFILES.map((profile) => (
+          <article key={profile.title} className="audience-panel">
+            <div className="feature-icon">
+              <profile.icon className="h-5 w-5" />
+            </div>
+            <h3 className="mt-7 text-2xl font-semibold tracking-[-0.04em] text-brand-ink">
+              {profile.title}
+            </h3>
+            <p className="mt-4 text-lg leading-relaxed text-brand-muted">{profile.text}</p>
+          </article>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function BeforeAfterSection() {
+  return (
+    <section className="section-shell section-spacing pt-6 sm:pt-10 lg:pt-14">
+      <SectionHeading
+        eyebrow="Antes e Depois"
+        title="A rotina da clínica antes e depois do Medainer."
+        centered={true}
+      />
+
+      <div className="mt-14 grid gap-6 lg:grid-cols-2">
+        <article className="comparison-card">
+          <p className="comparison-card-title text-[#ef4444]">Sem Medainer</p>
+
+          <ul className="mt-8 space-y-5">
+            {BEFORE_AFTER_COMPARISON.before.map((item) => (
+              <li key={item} className="comparison-list-item">
+                <span className="comparison-list-icon bg-[#fee2e2] text-[#ef4444]">
+                  <X className="h-3.5 w-3.5" />
+                </span>
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+        </article>
+
+        <article className="comparison-card comparison-card-positive">
+          <p className="comparison-card-title text-[#16a34a]">Com Medainer</p>
+
+          <ul className="mt-8 space-y-5">
+            {BEFORE_AFTER_COMPARISON.after.map((item) => (
+              <li key={item} className="comparison-list-item">
+                <span className="comparison-list-icon bg-[#dcfce7] text-[#16a34a]">
+                  <Check className="h-3.5 w-3.5" />
+                </span>
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+        </article>
+      </div>
+
+      <div className="mt-12 flex justify-center">
+        <Button
+          href={getRegisterUrl()}
+          className="min-w-[220px]"
+          trackEventName="click_trial"
+          trackPayload={{ source: 'before_after_cta' }}
+        >
+          Quero testar o Medainer
+          <ArrowRight className="h-4 w-4" />
+        </Button>
+      </div>
+    </section>
+  );
+}
+
+function ResourcesSection() {
+  return (
+    <section id="recursos" className="section-shell section-spacing">
+      <SectionHeading eyebrow="Recursos" title="O essencial da clínica, sem peso." centered={true} />
+
+      <div className="resource-grid mt-14">
+        {RESOURCE_CARDS.map((card) => (
+          <article key={card.title} className="resource-card">
+            <div className="feature-icon">
+              <card.icon className="h-5 w-5" />
+            </div>
+            <h3 className="mt-8 text-2xl font-semibold tracking-[-0.04em] text-brand-ink">{card.title}</h3>
+            <p className="mt-4 text-lg leading-relaxed text-brand-muted">{card.text}</p>
+          </article>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function HowItWorksSection() {
+  return (
+    <section className="section-shell section-spacing pt-8 sm:pt-12 lg:pt-16">
+      <SectionHeading
+        eyebrow="Como funciona"
+        title="Crie sua conta e configure sua clínica."
+        text="Três passos para otimizar sua rotina."
+        centered={true}
+      />
+
+      <div className="mt-14 grid gap-6 lg:grid-cols-3">
+        {HOW_IT_WORKS_STEPS.map((item) => (
+          <article key={item.step} className="how-step-card">
+            <span className="how-step-number">{item.step}</span>
+            <h3 className="mt-8 text-2xl font-semibold tracking-[-0.04em] text-brand-ink">{item.title}</h3>
+            <p className="mt-4 text-lg leading-relaxed text-brand-muted">{item.text}</p>
+          </article>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function FaqItem({ question, answer }: { key?: React.Key; question: string; answer: string }) {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <div className="faq-item">
+      <button
+        type="button"
+        onClick={() => setIsOpen((current) => !current)}
+        className="flex w-full items-center justify-between gap-4 text-left"
+        aria-expanded={isOpen}
+      >
+        <span className="text-lg font-semibold text-brand-ink sm:text-xl">{question}</span>
+        <span className={`faq-chevron ${isOpen ? 'rotate-180' : ''}`}>
+          <ChevronDown className="h-5 w-5" />
+        </span>
+      </button>
+
+      {isOpen ? <p className="mt-4 max-w-3xl text-lg leading-relaxed text-brand-muted">{answer}</p> : null}
+    </div>
+  );
+}
+
+function FaqSection() {
+  return (
+    <section className="section-shell section-spacing pt-8 sm:pt-12 lg:pt-16">
+      <SectionHeading
+        eyebrow="FAQ"
+        title="O que você precisa saber antes de criar sua conta."
+        text="As dúvidas mais comuns para começar com clareza."
+        centered={true}
+      />
+
+      <div className="mx-auto mt-14 max-w-4xl">
+        {FAQ_ITEMS.map((item) => (
+          <FaqItem key={item.question} question={item.question} answer={item.answer} />
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function TrustSection() {
+  return (
+    <section className="section-shell section-spacing pt-8 sm:pt-12 lg:pt-16">
+      <SectionHeading
+        eyebrow="Segurança e confiança"
+        title="Sua rotina mais organizada, com mais controle no dia a dia."
+        text="O Medainer foi pensado para trazer clareza operacional desde o primeiro acesso."
+        centered={true}
+      />
+
+      <div className="mt-14 grid gap-6 lg:grid-cols-3">
+        {TRUST_PILLARS.map((item) => (
+          <article key={item.title} className="trust-card">
+            <div className="feature-icon">
+              <item.icon className="h-5 w-5" />
+            </div>
+            <h3 className="mt-7 text-2xl font-semibold tracking-[-0.04em] text-brand-ink">{item.title}</h3>
+            <p className="mt-4 text-lg leading-relaxed text-brand-muted">{item.text}</p>
+          </article>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function AutomationSection() {
+  return (
+    <section id="automacao" className="section-shell section-spacing">
+      <div className="grid gap-14 lg:grid-cols-[minmax(0,1fr)_440px] lg:items-center">
+        <div className="max-w-2xl">
+          <p className="section-eyebrow">WhatsApp + IA</p>
+          <h2 className="mt-4 text-4xl font-semibold leading-[0.98] tracking-[-0.05em] text-brand-ink sm:text-5xl lg:text-6xl">
+            Reduza faltas e evite buracos na agenda.
+          </h2>
+          <p className="mt-6 text-lg leading-relaxed text-brand-muted">
+            Confirmações automáticas no WhatsApp, lembretes e remarcações sem esforço.
+          </p>
+
+          <ul className="mt-8 space-y-4">
+            {AUTOMATION_BENEFITS.map((item) => (
+              <li key={item} className="flex items-center gap-3 text-lg text-brand-ink">
+                <span className="flex h-7 w-7 items-center justify-center rounded-full bg-brand-primary-soft text-brand-primary">
+                  <Check className="h-4 w-4" />
+                </span>
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+
+          {/* <div className="mt-10">
+            <Button
+              href={PRICING_PATH}
+              className="px-8"
+              trackEventName="click_trial"
+              trackPayload={{ source: 'automation_cta' }}
+            >
+              Conhecer o plano Automação
+            </Button>
+          </div> */}
+        </div>
+
+        <div className="chat-showcase">
+          <div className="chat-card">
+            <div className="flex items-center gap-4 border-b border-brand-line pb-5">
+              <div className="flex h-11 w-11 items-center justify-center rounded-full bg-brand-primary text-base font-semibold text-white">
+                M
+              </div>
+              <div>
+                <p className="text-xl font-semibold text-brand-ink">Medainer · Clínica</p>
+                <p className="mt-1 text-sm text-brand-success">online</p>
+              </div>
+            </div>
+
+            <div className="mt-6 space-y-4">
+              <div className="chat-bubble chat-bubble-in">
+                Olá Maria! Sua consulta com Dr. Lucas está marcada para <strong>amanhã às 14h</strong>. Clique no link para confirmar.
+              </div>
+              <div className="chat-bubble chat-bubble-in !text-blue-500">
+                 https://app.medainer.com.br/r?c=link&action=confirm.
+              </div>
+              <div className="flex justify-end">
+                <div className="chat-bubble chat-bubble-out">Confirmei! ✅</div>
+              </div>
+              <div className="chat-bubble chat-bubble-in">
+                Perfeito! Te enviarei um lembrete 1h antes. Até amanhã 💙
+              </div>
+            </div>
+
+            <p className="mt-8 text-center text-sm text-brand-muted">Respondido automaticamente pelo Medainer</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function PlanCard({
+  plan,
+  buttonLabel,
+  buttonHref,
+  buttonVariant,
+}: {
+  key?: React.Key;
+  plan: ProductPlan;
+  buttonLabel: string;
+  buttonHref: string;
+  buttonVariant: 'primary' | 'secondary';
+}) {
+  const isFeatured = plan.featured;
+
+  return (
+    <article className={`pricing-card ${isFeatured ? 'pricing-card-featured' : ''}`}>
+      <div className="flex min-h-8 items-start">
+        {isFeatured ? (
+          <span className="rounded-full bg-brand-primary px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-white">
+            Mais escolhido
+          </span>
+        ) : null}
+      </div>
+
+      <h3 className={`mt-6 text-[2.1rem] font-semibold tracking-[-0.05em] ${isFeatured ? 'text-white' : 'text-brand-ink'}`}>
+        {plan.name.replace('Medainer ', '')}
+      </h3>
+      <p className={`mt-3 text-lg leading-relaxed ${isFeatured ? 'text-white/74' : 'text-brand-muted'}`}>{plan.description}</p>
+
+      <div className="mt-10 flex items-end gap-3">
+        {plan.pricePrefix ? (
+          <span className={`pb-2 text-base ${isFeatured ? 'text-white/78' : 'text-brand-muted'}`}>{plan.pricePrefix}</span>
+        ) : (
+          <span className={`pb-2 text-base ${isFeatured ? 'text-white/78' : 'text-brand-muted'}`}>R$</span>
+        )}
+        <span className={`text-6xl font-semibold tracking-[-0.06em] ${isFeatured ? 'text-white' : 'text-brand-ink'}`}>
+          {plan.price.replace('R$ ', '')}
+        </span>
+        <span className={`pb-2 text-base ${isFeatured ? 'text-white/78' : 'text-brand-muted'}`}>/mês</span>
+      </div>
+
+      <Button
+        href={buttonHref}
+        variant={buttonVariant}
+        className={`mt-8 w-full ${isFeatured && buttonVariant === 'primary' ? 'bg-[linear-gradient(135deg,#4457f3_0%,#6677ff_100%)]' : ''}`}
+        trackEventName="click_trial"
+        trackPayload={{ source: `pricing_card_${plan.id}` }}
+      >
+        {buttonLabel}
+      </Button>
+
+      <ul className="mt-8 space-y-4">
+        <li className={`flex items-start gap-3 text-lg ${isFeatured ? 'text-white/86' : 'text-brand-ink'}`}>
+          <Check className={`mt-1 h-4 w-4 shrink-0 ${isFeatured ? 'text-white' : 'text-brand-primary'}`} />
+          <span>{plan.practitioners} profissional(is) de saúde</span>
+        </li>
+        <li className={`flex items-start gap-3 text-lg ${isFeatured ? 'text-white/86' : 'text-brand-ink'}`}>
+          <Check className={`mt-1 h-4 w-4 shrink-0 ${isFeatured ? 'text-white' : 'text-brand-primary'}`} />
+          <span>{plan.admins} administrativo(s)</span>
+        </li>
+        {plan.features.slice(0, 5).map((feature) => (
+          <li key={feature} className={`flex items-start gap-3 text-lg ${isFeatured ? 'text-white/86' : 'text-brand-ink'}`}>
+            <Check className={`mt-1 h-4 w-4 shrink-0 ${isFeatured ? 'text-white' : 'text-brand-primary'}`} />
+            <span>{feature}</span>
+          </li>
+        ))}
+      </ul>
+    </article>
+  );
+}
+
+function PricingSection() {
+  const trackedWhatsappUrl = buildTrackedUrl(WHATSAPP_URL);
+
+  return (
+    <section id="planos" className="section-shell section-spacing">
+      <SectionHeading
+        eyebrow="Planos"
+        title="O plano certo para cada estágio."
+        text="Comece grátis. Suba de plano conforme a clínica cresce."
+        centered={true}
+      />
+
+      <div className="mt-16 grid gap-6 xl:grid-cols-3">
+        {PRODUCT_PLANS.map((plan) => {
+          const buttonLabel = plan.id === 'automacao' ? 'Falar com vendas' : plan.featured ? 'Escolher Clínica' : 'Começar grátis';
+          const buttonHref = plan.id === 'automacao' ? trackedWhatsappUrl : getRegisterUrl();
+          const buttonVariant = plan.featured ? 'primary' : 'secondary';
+
+          return (
+            <PlanCard
+              key={plan.id}
+              plan={plan}
+              buttonLabel={buttonLabel}
+              buttonHref={buttonHref}
+              buttonVariant={buttonVariant}
+            />
+          );
+        })}
+      </div>
+    </section>
+  );
+}
+
+function FinalCtaSection() {
+  const trackedWhatsappUrl = buildTrackedUrl(
+    `https://wa.me/5579996018591?text=${encodeURIComponent('Oi! Quero falar com um especialista da Medainer.')}`
+  );
+
+  return (
+    <section className="section-shell section-spacing pb-24 sm:pb-28 lg:pb-32">
+      <div className="mx-auto max-w-4xl text-center">
+        <h2 className="text-4xl font-semibold leading-[1.08] tracking-[-0.05em] text-brand-ink sm:text-5xl sm:leading-[1.05] lg:text-7xl lg:leading-[1.02]">
+          Sua clínica organizada em
+          <span className="block pb-[0.08em] bg-[linear-gradient(135deg,#4457f3_0%,#6884ff_100%)] bg-clip-text text-transparent">
+            clínica odontológica hoje.
+          </span>
+        </h2>
+        <p className="mx-auto mt-6 max-w-3xl text-xl leading-relaxed text-brand-muted">
+          Teste o Medainer por 7 dias. Sem cartão. Sem compromisso.
+        </p>
+
+        <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+          <Button
+            href={getRegisterUrl()}
+            className="min-w-[208px] px-8"
+            trackEventName="click_trial"
+            trackPayload={{ source: 'final_cta_primary' }}
+          >
+            Começar agora
+            <ArrowRight className="h-4 w-4" />
+          </Button>
+          <Button
+            href={trackedWhatsappUrl}
+            variant="ghost"
+            className="text-base"
+            trackEventName="click_trial"
+            trackPayload={{ source: 'final_cta_secondary' }}
+          >
+            Falar com especialista
+          </Button>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function PricingPage() {
+  const trackedWhatsappUrl = buildTrackedUrl(WHATSAPP_URL);
+
+  return (
+    <section className="pt-28 sm:pt-32 lg:pt-36">
+      <div className="section-shell">
+        <SectionHeading
+          eyebrow="Planos"
+          title="Escolha o plano certo para o momento da sua clínica."
+          text="Os mesmos blocos da landing, com mais clareza para comparar capacidade, operação e automação."
+          centered={true}
+        />
+
+        <div className="mt-16 grid gap-6 xl:grid-cols-3">
+          {PRODUCT_PLANS.map((plan) => (
+            <PlanCard
+              key={plan.id}
+              plan={plan}
+              buttonLabel={plan.id === 'automacao' ? 'Falar com vendas' : 'Começar teste grátis'}
+              buttonHref={plan.id === 'automacao' ? trackedWhatsappUrl : getRegisterUrl()}
+              buttonVariant={plan.featured ? 'primary' : 'secondary'}
+            />
+          ))}
+        </div>
+
+        <div className="mt-10 overflow-x-auto rounded-[32px] border border-brand-line bg-white shadow-[0_24px_60px_rgba(15,28,77,0.08)]">
+          <table className="min-w-full text-left">
+            <thead>
+              <tr className="border-b border-brand-line text-sm uppercase tracking-[0.14em] text-brand-muted">
+                <th className="px-6 py-5 font-semibold">Comparativo</th>
+                <th className="px-6 py-5 font-semibold">Solo</th>
+                <th className="px-6 py-5 font-semibold">Clínica</th>
+                <th className="px-6 py-5 font-semibold">Automação</th>
+              </tr>
+            </thead>
+            <tbody>
+              {PLAN_COMPARISON_ROWS.map((row) => (
+                <tr key={row.label} className="border-b border-brand-line last:border-b-0">
+                  <td className="px-6 py-5 text-base font-semibold text-brand-ink">{row.label}</td>
+                  <td className="px-6 py-5 text-base text-brand-muted">{row.solo}</td>
+                  <td className="px-6 py-5 text-base text-brand-muted">{row.clinica}</td>
+                  <td className="px-6 py-5 text-base text-brand-muted">{row.automacao}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <FinalCtaSection />
+    </section>
+  );
+}
+
+function HomePage() {
+  return (
+    <>
+      <HeroSection />
+      <PillarsSection />
+      <AudienceSection />
+      <ResourcesSection />
+      <HowItWorksSection />
+      <AutomationSection />
+      <BeforeAfterSection />
+      <TrustSection />
+      <FinalCtaSection />
+      <FaqSection />
+    </>
+  );
+}
 
 export default function App() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [{ pathname, hash }, setLocationState] = useState(getCurrentLocationState);
-  const demoWhatsappUrl = buildTrackedUrl(WHATSAPP_URL);
   const isPricingPage = pathname === PRICING_PATH;
+  const previousPathRef = useRef(pathname);
 
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 24);
+    const handleScroll = () => setIsScrolled(window.scrollY > 18);
     const handleLocationChange = () => setLocationState(getCurrentLocationState());
 
     window.addEventListener('scroll', handleScroll);
     window.addEventListener('popstate', handleLocationChange);
     window.addEventListener('hashchange', handleLocationChange);
+
+    handleScroll();
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
@@ -252,523 +929,21 @@ export default function App() {
 
     const frameId = window.requestAnimationFrame(() => scrollToHash(hash));
     return () => window.cancelAnimationFrame(frameId);
-  }, [hash, isPricingPage, pathname]);
+  }, [hash, isPricingPage]);
+
+  useEffect(() => {
+    if (previousPathRef.current === pathname) return;
+    previousPathRef.current = pathname;
+    trackPageView(`${pathname}${window.location.search}`);
+  }, [pathname]);
 
   return (
-    <div className="min-h-screen bg-brand-page font-sans text-brand-ink selection:bg-brand-primary selection:text-white">
-      <LandingHeader isScrolled={isScrolled} navigationMode="spa" trackEvent={trackEvent} />
-
-      <main>
-        {isPricingPage ? (
-          <section className="bg-[linear-gradient(180deg,#f8fbff_0%,#ffffff_100%)] pt-28 sm:pt-32 lg:pt-36">
-            <div className="mx-auto w-full max-w-[1240px] px-4 pb-20 sm:px-6 lg:pb-24">
-              <SectionHeading
-                eyebrow="Planos"
-                title="Escolha o plano que acompanha o momento da sua clínica"
-                text="O Medainer Clínica é o plano principal para clínicas em crescimento. O Automação é desenhado com o comercial conforme a operação e o volume no WhatsApp."
-                centered={true}
-              />
-
-              <div className="mt-14 grid gap-6 lg:grid-cols-[0.95fr_1.08fr_0.95fr]">
-                {PRODUCT_PLANS.map((plan) => {
-                  const isCustomPlan = plan.id === 'automacao';
-                  const footerNote = isCustomPlan
-                    ? 'Plano personalizado com escopo alinhado pelo WhatsApp.'
-                    : plan.featured
-                      ? 'Recomendado para clínicas que já precisam de equipe, financeiro e painel da clínica.'
-                      : 'Entrada enxuta para organizar agenda, pacientes e prontuário essencial.';
-                  const capacityItems = [
-                    { label: 'Administrativos', value: plan.admins },
-                    { label: 'Profissionais de saúde', value: plan.practitioners },
-                  ] as const;
-
-                  return (
-                    <article
-                      key={plan.name}
-                      className={`flex h-full flex-col rounded-[24px] border p-8 shadow-sm ${
-                        plan.featured
-                          ? 'border-brand-primary bg-white shadow-[0_24px_60px_rgba(59,130,246,0.10)]'
-                          : 'border-brand-line bg-white'
-                      }`}
-                    >
-                      <div className={`border-b pb-6 ${plan.featured ? 'border-brand-primary/15' : 'border-brand-line'}`}>
-                        <div className="flex flex-wrap items-center gap-3">
-                          <p
-                            className={`rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.22em] ${
-                              plan.featured ? 'bg-brand-primary-soft text-brand-primary' : 'bg-brand-panel text-brand-green'
-                            }`}
-                          >
-                            {plan.badge}
-                          </p>
-                          {plan.featured ? (
-                            <span className="rounded-full border border-brand-primary/20 bg-white px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-brand-primary">
-                              Recomendado
-                            </span>
-                          ) : null}
-                        </div>
-                        <h2 className="mt-4 text-3xl font-serif font-semibold text-brand-ink">{plan.name}</h2>
-                        <p className="mt-4 text-sm leading-relaxed text-brand-muted">{plan.description}</p>
-                      </div>
-
-                      <div className="pt-6">
-                        {plan.pricePrefix ? (
-                          <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-brand-green">{plan.pricePrefix}</p>
-                        ) : null}
-                        <p className="mt-2 flex items-end gap-2 text-brand-ink">
-                          <span className="text-5xl font-serif font-semibold">{plan.price}</span>
-                          <span className="pb-1 text-sm text-brand-muted">/mês</span>
-                        </p>
-                      </div>
-
-                      <ul className="mt-8 flex-grow space-y-4">
-                        {capacityItems.map((item) => (
-                          <li key={item.label} className="flex items-start gap-3 text-sm leading-relaxed text-brand-muted">
-                            <Check className="mt-0.5 h-4 w-4 shrink-0 text-brand-green" />
-                            <span>
-                              <span className="font-semibold text-brand-ink">{item.label}:</span> {item.value}
-                            </span>
-                          </li>
-                        ))}
-                        {plan.features.map((feature) => (
-                          <li key={feature} className="flex items-start gap-3 text-sm leading-relaxed text-brand-muted">
-                            <Check className="mt-0.5 h-4 w-4 shrink-0 text-brand-green" />
-                            <span>{feature}</span>
-                          </li>
-                        ))}
-                      </ul>
-
-                      <div className="mt-8">
-                        <Button
-                          href={demoWhatsappUrl}
-                          variant={plan.featured ? 'primary' : 'outline'}
-                        className="w-full sm:w-full"
-                        trackEventName="click_trial"
-                        trackPayload={{ source: `pricing_page_${plan.id}` }}
-                      >
-                          Solicitar demonstração
-                        </Button>
-                        <p className="mt-3 text-xs leading-relaxed text-brand-muted">{footerNote}</p>
-                      </div>
-                    </article>
-                  );
-                })}
-              </div>
-
-              <div className="mt-12 overflow-x-auto rounded-[24px] border border-brand-line bg-white shadow-sm">
-                <table className="min-w-full text-sm">
-                  <thead>
-                    <tr className="border-b border-brand-line text-left text-brand-muted">
-                      <th className="px-5 py-4 font-semibold">Comparativo</th>
-                      <th className="px-5 py-4 font-semibold">Medainer Solo</th>
-                      <th className="px-5 py-4 font-semibold">Medainer Clínica</th>
-                      <th className="px-5 py-4 font-semibold">Medainer Automação</th>
-                    </tr>
-                  </thead>
-                  <tbody className="text-brand-ink/80">
-                    {PLAN_COMPARISON_ROWS.map((row) => (
-                      <tr key={row.label} className="border-b border-brand-line last:border-b-0">
-                        <td className="px-5 py-4 font-medium">{row.label}</td>
-                        <td className="px-5 py-4">{row.solo}</td>
-                        <td className="px-5 py-4">{row.clinica}</td>
-                        <td className="px-5 py-4">{row.automacao}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </section>
-        ) : (
-        <>
-        <section className="relative overflow-hidden bg-[linear-gradient(180deg,#f8fbff_0%,#ffffff_100%)] pt-28 sm:pt-32 lg:pt-36">
-          <div className="ambient-orb absolute left-0 top-0 h-64 w-64 rounded-full bg-brand-primary-soft blur-3xl" />
-          <div className="ambient-orb-delayed absolute bottom-8 right-0 h-56 w-56 rounded-full bg-brand-green-soft blur-3xl" />
-
-          <div className="mx-auto grid w-full max-w-[1240px] gap-14 px-4 pb-16 sm:px-6 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:items-stretch lg:pb-24">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7 }}
-              className="relative z-10 max-w-xl"
-            >
-              {/* <div className="inline-flex items-center gap-2 px-1 py-1 text-[11px] font-semibold uppercase tracking-[0.22em] text-brand-green">
-                <ShieldCheck className="h-4 w-4" />
-                Gestão para clínicas e consultórios de saúde
-              </div> */}
-              
-              <h1 className="text-4xl font-serif font-semibold leading-[1.02] text-brand-ink sm:text-5xl lg:text-6xl">
-                Sua clínica organizada e sem depender de você para cada detalhe
-              </h1>
-              <p className="mt-6 text-base leading-relaxed text-brand-muted sm:text-lg">
-                Agenda, pacientes, prontuários, financeiro e operação no mesmo lugar para reduzir correria e organizar o dia a dia com mais leveza.
-              </p>
-              <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center">
-                <Button
-                  href={demoWhatsappUrl}
-                  variant="primary"
-                  className="px-8 py-4 text-base"
-                  trackEventName="click_trial"
-                  trackPayload={{ source: 'hero_primary' }}
-                >
-                  Solicitar demonstração
-                </Button>
-                <Button
-                  href="#como-funciona"
-                  variant="link"
-                  className="text-base font-medium"
-                  trackEventName="view_product"
-                  trackPayload={{ source: 'hero_secondary' }}
-                >
-                  Ver como funciona
-                </Button>
-              </div>
-              {/* <div className="interactive-card mt-5 hidden items-center gap-3 rounded-full border border-brand-line bg-white/85 px-4 py-2 text-xs font-medium text-brand-muted shadow-sm backdrop-blur-sm sm:inline-flex">
-                <div className="flex items-center gap-1.5">
-                  <span className="h-2.5 w-2.5 rounded-full bg-brand-primary" />
-                  <span className="h-2.5 w-2.5 rounded-full bg-brand-green" />
-                  <span className="h-2.5 w-2.5 rounded-full bg-brand-primary-soft border border-brand-line" />
-                </div>
-                <span>Para clínicas com equipe e profissionais com consultório</span>
-              </div> */}
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.1 }}
-              className="relative aspect-[16/11] sm:aspect-[16/10] lg:h-full lg:min-h-[540px] lg:aspect-auto"
-            >
-              {/* Hero antigo com video mantido aqui para referencia futura. */}
-              {/*
-              <div className="hero-frame rounded-[24px] border border-brand-line bg-white p-3 shadow-[0_32px_80px_rgba(59,130,246,0.10)] sm:p-4">
-                <div className="mb-3 flex items-center justify-between rounded-[18px] px-4 py-3 text-sm text-brand-muted">
-                  <span>Visão principal do Medainer</span>
-                </div>
-                <div className="overflow-hidden rounded-[18px] border border-brand-line">
-                  <div className="aspect-video w-full bg-brand-panel">
-                    {isHeroVideoPlaying ? (
-                      <div className="relative h-full w-full">
-                        <iframe
-                          ref={heroVideoRef}
-                          src={heroYoutubeEmbedUrl}
-                          title="Apresentação do Medainer"
-                          className="h-full w-full pointer-events-none"
-                          allow="autoplay; encrypted-media; picture-in-picture"
-                          referrerPolicy="strict-origin-when-cross-origin"
-                          tabIndex={-1}
-                        />
-
-                        <button
-                          type="button"
-                          onClick={handleHeroVideoToggle}
-                          className="absolute inset-0 z-10 block h-full w-full cursor-pointer bg-transparent"
-                          aria-label={
-                            isHeroVideoPaused
-                              ? 'Retomar apresentação do Medainer'
-                              : 'Pausar apresentação do Medainer'
-                          }
-                        />
-                      </div>
-                    ) : (
-                      <button
-                        type="button"
-                        onClick={handleHeroVideoStart}
-                        className="group relative block h-full w-full cursor-pointer overflow-hidden"
-                        aria-label="Reproduzir apresentação do Medainer"
-                      >
-                        <img
-                          src={dashboardGeralImage}
-                          alt="Preview da apresentação do Medainer"
-                          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
-                          loading="eager"
-                        />
-                        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(15,23,42,0.08)_0%,rgba(15,23,42,0.28)_100%)]" />
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          <span className="flex h-18 w-18 items-center justify-center rounded-full bg-white text-brand-primary shadow-[0_18px_40px_rgba(15,23,42,0.18)] transition-transform duration-300 group-hover:scale-105">
-                            <Play className="ml-1 h-8 w-8 fill-current" />
-                          </span>
-                        </div>
-                      </button>
-                    )}
-                  </div>
-                </div>
-              </div>
-              */}
-              <div className="h-full overflow-hidden rounded-[24px]">
-                <img
-                  src={dashMainImage}
-                  alt="Painel principal do Medainer"
-                  className="block h-full w-full object-cover object-center"
-                  loading="eager"
-                />
-              </div>
-            </motion.div>
-          </div>
-
-          <div className="mx-auto w-full max-w-[1240px] px-4 pb-4 sm:px-6 lg:pb-6">
-            <div className="hero-marquee overflow-hidden bg-white/70 py-4 backdrop-blur-sm">
-              <div className="hero-marquee-track flex w-max items-center gap-8">
-                {[...HERO_MARQUEE_ITEMS, ...HERO_MARQUEE_ITEMS].map((item, index) => (
-                  <div key={`${item.text}-${index}`} className="flex items-center gap-3 text-sm text-brand-muted">
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-brand-primary-soft text-brand-primary">
-                      <item.icon className="h-5 w-5" />
-                    </div>
-                    <span className="whitespace-nowrap">{item.text}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section className="bg-white py-16 sm:py-20">
-          <div className="mx-auto w-full max-w-[1240px] px-4 sm:px-6">
-            <SectionHeading
-              eyebrow="Para quem é"
-              title="O Medainer faz sentido para clínicas e consultórios que querem mais clareza na rotina"
-              // text="Não importa se você opera com recepção e equipe ou atende no próprio consultório. A ideia é eliminar o improviso e colocar tudo em um fluxo mais simples de acompanhar."
-              centered={true}
-            />
-
-            <div className="mt-8 flex flex-wrap justify-center gap-3">
-              {PRACTITIONER_TYPES.map((item) => (
-                <div
-                  key={item}
-                  className="rounded-full border border-brand-line bg-white px-4 py-2 text-sm font-medium text-brand-muted shadow-sm"
-                >
-                  {item}
-                </div>
-              ))}
-            </div>
-
-            <div className="mt-12 grid gap-5 md:grid-cols-3">
-              {IDEAL_FIT_SEGMENTS.map((item, index) => (
-                <motion.div
-                  key={item.title}
-                  initial={{ opacity: 0, y: 18 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.06 }}
-                  className="interactive-card rounded-[20px] border border-brand-line bg-brand-panel p-6 shadow-sm"
-                >
-                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white text-brand-primary shadow-sm">
-                    <item.icon className="h-6 w-6" />
-                  </div>
-                  <h3 className="mt-5 text-xl font-serif font-semibold text-brand-ink">{item.title}</h3>
-                  <p className="mt-3 text-sm leading-relaxed text-brand-muted">{item.text}</p>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section className="bg-brand-panel py-20 sm:py-20">
-          <div className="mx-auto w-full max-w-[1240px] px-4 sm:px-6">
-            <SectionHeading
-              eyebrow="Rotina desorganizada"
-              title="Quando a rotina fica espalhada, a clínica perde clareza."
-              text="A desorganização não aparece só no atendimento. Ela também pesa na recepção, no acompanhamento dos pacientes e nas decisões do dia a dia."
-              centered={true}
-            />
-
-            <div className="mt-12 grid gap-5 md:grid-cols-3">
-              {PAIN_POINTS.map((item, index) => (
-                <motion.div
-                  key={item}
-                  initial={{ opacity: 0, y: 18 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.08 }}
-                  className="interactive-card rounded-[20px] border border-brand-line bg-white p-7 shadow-sm"
-                >
-                  <p className="text-2xl font-serif font-semibold leading-none text-brand-primary sm:text-3xl">0{index + 1}</p>
-                  <p className="mt-4 text-base leading-relaxed text-brand-muted">{item}</p>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section id="como-funciona" className="bg-white py-20 sm:py-24">
-          <div className="mx-auto grid w-full max-w-[1240px] gap-14 px-4 sm:px-6 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:items-center">
-            <div>
-              <SectionHeading
-              eyebrow="Tudo centralizado"
-              title="Tudo que sua clínica precisa, organizado em um só lugar."
-              text="Com o Medainer, a equipe consulta as mesmas informações e trabalha com mais previsibilidade, sem precisar alternar entre várias ferramentas soltas."
-              />
-
-              <div className="mt-8 grid gap-3 sm:grid-cols-2">
-                {CENTRALIZATION_AREAS.map((item) => (
-                <div key={item} className="interactive-card flex items-center gap-3 rounded-xl border border-brand-line bg-brand-panel px-4 py-4 text-sm text-brand-ink">
-                    <Check className="h-4 w-4 text-brand-green" />
-                    <span>{item}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="grid gap-5">
-              <div className="interactive-card w-full rounded-[24px] border border-brand-line bg-white p-4 shadow-sm">
-                <img src={prontuarioImage} alt="Prontuários organizados no Medainer" className="aspect-[16/10] w-full rounded-[18px] object-cover" />
-              </div>
-
-              <div className="interactive-card w-full rounded-[24px] border border-brand-line bg-white p-4 shadow-sm">
-                <img src={financeiroImage} alt="Financeiro da clínica organizado no Medainer" className="aspect-[16/8] w-full rounded-[18px] object-cover" />
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section id="beneficios" className="bg-brand-page py-20 sm:py-24">
-          <div className="mx-auto w-full max-w-[1240px] px-4 sm:px-6">
-            <SectionHeading
-              eyebrow="Benefícios"
-              title="Mais organização para a rotina inteira da clínica."
-              text="Cada parte do sistema existe para deixar o trabalho mais simples de acompanhar e mais fácil de executar."
-              centered={true}
-            />
-
-            <div className="mt-12 grid gap-5 md:grid-cols-2 xl:grid-cols-5">
-              {BENEFITS.map((item, index) => (
-                <motion.div
-                  key={item.title}
-                  initial={{ opacity: 0, y: 18 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.06 }}
-                  className="interactive-card rounded-[20px] border border-brand-line bg-white p-6 shadow-sm"
-                >
-                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-primary-soft text-brand-primary">
-                    <item.icon className="h-6 w-6" />
-                  </div>
-                  <h3 className="mt-5 text-xl font-serif font-semibold text-brand-ink">{item.title}</h3>
-                  <p className="mt-3 text-sm leading-relaxed text-brand-muted">{item.text}</p>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section id="automacao" className="bg-white py-20 sm:py-24">
-          <div className="mx-auto grid w-full max-w-[1240px] gap-12 px-4 sm:px-6 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] lg:items-center">
-            <div className="interactive-card rounded-[28px] border border-brand-line bg-[linear-gradient(180deg,#f5fbff_0%,#f7fffa_100%)] p-8 sm:p-10">
-              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white text-brand-primary shadow-sm">
-                <Bot className="h-7 w-7" />
-              </div>
-              <p className="mt-6 text-[11px] font-semibold uppercase tracking-[0.22em] text-brand-green">Automação com IA</p>
-              <h2 className="mt-4 text-3xl font-serif font-semibold leading-tight text-brand-ink sm:text-4xl">
-                Automações para reduzir tarefas repetitivas.
-              </h2>
-              <p className="mt-5 text-base leading-relaxed text-brand-muted">
-                O Medainer pode apoiar confirmações, lembretes e fluxos de atendimento com mais consistência, sem deixar a comunicação pesada ou impessoal.
-              </p>
-              <div className="mt-8 space-y-4">
-                {[
-                  'Ajuda a reduzir trabalho manual no WhatsApp',
-                  'Apoia confirmações e lembretes com mais regularidade',
-                  'Mantém a rotina mais organizada conforme a clínica cresce'
-                ].map((item) => (
-                  <div key={item} className="interactive-card flex items-start gap-3 rounded-xl bg-white px-4 py-4 text-sm text-brand-muted shadow-sm">
-                    <Check className="mt-0.5 h-4 w-4 shrink-0 text-brand-green" />
-                    <span>{item}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="grid gap-5">
-              <div className="interactive-card rounded-[24px] border border-brand-line bg-white p-4 shadow-sm">
-                <img src={agendaImage} alt="Fluxos automatizados de agenda no Medainer" className="aspect-[16/10] w-full rounded-[18px] object-cover" />
-              </div>
-              {/* <div className="interactive-card rounded-[24px] border border-brand-line bg-brand-panel p-6 sm:p-8">
-                <p className="text-lg leading-relaxed text-brand-muted">
-                  Não substitui o cuidado humano da clínica. Dá mais fluidez para tarefas que hoje consomem tempo demais da equipe.
-                </p>
-              </div> */}
-            </div>
-          </div>
-        </section>
-
-        <section className="bg-brand-panel py-20 sm:py-24">
-          <div className="mx-auto grid w-full max-w-[1240px] gap-14 px-4 sm:px-6 lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] lg:items-center">
-            <div className="relative">
-              <div className="absolute -left-2 top-6 hidden h-[84%] w-[88%] rounded-[24px] bg-brand-green-soft lg:block" />
-              <img
-                src={profissionalImage}
-                alt="Gestora de clínica em ambiente moderno"
-                className="relative z-10 aspect-[4/5] w-full rounded-[24px] object-cover shadow-[0_24px_60px_rgba(15,23,42,0.08)]"
-              />
-            </div>
-
-            <div>
-              <SectionHeading
-                eyebrow="Onboarding simples"
-                title="Um começo organizado para a equipe usar com segurança."
-                text="A implantação foi pensada para ser clara, acompanhada e adequada à rotina da clínica desde o início."
-              />
-
-              <div className="mt-10 grid gap-5">
-                {ONBOARDING_STEPS.map((item, index) => (
-                  <motion.div
-                    key={item.step}
-                    initial={{ opacity: 0, y: 18 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: index * 0.08 }}
-                    className="interactive-card rounded-[20px] border border-brand-line bg-white p-6 shadow-sm"
-                  >
-                    <div className="flex items-center gap-4">
-                      <div className="flex h-11 w-11 items-center justify-center rounded-full bg-brand-primary-soft text-sm font-semibold text-brand-primary">
-                        {item.step}
-                      </div>
-                      <h3 className="text-xl font-serif font-semibold text-brand-ink">{item.title}</h3>
-                    </div>
-                    <p className="mt-4 text-sm leading-relaxed text-brand-muted">{item.text}</p>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section className="bg-white py-20 sm:py-24">
-          <div className="mx-auto w-full max-w-[980px] px-4 text-center sm:px-6">
-            <h2 className="mt-4 text-4xl font-serif font-semibold leading-tight text-brand-ink sm:text-5xl">
-              Mais clareza para a rotina da sua clínica começa aqui.
-            </h2>
-            <p className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-brand-muted sm:text-lg">
-              Veja como o Medainer pode ajudar sua equipe a organizar agenda, pacientes, prontuários, financeiro e atendimento em um fluxo mais simples.
-            </p>
-            <div className="mt-8 flex flex-col justify-center gap-4 sm:flex-row">
-              <Button
-                href={demoWhatsappUrl}
-                variant="primary"
-                className="px-8 py-4 text-base"
-                trackEventName="click_trial"
-                trackPayload={{ source: 'final_cta_primary' }}
-              >
-                Falar com especialista
-              </Button>
-            </div>
-          </div>
-        </section>
-        </>
-        )}
-      </main>
-
-      <LandingFooter />
-
-      <motion.a
-        href={demoWhatsappUrl}
-        initial={{ scale: 0, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        whileHover={{ scale: 1.06 }}
-        onClick={() => trackEvent('click_trial', { source: 'floating_button' })}
-        className="fixed bottom-5 right-4 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-[0_18px_40px_rgba(37,211,102,0.35)] sm:bottom-8 sm:right-8 sm:h-16 sm:w-16"
-      >
-        <MessageCircle className="h-7 w-7 sm:h-8 sm:w-8" />
-      </motion.a>
-    </div>
+    <LeadFlowProvider experience="landing">
+      <div className="min-h-screen bg-brand-page text-brand-ink">
+        <LandingHeader isScrolled={isScrolled} navigationMode="spa" trackEvent={trackEvent} />
+        <main>{isPricingPage ? <PricingPage /> : <HomePage />}</main>
+        <LandingFooter />
+      </div>
+    </LeadFlowProvider>
   );
 }

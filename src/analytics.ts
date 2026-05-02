@@ -5,6 +5,7 @@ const CAMPAIGN_PARAM_NAMES = new Set(['fbclid', 'gad_source', 'gclid', 'gbraid',
 declare global {
   interface Window {
     dataLayer?: unknown[];
+    fbq?: (...args: unknown[]) => void;
     gtag?: (...args: unknown[]) => void;
     __gaInitialized?: boolean;
     __gaScriptLoading?: boolean;
@@ -58,7 +59,6 @@ function sendInitialPageView() {
       ...trackingConfig,
       send_page_view: false,
     });
-    window.gtag('event', 'page_view', trackingConfig);
   }
 
   if (GOOGLE_ADS_ID) {
@@ -66,6 +66,7 @@ function sendInitialPageView() {
   }
 
   window.__gaInitialized = true;
+  trackPageView(pagePath, { includeMeta: false });
 }
 
 export function initAnalytics() {
@@ -97,6 +98,21 @@ export function initAnalytics() {
     window.__gaScriptLoading = false;
   };
   document.head.appendChild(script);
+}
+
+export function trackPageView(pagePath = getNormalizedPagePath(), options: { includeMeta?: boolean } = {}) {
+  if (typeof window === 'undefined') return;
+
+  const trackingConfig = getTrackingConfig(pagePath);
+  const includeMeta = options.includeMeta ?? true;
+
+  if (typeof window.gtag === 'function' && GA_MEASUREMENT_ID) {
+    window.gtag('event', 'page_view', trackingConfig);
+  }
+
+  if (includeMeta && typeof window.fbq === 'function') {
+    window.fbq('track', 'PageView');
+  }
 }
 
 export function buildTrackedUrl(baseUrl: string): string {

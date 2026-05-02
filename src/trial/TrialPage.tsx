@@ -16,6 +16,7 @@ import pacientesImage from '../assets/images/pacientes.jpg';
 import prontuarioImage from '../assets/images/prontuario.jpg';
 import { buildTrackedUrl } from '../analytics';
 import { LandingFooter, LandingHeader } from '../components/LandingChrome';
+import { LeadFlowProvider, useLeadFlow } from '../components/LeadFlow';
 import { PRODUCT_PLANS } from '../constants/plans';
 
 declare global {
@@ -139,6 +140,24 @@ function trackEvent(eventName: string, payload: Record<string, unknown> = {}) {
   }
 }
 
+function getButtonLabel(children: React.ReactNode): string {
+  return React.Children.toArray(children)
+    .map((child) => {
+      if (typeof child === 'string') {
+        return child.trim();
+      }
+
+      if (React.isValidElement<{ children?: React.ReactNode }>(child) && child.props.children) {
+        return getButtonLabel(child.props.children);
+      }
+
+      return '';
+    })
+    .join(' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
 const Button = ({
   children,
   variant = 'primary',
@@ -154,6 +173,7 @@ const Button = ({
   trackEventName?: string;
   trackPayload?: Record<string, unknown>;
 }) => {
+  const { openLeadForm } = useLeadFlow();
   const baseStyles =
     'inline-flex w-full sm:w-auto items-center justify-center rounded-xl px-6 py-3.5 text-center text-sm font-semibold transition-all duration-300';
   const variants = {
@@ -163,10 +183,16 @@ const Button = ({
     ghost: 'text-brand-primary hover:bg-brand-primary-soft',
   };
 
-  const handleClick = () => {
+  const handleClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault();
     if (trackEventName) {
       trackEvent(trackEventName, trackPayload);
     }
+    openLeadForm({
+      source: typeof trackPayload?.source === 'string' ? trackPayload.source : 'trial_cta',
+      ctaLabel: getButtonLabel(children) || 'Abrir formulário',
+      targetHref: href,
+    });
   };
 
   return (
@@ -244,9 +270,10 @@ const FAQItem = ({ question, answer }: { question: string; answer: string }) => 
   );
 };
 
-export function TrialPage() {
+function TrialPageContent() {
   const [isScrolled, setIsScrolled] = useState(false);
   const appRegisterUrl = buildTrackedUrl(APP_REGISTER_URL);
+  const { openLeadForm } = useLeadFlow();
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
@@ -615,19 +642,34 @@ export function TrialPage() {
 
       <LandingFooter />
 
-      <motion.a
-        href={WHATSAPP_URL}
+      <motion.button
+        type="button"
         initial={{ scale: 0, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         whileHover={{ scale: 1.1 }}
-        onClick={() => trackEvent('click_whatsapp', { source: 'floating_button' })}
+        onClick={() => {
+          trackEvent('click_whatsapp', { source: 'floating_button' });
+          openLeadForm({
+            source: 'floating_button',
+            ctaLabel: 'Tirar dúvida antes de testar',
+            targetHref: WHATSAPP_URL,
+          });
+        }}
         className="group fixed bottom-5 right-4 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-2xl shadow-[#25D366]/40 sm:bottom-8 sm:right-8 sm:h-16 sm:w-16"
       >
         <MessageCircle className="h-7 w-7 sm:h-8 sm:w-8" />
         <span className="pointer-events-none absolute right-full mr-4 hidden whitespace-nowrap rounded-xl border border-brand-line bg-white px-4 py-2 text-sm font-bold text-brand-ink opacity-0 shadow-xl transition-opacity group-hover:opacity-100 sm:block">
           Tirar dúvida antes de testar
         </span>
-      </motion.a>
+      </motion.button>
     </div>
+  );
+}
+
+export function TrialPage() {
+  return (
+    <LeadFlowProvider experience="trial">
+      <TrialPageContent />
+    </LeadFlowProvider>
   );
 }

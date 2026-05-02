@@ -19,6 +19,9 @@ export default defineConfig(({mode}) => {
             if (req.url === '/planos') {
               req.url = '/planos/index.html';
             }
+            if (req.url === '/obrigado') {
+              req.url = '/obrigado/index.html';
+            }
             next();
           });
         },
@@ -38,13 +41,20 @@ export default defineConfig(({mode}) => {
           main: path.resolve(__dirname, 'index.html'),
           pricing: path.resolve(__dirname, 'planos/index.html'),
           trial: path.resolve(__dirname, 'teste-gratuito/index.html'),
+          thankyou: path.resolve(__dirname, 'obrigado/index.html'),
         },
       },
     },
     server: {
+      port: 3007,
+      strictPort: true,
       // HMR is disabled in AI Studio via DISABLE_HMR env var.
       // Do not modifyâfile watching is disabled to prevent flickering during agent edits.
       hmr: process.env.DISABLE_HMR !== 'true',
+    },
+    preview: {
+      port: 3007,
+      strictPort: true,
     },
   };
 });
