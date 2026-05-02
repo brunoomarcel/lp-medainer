@@ -925,49 +925,6 @@ function PricingSection() {
   );
 }
 
-function FinalCtaSection() {
-  const trackedWhatsappUrl = buildTrackedUrl(
-    `https://wa.me/5579996018591?text=${encodeURIComponent('Oi! Quero falar com um especialista da Medainer.')}`
-  );
-
-  return (
-    <section className="section-shell section-spacing pb-24 sm:pb-28 lg:pb-32">
-      <Reveal className="mx-auto w-full max-w-4xl text-center">
-        <h2 className="text-3xl font-semibold leading-[1.08] tracking-[-0.05em] text-brand-ink sm:text-5xl sm:leading-[1.05] lg:text-7xl lg:leading-[1.02]">
-          Sua clínica organizada em
-          <span className="block pb-[0.08em] bg-[linear-gradient(135deg,#4457f3_0%,#6884ff_100%)] bg-clip-text text-transparent">
-            clínica odontológica hoje.
-          </span>
-        </h2>
-        <p className="mx-auto mt-5 max-w-3xl text-base leading-relaxed text-brand-muted sm:mt-6 sm:text-xl">
-          Teste o Medainer por 7 dias. Sem cartão. Sem compromisso.
-        </p>
-
-        <div className="mt-8 flex w-full flex-col items-stretch justify-center gap-4 sm:mt-10 sm:flex-row sm:items-center">
-          <Button
-            href={getRegisterUrl()}
-            className="w-full max-w-full px-8 sm:min-w-[208px] sm:w-auto"
-            trackEventName="click_trial"
-            trackPayload={{ source: 'final_cta_primary' }}
-          >
-            {PRIMARY_CTA_LABEL}
-            <ArrowRight className="h-4 w-4" />
-          </Button>
-          {/* <Button
-            href={trackedWhatsappUrl}
-            variant="ghost"
-            className="w-full justify-center text-base sm:w-auto"
-            trackEventName="click_trial"
-            trackPayload={{ source: 'final_cta_secondary' }}
-          >
-            Falar com especialista
-          </Button> */}
-        </div>
-      </Reveal>
-    </section>
-  );
-}
-
 function PricingPage() {
   const trackedWhatsappUrl = buildTrackedUrl(WHATSAPP_URL);
 
@@ -1017,7 +974,6 @@ function PricingPage() {
         </div>
       </div>
 
-      <FinalCtaSection />
     </section>
   );
 }
@@ -1033,7 +989,6 @@ function HomePage() {
       <AutomationSection />
       <BeforeAfterSection />
       <TrustSection />
-      <FinalCtaSection />
       <FaqSection />
     </>
   );
