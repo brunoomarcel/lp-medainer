@@ -330,7 +330,7 @@ function ModalStepField({
       placeholder={step.placeholder}
       value={value}
       onChange={(event) => onInputChange(event.target.value)}
-      className="w-full rounded-[24px] border border-brand-line bg-white px-5 py-4 text-xl tracking-[-0.03em] text-brand-ink outline-none transition-colors placeholder:text-brand-muted/70 focus:border-brand-primary focus:ring-4 focus:ring-brand-primary/10 sm:text-2xl"
+      className="w-full rounded-[24px] border border-brand-line bg-white px-5 py-4 text-lg tracking-[-0.03em] text-brand-ink outline-none transition-colors placeholder:text-brand-muted/70 focus:border-brand-primary focus:ring-4 focus:ring-brand-primary/10 sm:text-lg"
     />
   );
 }
@@ -410,10 +410,10 @@ function LeadFormModal({
 
             <div className="flex min-h-full flex-1 flex-col px-5 pb-8 pt-16 sm:min-h-0 sm:px-8 sm:pb-8 sm:pt-12">
               <div className="mx-auto flex w-full max-w-[560px] flex-wrap items-center justify-between gap-3">
-                <p className="text-xs font-semibold uppercase tracking-[0.22em] text-brand-primary">
+                <p className="text-xs font-semibold uppercase tracking-[0.22em] text-brand-primary sm:text-[11px]">
                   Formulário Medainer
                 </p>
-                <div className="rounded-full bg-brand-primary-soft px-4 py-2 text-sm font-semibold text-brand-primary">
+                <div className="rounded-full bg-brand-primary-soft px-4 py-2 text-sm font-semibold text-brand-primary sm:text-xs">
                   {stepIndex + 1} de {LEAD_FORM_STEPS.length}
                 </div>
               </div>
@@ -436,7 +436,7 @@ function LeadFormModal({
                     }}
                   >
                     <div>
-                      <h2 className="w-full max-w-none text-3xl font-semibold leading-[1.04] tracking-[-0.06em] text-brand-ink sm:text-5xl">
+                      <h2 className="w-full max-w-none text-3xl font-semibold leading-[1.04] tracking-[-0.06em] text-brand-ink sm:text-[2.5rem]">
                         {step.title}
                       </h2>
                       {/* <p className="mt-5 max-w-2xl text-lg leading-relaxed text-brand-muted">{step.description}</p> */}
