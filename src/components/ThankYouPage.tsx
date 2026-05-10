@@ -29,7 +29,7 @@ export function ThankYouPage() {
           </h1>
           <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-brand-muted sm:mt-6 sm:text-lg">
             {isQualified
-              ? 'Recebemos seus dados. Nosso time entrará em contato em algumas horas para continuar o contato.'
+              ? 'Recebemos seus dados. Nosso time entrará em contato em alguns minutos para continuar o contato.'
               : 'Recebemos suas informações. Pelo perfil atual da sua operação, o caminho mais útil agora é estruturar a clínica antes de uma conversa comercial com o time.'}
           </p>
 
