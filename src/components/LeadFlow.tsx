@@ -475,7 +475,7 @@ function LeadFormModal({
               <X className="h-5 w-5" />
             </button>
 
-            <div className="flex min-h-full flex-1 flex-col px-5 pb-8 pt-16 sm:min-h-0 sm:px-8 sm:pb-8 sm:pt-12">
+            <div className="flex min-h-full flex-1 flex-col px-5 pb-8 pt-12 sm:min-h-0 sm:px-8 sm:pb-8 sm:pt-12">
               <div className="mx-auto flex w-full max-w-[560px] flex-wrap items-center justify-between gap-3">
                 <p className="text-xs font-semibold uppercase tracking-[0.22em] text-brand-primary sm:text-[11px]">
                   Formulário Medainer
@@ -492,10 +492,10 @@ function LeadFormModal({
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -18 }}
                   transition={{ duration: 0.2, ease: 'easeOut' }}
-                  className="mt-8 flex flex-1 flex-col sm:mt-10"
+                  className="mt-6 flex flex-1 flex-col sm:mt-10"
                 >
                   <form
-                    className="mx-auto flex w-full max-w-[560px] flex-1 flex-col justify-center"
+                    className="mx-auto flex w-full max-w-[560px] flex-1 flex-col justify-start sm:justify-center"
                     onSubmit={(event) => {
                       event.preventDefault();
                       if (!canAdvance || isSubmitting || step.kind === 'choice') return;
@@ -507,7 +507,7 @@ function LeadFormModal({
                         {step.title}
                       </h2>
 
-                      <div className="mt-10">
+                      <div className="mt-8 sm:mt-10">
                         <ModalStepField
                           step={step}
                           value={value}
