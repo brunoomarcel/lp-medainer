@@ -89,17 +89,17 @@ export function LandingHeader({
         isScrolled
           ? 'border-b border-brand-line/80 bg-white/88 py-3 shadow-[0_14px_36px_rgba(15,28,77,0.08)] backdrop-blur-xl'
           : 'bg-transparent py-5'
-      }`}
+      } overflow-x-clip`}
     >
-      <div className="mx-auto flex w-full max-w-[1240px] items-center justify-between gap-4 px-4 sm:px-6">
-        <HeaderLink href="/" navigationMode={navigationMode} className="flex items-center gap-3">
+      <div className="mx-auto flex w-full max-w-[1240px] min-w-0 items-center justify-between gap-4 px-4 sm:px-6">
+        <HeaderLink href="/" navigationMode={navigationMode} className="flex min-w-0 items-center gap-3">
           <img
             src={medainerSymbol}
             alt="Logo da Medainer"
             className="h-10 w-10 rounded-full object-cover shadow-[0_12px_26px_rgba(68,87,243,0.24)] sm:h-11 sm:w-11"
             loading="eager"
           />
-          <span className="text-xl font-semibold tracking-[-0.04em] text-brand-ink sm:text-2xl">Medainer</span>
+          <span className="truncate text-xl font-semibold tracking-[-0.04em] text-brand-ink sm:text-2xl">Medainer</span>
         </HeaderLink>
 
         <nav className="hidden items-center gap-10 lg:flex">
@@ -142,7 +142,7 @@ export function LandingHeader({
         <button
           type="button"
           onClick={() => setIsMobileMenuOpen((current) => !current)}
-          className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-brand-line bg-white/92 text-brand-ink shadow-[0_8px_24px_rgba(15,28,77,0.08)] lg:hidden"
+          className="shrink-0 inline-flex h-11 w-11 items-center justify-center rounded-full border border-brand-line bg-white/92 text-brand-ink shadow-[0_8px_24px_rgba(15,28,77,0.08)] lg:hidden"
           aria-label={isMobileMenuOpen ? 'Fechar menu' : 'Abrir menu'}
           aria-expanded={isMobileMenuOpen}
         >

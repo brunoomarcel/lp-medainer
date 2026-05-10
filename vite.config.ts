@@ -13,14 +13,16 @@ export default defineConfig(({mode}) => {
         name: 'trial-route-rewrite',
         configureServer(server) {
           server.middlewares.use((req, _res, next) => {
-            if (req.url === '/teste-gratuito') {
-              req.url = '/teste-gratuito/index.html';
+            const url = req.url || '';
+
+            if (url === '/teste-gratuito' || url.startsWith('/teste-gratuito?')) {
+              req.url = url.replace('/teste-gratuito', '/teste-gratuito/index.html');
             }
-            if (req.url === '/planos') {
-              req.url = '/planos/index.html';
+            if (url === '/planos' || url.startsWith('/planos?')) {
+              req.url = url.replace('/planos', '/planos/index.html');
             }
-            if (req.url === '/obrigado') {
-              req.url = '/obrigado/index.html';
+            if (url === '/obrigado' || url.startsWith('/obrigado?')) {
+              req.url = url.replace('/obrigado', '/obrigado/index.html');
             }
             next();
           });

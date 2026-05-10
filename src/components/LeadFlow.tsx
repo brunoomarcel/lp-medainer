@@ -22,10 +22,12 @@ type LeadFormData = {
   name: string;
   phone: string;
   email: string;
-  clinicType: string;
+  operationStage: string;
   professionalCount: string;
-  role: string;
+  primaryChallenge: string;
 };
+
+type LeadStatus = 'qualified' | 'disqualified';
 
 type OpenLeadFormOptions = {
   source?: string;
@@ -56,7 +58,7 @@ type LeadFormStep =
       autoComplete: string;
     }
   | {
-      id: 'clinicType' | 'professionalCount' | 'role';
+      id: 'operationStage' | 'professionalCount' | 'primaryChallenge';
       kind: 'choice';
       title: string;
       description: string;
@@ -67,9 +69,9 @@ const INITIAL_FORM_DATA: LeadFormData = {
   name: '',
   phone: '',
   email: '',
-  clinicType: '',
+  operationStage: '',
   professionalCount: '',
-  role: '',
+  primaryChallenge: '',
 };
 
 const LEAD_FORM_STEPS: LeadFormStep[] = [
@@ -77,15 +79,15 @@ const LEAD_FORM_STEPS: LeadFormStep[] = [
     id: 'name',
     kind: 'input',
     title: 'Qual é o seu nome?',
-    description: 'Quero te chamar do jeito certo antes de mostrar como o Medainer se encaixa na sua clínica.',
-    placeholder: 'Digite seu nome completo',
+    description: 'Esses dados serão usados para enviar sua demonstração personalizada.',
+    placeholder: 'Seu nome completo',
     inputType: 'text',
     autoComplete: 'name',
   },
   {
     id: 'phone',
     kind: 'input',
-    title: 'Qual é o seu telefone?',
+    title: 'Qual é o seu WhatsApp?',
     description: 'Usamos esse número para continuar seu atendimento e organizar o retorno do time.',
     placeholder: '(00) 00000-0000',
     inputType: 'tel',
@@ -95,7 +97,7 @@ const LEAD_FORM_STEPS: LeadFormStep[] = [
   {
     id: 'email',
     kind: 'input',
-    title: 'E o seu melhor e-mail?',
+    title: 'E o seu melhor email?',
     description: 'Assim a gente consegue te enviar os próximos passos sem depender só do WhatsApp.',
     placeholder: 'voce@clinica.com.br',
     inputType: 'email',
@@ -103,30 +105,30 @@ const LEAD_FORM_STEPS: LeadFormStep[] = [
     autoComplete: 'email',
   },
   {
-    id: 'clinicType',
+    id: 'operationStage',
     kind: 'choice',
-    title: 'Qual é o tipo da sua clínica?',
-    description: 'Isso ajuda a mostrar o fluxo mais próximo da sua operação atual.',
+    title: 'Qual melhor descreve sua operação hoje?',
+    description: 'Quero entender o momento da sua clínica de um jeito simples e humano.',
     options: [
       {
-        label: 'Consultório odontológico',
-        value: 'consultorio_odontologico',
-        description: 'Poucos profissionais',
+        label: 'Atendo sozinho(a)',
+        value: 'solo',
+        description: 'Você concentra o atendimento e boa parte da rotina da clínica.',
       },
       {
-        label: 'Clínica odontológica',
-        value: 'clinica_odontologica',
-        description: 'Equipe, recepção e mais de uma frente operacional no dia a dia.',
+        label: 'Tenho equipe pequena',
+        value: 'small_team',
+        description: 'A clínica já está em movimento, mas ainda pede mais fluidez operacional.',
       },
       {
-        label: 'Rede ou multiunidade',
-        value: 'rede_multiunidade',
-        description: 'Mais de uma unidade ou estrutura com maior complexidade de operação.',
+        label: 'Tenho uma clínica estruturada',
+        value: 'structured_clinic',
+        description: 'Já existe equipe, rotina e necessidade clara de mais organização.',
       },
       {
-        label: 'Outro formato',
-        value: 'outro_formato',
-        description: 'Quero explicar meu contexto com o time depois.',
+        label: 'Tenho múltiplas unidades',
+        value: 'multi_unit',
+        description: 'Você precisa ganhar visão, padronização e controle entre frentes.',
       },
     ],
   },
@@ -134,55 +136,65 @@ const LEAD_FORM_STEPS: LeadFormStep[] = [
     id: 'professionalCount',
     kind: 'choice',
     title: 'Quantos profissionais atendem hoje?',
-    description: 'Esse número ajuda a indicar o melhor ponto de partida entre Solo, Clínica e Automação.',
+    description: 'Isso ajuda a entender o volume de operação e o potencial de encaixe do Medainer.',
     options: [
       {
         label: '1 profissional',
         value: '1',
-        description: 'Consultório em fase inicial.',
+        description: 'Rotina mais concentrada no próprio dentista.',
       },
       {
         label: '2 a 3 profissionais',
         value: '2_3',
-        description: 'Time pequeno com rotina compartilhada.',
+        description: 'Clínica em movimento, com mais agenda e comunicação entre equipe.',
       },
       {
         label: '4 a 10 profissionais',
         value: '4_10',
-        description: 'Clínica em crescimento com mais agenda e coordenação.',
+        description: 'Operação mais intensa, com necessidade de padronização e visibilidade.',
       },
       {
         label: '11 ou mais',
         value: '11_plus',
-        description: 'Estrutura com maior volume e necessidade de visibilidade.',
+        description: 'Estrutura robusta, com mais frentes para coordenar no dia a dia.',
       },
     ],
   },
   {
-    id: 'role',
+    id: 'primaryChallenge',
     kind: 'choice',
-    title: 'O que você é na empresa?',
-    description: 'Assim o time já entende seu papel e a conversa começa no nível certo.',
+    title: 'Qual é hoje o maior desafio da sua clínica?',
+    description: 'Vamos usar isso para direcionar uma demonstração mais assertiva, se fizer sentido para sua operação.',
     options: [
       {
-        label: 'Dentista / profissional',
-        value: 'dentista_profissional',
-        description: 'Atuo diretamente no atendimento clínico.',
+        label: 'Agenda e faltas',
+        value: 'agenda_absences',
+        description: 'Confirmar presença, reduzir buracos e manter a agenda mais previsível.',
       },
       {
-        label: 'Proprietário(a)',
-        value: 'proprietario',
-        description: 'Cuido da clínica e das decisões do negócio.',
+        label: 'Organização da clínica',
+        value: 'clinic_organization',
+        description: 'Centralizar rotina, equipe e operação sem depender de improviso.',
       },
       {
-        label: 'Gestor(a) / coordenador(a)',
-        value: 'gestor_coordenador',
-        description: 'Acompanho operação, processos e resultados.',
+        label: 'Crescimento da operação',
+        value: 'operation_growth',
+        description: 'Crescer com mais clareza sobre agenda, atendimento e fluxo interno.',
       },
       {
-        label: 'Recepção / administrativo',
-        value: 'recepcao_administrativo',
-        description: 'Estou no dia a dia da agenda e da organização da clínica.',
+        label: 'Prontuário e histórico dos pacientes',
+        value: 'patient_records',
+        description: 'Ter contexto clínico organizado sem perder informações no processo.',
+      },
+      {
+        label: 'Comunicação com pacientes',
+        value: 'patient_communication',
+        description: 'Melhorar retornos, lembretes e o relacionamento no pós-atendimento.',
+      },
+      {
+        label: 'Outro',
+        value: 'other',
+        description: 'Existe uma necessidade específica que vale entender melhor na conversa.',
       },
     ],
   },
@@ -203,22 +215,77 @@ function isValidEmail(value: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 }
 
-function isStepComplete(step: LeadFormStep, data: LeadFormData) {
-  const value = data[step.id];
-
-  if (step.id === 'name') {
+function isFieldComplete(field: keyof LeadFormData, value: string) {
+  if (field === 'name') {
     return value.trim().length >= 3;
   }
 
-  if (step.id === 'phone') {
+  if (field === 'phone') {
     return value.replace(/\D/g, '').length >= 10;
   }
 
-  if (step.id === 'email') {
+  if (field === 'email') {
     return isValidEmail(value.trim());
   }
 
   return value.trim().length > 0;
+}
+
+function isStepComplete(step: LeadFormStep, data: LeadFormData) {
+  if (step.kind === 'input') {
+    return isFieldComplete(step.id, data[step.id]);
+  }
+
+  return data[step.id].trim().length > 0;
+}
+
+function getLeadQualification(data: LeadFormData): { status: LeadStatus; reason: string; score: number } {
+  const operationScore = {
+    solo: 0,
+    small_team: 1,
+    structured_clinic: 2,
+    multi_unit: 3,
+  }[data.operationStage] ?? 0;
+
+  const professionalScore = {
+    '1': 0,
+    '2_3': 1,
+    '4_10': 2,
+    '11_plus': 3,
+  }[data.professionalCount] ?? 0;
+
+  const challengeScore = {
+    agenda_absences: 1,
+    clinic_organization: 1,
+    operation_growth: 2,
+    patient_records: 1,
+    patient_communication: 1,
+    other: 0,
+  }[data.primaryChallenge] ?? 0;
+
+  const score = operationScore + professionalScore + challengeScore;
+
+  if (data.operationStage === 'solo' && data.professionalCount === '1') {
+    return {
+      status: 'disqualified',
+      reason: 'solo_operation_low_complexity',
+      score,
+    };
+  }
+
+  if (score >= 3) {
+    return {
+      status: 'qualified',
+      reason: operationScore >= 2 ? 'structured_operation_profile' : 'growing_team_profile',
+      score,
+    };
+  }
+
+  return {
+    status: 'disqualified',
+    reason: 'low_operational_complexity',
+    score,
+  };
 }
 
 function pushAnalyticsEvent(eventName: string, payload: Record<string, unknown>) {
@@ -439,7 +506,6 @@ function LeadFormModal({
                       <h2 className="w-full max-w-none text-3xl font-semibold leading-[1.04] tracking-[-0.06em] text-brand-ink sm:text-[2.5rem]">
                         {step.title}
                       </h2>
-                      {/* <p className="mt-5 max-w-2xl text-lg leading-relaxed text-brand-muted">{step.description}</p> */}
 
                       <div className="mt-10">
                         <ModalStepField
@@ -488,7 +554,7 @@ function LeadFormModal({
                           }`}
                         >
                           {isSubmitting ? <LoaderCircle className="h-4 w-4 animate-spin" /> : null}
-                          {isLastStep ? 'Enviar formulário' : 'Continuar'}
+                          {isLastStep ? 'Solicitar demonstração' : 'Continuar'}
                           {!isSubmitting ? <ArrowRight className="h-4 w-4" /> : null}
                         </button>
                       ) : (
@@ -564,6 +630,7 @@ export function LeadFlowProvider({
     setCtaLabel(options?.ctaLabel || '');
     setTargetHref(options?.targetHref || '');
     setStepIndex(0);
+    setFormData(INITIAL_FORM_DATA);
     setErrorMessage('');
     setIsOpen(true);
 
@@ -597,9 +664,13 @@ export function LeadFlowProvider({
     setIsSubmitting(true);
     setErrorMessage('');
     const submissionStartedAt = Date.now();
+    const leadQualification = getLeadQualification(completedFormData);
 
     const submissionPayload = {
       ...completedFormData,
+      leadStatus: leadQualification.status,
+      leadStatusReason: leadQualification.reason,
+      qualificationScore: leadQualification.score,
       submittedAt: new Date().toISOString(),
       source: contextSource,
       ctaLabel,
@@ -621,29 +692,45 @@ export function LeadFlowProvider({
         await new Promise((resolve) => window.setTimeout(resolve, MIN_SUBMIT_LOADING_MS - elapsedTime));
       }
 
-      pushAnalyticsEvent('generate_lead', {
+      const analyticsPayload = {
         source: contextSource,
         experience,
-        clinic_type: completedFormData.clinicType,
+        lead_status: leadQualification.status,
+        qualification_score: leadQualification.score,
+        operation_stage: completedFormData.operationStage,
         professional_count: completedFormData.professionalCount,
-        role: completedFormData.role,
-      });
+        primary_challenge: completedFormData.primaryChallenge,
+      };
+
+      if (leadQualification.status === 'qualified') {
+        pushAnalyticsEvent('generate_lead', analyticsPayload);
+      } else {
+        pushAnalyticsEvent('lead_disqualified', analyticsPayload);
+      }
+
       pushAnalyticsEvent('lead_form_submitted', {
         source: contextSource,
         experience,
+        lead_status: leadQualification.status,
       });
 
-      if (typeof window.fbq === 'function') {
+      if (leadQualification.status === 'qualified' && typeof window.fbq === 'function') {
         window.fbq('track', 'Lead', {
           content_name: 'Formulário Medainer',
           content_category: experience,
           source: contextSource,
         });
+      } else if (leadQualification.status === 'disqualified') {
+        pushMetaCustomEvent('LeadDisqualified', {
+          source: contextSource,
+          experience,
+          reason: leadQualification.reason,
+        });
       }
 
       setIsOpen(false);
       resetSubmissionState();
-      window.location.assign(buildTrackedUrl(THANK_YOU_PATH));
+      window.location.assign(buildTrackedUrl(`${THANK_YOU_PATH}?status=${leadQualification.status}`));
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Não foi possível enviar agora. Tente novamente.';
       setErrorMessage(message);

@@ -5,9 +5,12 @@ const HEADERS = [
   'name',
   'phone',
   'email',
+  'operationStage',
   'clinicType',
   'professionalCount',
   'role',
+  'leadStatus',
+  'leadStatusReason',
   'source',
   'ctaLabel',
   'targetHref',
@@ -28,6 +31,8 @@ const HEADERS = [
   'msclkid',
   'wbraid',
   'userAgent',
+  'primaryChallenge',
+  'qualificationScore',
 ];
 
 function doGet() {
@@ -111,6 +116,16 @@ function getOrCreateSheet_() {
 function ensureHeaders_(sheet) {
   const hasHeaders = sheet.getLastRow() > 0;
   if (hasHeaders) {
+    const currentHeaders = sheet.getRange(1, 1, 1, Math.max(sheet.getLastColumn(), 1)).getValues()[0];
+
+    HEADERS.forEach((header, index) => {
+      if (currentHeaders[index] === header) {
+        return;
+      }
+
+      sheet.getRange(1, index + 1).setValue(header);
+    });
+
     return;
   }
 
