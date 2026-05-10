@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import { ArrowLeft, ArrowRight, LoaderCircle, X } from 'lucide-react';
 import { buildTrackedUrl } from '../analytics';
@@ -352,12 +352,14 @@ function ModalStepField({
   step,
   value,
   disabled,
+  inputRef,
   onInputChange,
   onChoiceSelect,
 }: {
   step: LeadFormStep;
   value: string;
   disabled: boolean;
+  inputRef?: React.Ref<HTMLInputElement>;
   onInputChange: (value: string) => void;
   onChoiceSelect: (value: string) => void;
 }) {
@@ -390,7 +392,7 @@ function ModalStepField({
 
   return (
     <input
-      autoFocus
+      ref={inputRef}
       type={step.inputType}
       inputMode={step.inputMode}
       autoComplete={step.autoComplete}
@@ -429,11 +431,30 @@ function LeadFormModal({
   onChoiceSelect: (stepId: keyof LeadFormData, value: string) => void;
   onAdvance: () => void;
 }) {
+  const inputRefs = useRef<Record<'name' | 'phone' | 'email', HTMLInputElement | null>>({
+    name: null,
+    phone: null,
+    email: null,
+  });
   const step = LEAD_FORM_STEPS[stepIndex];
   const value = formData[step.id];
   const isLastStep = stepIndex === LEAD_FORM_STEPS.length - 1;
   const canAdvance = isStepComplete(step, formData);
   const progressWidth = `${((stepIndex + 1) / LEAD_FORM_STEPS.length) * 100}%`;
+
+  useEffect(() => {
+    if (!isOpen || step.kind !== 'input') return;
+
+    const nextInput = inputRefs.current[step.id];
+    if (!nextInput) return;
+
+    const timerId = window.setTimeout(() => {
+      nextInput.focus();
+      nextInput.setSelectionRange?.(nextInput.value.length, nextInput.value.length);
+    }, 30);
+
+    return () => window.clearTimeout(timerId);
+  }, [isOpen, step.id, step.kind]);
 
   return (
     <AnimatePresence>
@@ -482,91 +503,110 @@ function LeadFormModal({
                 </p>
               </div>
 
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={step.id}
-                  initial={{ opacity: 0, y: 18 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -18 }}
-                  transition={{ duration: 0.2, ease: 'easeOut' }}
-                  className="mt-6 flex flex-1 flex-col sm:mt-10"
+              <div className="mt-6 flex flex-1 flex-col sm:mt-10">
+                <form
+                  className="mx-auto flex w-full max-w-[560px] flex-1 flex-col justify-start sm:justify-center"
+                  onSubmit={(event) => {
+                    event.preventDefault();
+                    if (!canAdvance || isSubmitting || step.kind === 'choice') return;
+                    onAdvance();
+                  }}
                 >
-                  <form
-                    className="mx-auto flex w-full max-w-[560px] flex-1 flex-col justify-start sm:justify-center"
-                    onSubmit={(event) => {
-                      event.preventDefault();
-                      if (!canAdvance || isSubmitting || step.kind === 'choice') return;
-                      onAdvance();
-                    }}
+                  <div className="relative">
+                    {LEAD_FORM_STEPS.map((panelStep, index) => {
+                      const isActive = index === stepIndex;
+                      const panelValue = formData[panelStep.id];
+
+                      return (
+                        <motion.div
+                          key={panelStep.id}
+                          initial={false}
+                          animate={{
+                            opacity: isActive ? 1 : 0,
+                            y: isActive ? 0 : 12,
+                          }}
+                          transition={{ duration: 0.2, ease: 'easeOut' }}
+                          className={isActive ? 'relative' : 'pointer-events-none absolute inset-0'}
+                          aria-hidden={!isActive}
+                        >
+                          <div className={isActive ? '' : 'invisible'}>
+                            <h2 className="w-full max-w-none text-3xl font-semibold leading-[1.04] tracking-[-0.06em] text-brand-ink sm:text-[2.5rem]">
+                              {panelStep.title}
+                            </h2>
+
+                            <div className="mt-8 sm:mt-10">
+                              <ModalStepField
+                                step={panelStep}
+                                value={panelValue}
+                                disabled={isSubmitting || !isActive}
+                                inputRef={
+                                  panelStep.kind === 'input'
+                                    ? (node) => {
+                                        inputRefs.current[panelStep.id] = node;
+                                      }
+                                    : undefined
+                                }
+                                onInputChange={(nextValue) => onInputChange(panelStep.id, nextValue)}
+                                onChoiceSelect={(nextValue) => onChoiceSelect(panelStep.id, nextValue)}
+                              />
+                            </div>
+                          </div>
+                        </motion.div>
+                      );
+                    })}
+
+                    {errorMessage ? <p className="mt-4 text-sm font-medium text-[#dc2626]">{errorMessage}</p> : null}
+                  </div>
+
+                  <div
+                    className={`mt-8 sm:mt-10 ${
+                      step.kind === 'input'
+                        ? 'grid grid-cols-2 gap-3 sm:flex sm:flex-row sm:items-center sm:justify-between'
+                        : 'flex flex-col items-center justify-center gap-3 text-center'
+                    }`}
                   >
-                    <div>
-                      <h2 className="w-full max-w-none text-3xl font-semibold leading-[1.04] tracking-[-0.06em] text-brand-ink sm:text-[2.5rem]">
-                        {step.title}
-                      </h2>
-
-                      <div className="mt-8 sm:mt-10">
-                        <ModalStepField
-                          step={step}
-                          value={value}
-                          disabled={isSubmitting}
-                          onInputChange={(nextValue) => onInputChange(step.id, nextValue)}
-                          onChoiceSelect={(nextValue) => onChoiceSelect(step.id, nextValue)}
-                        />
-                      </div>
-
-                      {errorMessage ? <p className="mt-4 text-sm font-medium text-[#dc2626]">{errorMessage}</p> : null}
-                    </div>
-
-                    <div
-                      className={`mt-8 sm:mt-10 ${
-                        step.kind === 'input'
-                          ? 'grid grid-cols-2 gap-3 sm:flex sm:flex-row sm:items-center sm:justify-between'
-                          : 'flex flex-col items-center justify-center gap-3 text-center'
+                    <button
+                      type="button"
+                      onClick={onBack}
+                      disabled={stepIndex === 0 || isSubmitting}
+                      className={`inline-flex items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-semibold transition-colors ${
+                        step.kind === 'input' ? 'w-full sm:w-auto' : 'w-auto'
+                      } ${
+                        stepIndex === 0 || isSubmitting
+                          ? 'cursor-not-allowed text-brand-muted/45'
+                          : 'text-brand-muted hover:text-brand-ink'
                       }`}
                     >
+                      <ArrowLeft className="h-4 w-4" />
+                      Voltar
+                    </button>
+
+                    {step.kind === 'input' ? (
                       <button
-                        type="button"
-                        onClick={onBack}
-                        disabled={stepIndex === 0 || isSubmitting}
-                        className={`inline-flex items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-semibold transition-colors ${
-                          step.kind === 'input' ? 'w-full sm:w-auto' : 'w-auto'
-                        } ${
-                          stepIndex === 0 || isSubmitting
-                            ? 'cursor-not-allowed text-brand-muted/45'
-                            : 'text-brand-muted hover:text-brand-ink'
+                        type="submit"
+                        disabled={!canAdvance || isSubmitting}
+                        className={`inline-flex w-full items-center justify-center gap-2 rounded-full px-6 py-3.5 text-sm font-semibold transition-all duration-300 sm:min-w-[196px] sm:w-auto ${
+                          canAdvance && !isSubmitting
+                            ? 'bg-[linear-gradient(135deg,#4457f3_0%,#6273ff_100%)] text-white shadow-[0_18px_48px_rgba(68,87,243,0.24)] hover:-translate-y-0.5'
+                            : 'cursor-not-allowed bg-brand-line text-white/70'
                         }`}
                       >
-                        <ArrowLeft className="h-4 w-4" />
-                        Voltar
+                        {isSubmitting ? <LoaderCircle className="h-4 w-4 animate-spin" /> : null}
+                        {isLastStep ? 'Solicitar demonstração' : 'Continuar'}
+                        {!isSubmitting ? <ArrowRight className="h-4 w-4" /> : null}
                       </button>
-
-                      {step.kind === 'input' ? (
-                        <button
-                          type="submit"
-                          disabled={!canAdvance || isSubmitting}
-                          className={`inline-flex w-full items-center justify-center gap-2 rounded-full px-6 py-3.5 text-sm font-semibold transition-all duration-300 sm:min-w-[196px] sm:w-auto ${
-                            canAdvance && !isSubmitting
-                              ? 'bg-[linear-gradient(135deg,#4457f3_0%,#6273ff_100%)] text-white shadow-[0_18px_48px_rgba(68,87,243,0.24)] hover:-translate-y-0.5'
-                              : 'cursor-not-allowed bg-brand-line text-white/70'
-                          }`}
-                        >
-                          {isSubmitting ? <LoaderCircle className="h-4 w-4 animate-spin" /> : null}
-                          {isLastStep ? 'Solicitar demonstração' : 'Continuar'}
-                          {!isSubmitting ? <ArrowRight className="h-4 w-4" /> : null}
-                        </button>
-                      ) : (
-                        <div className="max-w-[18rem] text-center text-sm text-brand-muted">
-                          <span>
-                            {isLastStep
-                              ? 'Ao escolher, enviamos seus dados e abrimos a página de obrigado.'
-                              : 'Escolha uma opção para seguir.'}
-                          </span>
-                        </div>
-                      )}
-                    </div>
-                  </form>
-                </motion.div>
-              </AnimatePresence>
+                    ) : (
+                      <div className="max-w-[18rem] text-center text-sm text-brand-muted">
+                        <span>
+                          {isLastStep
+                            ? 'Ao escolher, enviamos seus dados e abrimos a página de obrigado.'
+                            : 'Escolha uma opção para seguir.'}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                </form>
+              </div>
             </div>
           </motion.div>
         </motion.div>
