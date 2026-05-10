@@ -469,20 +469,17 @@ function LeadFormModal({
             <button
               type="button"
               onClick={onClose}
-              className="absolute right-4 top-4 inline-flex h-11 w-11 items-center justify-center rounded-full border border-brand-line bg-white/90 text-brand-ink transition-colors hover:border-brand-primary hover:text-brand-primary"
+              className="absolute right-4 top-4 inline-flex h-11 w-11 items-center justify-center rounded-full bg-transparent text-brand-ink transition-colors hover:text-brand-primary"
               aria-label="Fechar formulário"
             >
               <X className="h-5 w-5" />
             </button>
 
             <div className="flex min-h-full flex-1 flex-col px-5 pb-8 pt-12 sm:min-h-0 sm:px-8 sm:pb-8 sm:pt-12">
-              <div className="mx-auto flex w-full max-w-[560px] flex-wrap items-center justify-between gap-3">
+              <div className="mx-auto flex w-full max-w-[560px] items-center">
                 <p className="text-xs font-semibold uppercase tracking-[0.22em] text-brand-primary sm:text-[11px]">
                   Formulário Medainer
                 </p>
-                <div className="rounded-full bg-brand-primary-soft px-4 py-2 text-sm font-semibold text-brand-primary sm:text-xs">
-                  {stepIndex + 1} de {LEAD_FORM_STEPS.length}
-                </div>
               </div>
 
               <AnimatePresence mode="wait">
