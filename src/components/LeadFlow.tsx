@@ -471,7 +471,7 @@ function LeadFormModal({
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: 24, scale: 0.98 }}
           transition={{ duration: 0.24, ease: 'easeOut' }}
-          className="relative flex h-[100dvh] w-full max-w-none flex-col overflow-y-auto border-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.99)_0%,rgba(247,248,253,0.99)_100%)] shadow-none sm:h-auto sm:max-h-[min(90vh,920px)] sm:min-h-0 sm:max-w-[760px] sm:overflow-hidden sm:rounded-[32px] sm:border sm:border-white/70 sm:shadow-[0_40px_120px_rgba(9,16,42,0.28)]"
+          className="relative flex h-[100dvh] w-full max-w-none flex-col overflow-y-auto border-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.99)_0%,rgba(247,248,253,0.99)_100%)] shadow-none sm:h-auto sm:max-h-[min(90vh,920px)] sm:min-h-0 sm:max-w-[760px] sm:overflow-y-auto sm:rounded-[32px] sm:border sm:border-white/70 sm:shadow-[0_40px_120px_rgba(9,16,42,0.28)]"
           onClick={(event) => event.stopPropagation()}
         >
             {isSubmitting ? (
@@ -505,7 +505,7 @@ function LeadFormModal({
 
               <div className="mt-6 flex flex-1 flex-col sm:mt-10">
                 <form
-                  className="mx-auto flex w-full max-w-[560px] flex-1 flex-col justify-start sm:justify-center"
+                  className="mx-auto flex w-full max-w-[560px] flex-1 flex-col justify-start"
                   onSubmit={(event) => {
                     event.preventDefault();
                     if (!canAdvance || isSubmitting || step.kind === 'choice') return;
