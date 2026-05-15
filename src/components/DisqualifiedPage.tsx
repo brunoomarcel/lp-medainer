@@ -28,7 +28,7 @@ export function DisqualifiedPage() {
           </p>
 
           <p className="mt-6 text-sm text-brand-muted">
-            Voltar ao site:
+            Ir para o site:
             {' '}
             <a href="/" className="font-semibold text-brand-primary hover:text-brand-primary-strong">
               medainer.com.br

@@ -24,6 +24,9 @@ export default defineConfig(({mode}) => {
             if (url === '/obrigado' || url.startsWith('/obrigado?')) {
               req.url = url.replace('/obrigado', '/obrigado/index.html');
             }
+            if (url === '/formulario' || url.startsWith('/formulario?')) {
+              req.url = url.replace('/formulario', '/formulario/index.html');
+            }
             next();
           });
         },
@@ -44,6 +47,7 @@ export default defineConfig(({mode}) => {
           pricing: path.resolve(__dirname, 'planos/index.html'),
           trial: path.resolve(__dirname, 'teste-gratuito/index.html'),
           thankyou: path.resolve(__dirname, 'obrigado/index.html'),
+          form: path.resolve(__dirname, 'formulario/index.html'),
         },
       },
     },

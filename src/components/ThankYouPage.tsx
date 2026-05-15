@@ -3,10 +3,6 @@ import { CheckCircle2 } from 'lucide-react';
 import medainerSymbol from '../assets/images/symbol-medainer.png';
 
 export function ThankYouPage() {
-  const searchParams = new URLSearchParams(window.location.search);
-  const status = searchParams.get('status') === 'qualified' ? 'qualified' : 'disqualified';
-  const isQualified = status === 'qualified';
-
   return (
     <div className="min-h-screen bg-brand-page text-brand-ink">
       <main className="flex min-h-screen items-center justify-center px-4 py-10 sm:px-6">
@@ -20,21 +16,19 @@ export function ThankYouPage() {
           <div className="mt-8 flex flex-wrap items-center justify-center gap-3 sm:gap-4">
             <CheckCircle2 className="h-7 w-7 text-[#16a34a] sm:h-8 sm:w-8" />
             <p className="text-xs font-semibold uppercase tracking-[0.16em] text-brand-primary sm:text-sm sm:tracking-[0.2em]">
-              {isQualified ? 'Formulário enviado' : 'Recebemos seus dados'}
+              Formulário enviado
             </p>
           </div>
 
           <h1 className="mx-auto mt-4 max-w-[20ch] text-3xl font-semibold leading-[1.04] tracking-[-0.05em] sm:text-5xl">
-            {isQualified ? 'Obrigado!' : 'Seu momento pede outro próximo passo'}
+            Obrigado!
           </h1>
           <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-brand-muted sm:mt-6 sm:text-lg">
-            {isQualified
-              ? 'Recebemos seus dados. Nosso time entrará em contato em alguns minutos para continuar o contato.'
-              : 'Recebemos suas informações. Pelo perfil atual da sua operação, o caminho mais útil agora é estruturar a clínica antes de uma conversa comercial com o time.'}
+            Recebemos seus dados. Nosso time entrará em contato em alguns minutos para continuar o atendimento.
           </p>
 
           <p className="mt-6 text-sm text-brand-muted">
-            Voltar ao site:
+            Ir para o site:
             {' '}
             <a href="/" className="font-semibold text-brand-primary hover:text-brand-primary-strong">
               medainer.com.br
