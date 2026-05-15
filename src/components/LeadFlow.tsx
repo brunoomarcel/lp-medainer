@@ -678,6 +678,15 @@ export function LeadFormPage({
   }, [hasStarted, step.id, step.kind]);
 
   useEffect(() => {
+    if (typeof window === 'undefined' || !hasStarted || window.innerWidth >= 640) return;
+
+    window.scrollTo({
+      top: 0,
+      behavior: 'auto',
+    });
+  }, [hasStarted, stepIndex]);
+
+  useEffect(() => {
     pushAnalyticsEvent('lead_form_open', {
       source: contextSource,
       cta_label: ctaLabel,
