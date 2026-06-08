@@ -274,6 +274,10 @@ function getCampaignParams() {
   return entries;
 }
 
+function redirectToThankYou() {
+  window.location.assign(buildTrackedUrl(THANK_YOU_PATH));
+}
+
 async function persistLeadSubmission(payload: Record<string, unknown>) {
   if (!LEAD_FORM_WEBHOOK_URL) {
     const previousItems = JSON.parse(window.localStorage.getItem(LOCAL_LEAD_FALLBACK_KEY) || '[]') as Record<string, unknown>[];
@@ -765,7 +769,7 @@ export function LeadFormPage({
         });
       }
 
-      window.location.assign(buildTrackedUrl(THANK_YOU_PATH));
+      redirectToThankYou();
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Não foi possível enviar agora. Tente novamente.';
       setErrorMessage(message);
@@ -1112,7 +1116,7 @@ export function LeadFlowProvider({
 
       setIsOpen(false);
       resetSubmissionState();
-      window.location.assign(buildTrackedUrl(THANK_YOU_PATH));
+      redirectToThankYou();
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Não foi possível enviar agora. Tente novamente.';
       setErrorMessage(message);

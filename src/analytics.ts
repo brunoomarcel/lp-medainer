@@ -1,4 +1,4 @@
-import { ANALYTICS_LINKER_DOMAINS, GA_MEASUREMENT_ID, GOOGLE_ADS_ID } from './constants/analytics';
+import { ANALYTICS_LINKER_DOMAINS, GA_MEASUREMENT_ID } from './constants/analytics';
 
 const CAMPAIGN_PARAM_NAMES = new Set(['fbclid', 'gad_source', 'gclid', 'gbraid', 'msclkid', 'wbraid']);
 
@@ -61,22 +61,17 @@ function sendInitialPageView() {
     });
   }
 
-  if (GOOGLE_ADS_ID) {
-    window.gtag('config', GOOGLE_ADS_ID, trackingConfig);
-  }
-
   window.__gaInitialized = true;
   trackPageView(pagePath, { includeMeta: false });
 }
 
 export function initAnalytics() {
-  const tagId = GA_MEASUREMENT_ID || GOOGLE_ADS_ID;
-  if (typeof window === 'undefined' || !tagId) return;
+  if (typeof window === 'undefined' || !GA_MEASUREMENT_ID) return;
 
   ensureGtagStub();
 
   const existingScript = document.querySelector(
-    `script[src*="googletagmanager.com/gtag/js?id=${tagId}"]`,
+    `script[src*="googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}"]`,
   ) as HTMLScriptElement | null;
 
   if (existingScript) {
@@ -89,7 +84,7 @@ export function initAnalytics() {
 
   const script = document.createElement('script');
   script.async = true;
-  script.src = `https://www.googletagmanager.com/gtag/js?id=${tagId}`;
+  script.src = `https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`;
   script.onload = () => {
     window.__gaScriptLoading = false;
     sendInitialPageView();
