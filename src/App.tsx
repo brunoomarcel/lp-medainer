@@ -18,7 +18,7 @@ import {
 } from 'lucide-react';
 import { motion } from 'motion/react';
 import dashMainImage from './assets/images/dash-main.gif';
-import dashMainSecondaryImage from './assets/images/dash-maink.jpg';
+import dashMainSecondaryImage from './assets/images/dash-maink.png';
 import { buildTrackedUrl, trackPageView } from './analytics';
 import { LandingFooter, LandingHeader } from './components/LandingChrome';
 import { LeadFlowProvider, useLeadFlow } from './components/LeadFlow';
@@ -384,7 +384,7 @@ function Button({
 
 function HeroSection() {
   return (
-    <section className="relative overflow-hidden pt-22 sm:pt-28 lg:pt-36">
+    <section className="relative overflow-hidden pt-22">
       <div className="hero-glow hero-glow-top" />
       <div className="hero-glow hero-glow-bottom" />
 
@@ -395,20 +395,15 @@ function HeroSection() {
           transition={{ duration: 0.6 }}
           className="w-full max-w-4xl"
         >
-          <div className="inline-flex max-w-full items-center gap-2 rounded-full bg-brand-primary-soft px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-brand-primary sm:px-4 sm:text-xs sm:tracking-[0.18em]">
-            <span className="h-2 w-2 rounded-full bg-brand-primary" />
-            Plataforma de operação clínica
-          </div>
 
-          <h1 className="mt-8 text-[2.25rem] font-semibold leading-[1.04] tracking-[-0.06em] text-brand-ink sm:mt-10 sm:text-6xl sm:leading-[1] lg:text-8xl lg:leading-[0.98]">
-            Controle total da sua 
-            <span className="block pb-[0.26em] bg-[linear-gradient(135deg,#4150dd_0%,#6783ff_100%)] bg-clip-text text-transparent">
-              clínica odontológica.
+          <h1 className="mt-8 text-[2.25rem] font-semibold leading-[1.04] tracking-[-0.06em] text-brand-ink sm:text-6xl sm:leading-[1] lg:text-7xl lg:leading-[0.98]">
+            O melhor software para organizar sua
+            <span className="pb-[0.26em] bg-[linear-gradient(135deg,#4150dd_0%,#6783ff_100%)] bg-clip-text text-transparent"> clínica odontológica
             </span>
           </h1>
 
           <p className="mx-auto mt-6 max-w-3xl text-lg leading-relaxed text-brand-muted sm:mt-8 sm:text-[1.45rem]">
-            Agenda, pacientes, prontuário odontológico, financeiro e confirmações automáticas no WhatsApp.
+            Agenda, pacientes, prontuário, financeiro e confirmações automáticas no WhatsApp
           </p>
         </motion.div>
 
@@ -492,7 +487,6 @@ function AudienceSection() {
         <SectionHeading
           eyebrow="Para quem é"
           title="Para clínicas odontológicas que querem crescer com controle."
-          text="Do consultório enxuto à operação com automação no WhatsApp."
           centered={true}
         />
       </Reveal>
@@ -588,7 +582,7 @@ function ResourcesSection() {
   return (
     <section id="recursos" className="section-shell section-spacing">
       <Reveal>
-        <SectionHeading eyebrow="Recursos" title="O essencial da clínica, sem peso." centered={true} />
+        <SectionHeading eyebrow="Recursos" title="Seu consultório completo e organizado" centered={true} />
       </Reveal>
 
       <Reveal className="mx-auto mt-14 w-full max-w-5xl" delay={0.06}>
@@ -630,7 +624,6 @@ function HowItWorksSection() {
         <SectionHeading
           eyebrow="Como funciona"
           title="Crie sua conta e configure sua clínica."
-          text="Três passos para otimizar sua rotina."
           centered={true}
         />
       </Reveal>
@@ -682,8 +675,7 @@ function FaqSection() {
       <Reveal>
         <SectionHeading
           eyebrow="FAQ"
-          title="O que você precisa saber antes de criar sua conta."
-          text="As dúvidas mais comuns para começar com clareza."
+          title="Perguntas frequentes"
           centered={true}
         />
       </Reveal>
@@ -712,7 +704,6 @@ function TrustSection() {
         <SectionHeading
           eyebrow="Segurança e confiança"
           title="Sua rotina mais organizada, com mais controle no dia a dia."
-          text="O Medainer foi pensado para trazer clareza operacional desde o primeiro acesso."
           centered={true}
         />
       </Reveal>
