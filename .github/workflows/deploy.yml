@@ -169,9 +169,8 @@ jobs:
           if timeout 15 bash -c "cat < /dev/null > /dev/tcp/$FTP_HOST/$FTP_PORT"; then
             echo "TCP connection to $FTP_HOST:$FTP_PORT succeeded."
           else
-            echo "Could not open TCP connection to $FTP_HOST:$FTP_PORT from the GitHub runner."
-            echo "This usually means the host/port is unreachable, blocked by firewall, or the service is not listening on that protocol."
-            exit 1
+            echo "::warning::Could not open TCP connection to $FTP_HOST:$FTP_PORT from the GitHub runner."
+            echo "::warning::The deploy step will still run and decide whether the FTP service is reachable."
           fi
 
       - name: Deploy via FTP
