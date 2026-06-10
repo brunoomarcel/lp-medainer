@@ -927,14 +927,35 @@ function PricingSection() {
 
 function PricingPage() {
   const trackedWhatsappUrl = buildTrackedUrl(WHATSAPP_URL);
+  const renderComparisonCell = (value: string | boolean) => {
+    if (typeof value === 'boolean') {
+      return value ? (
+        <span className="inline-flex items-center justify-center text-brand-ink" aria-label="Incluído">
+          <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[#e7f6ec] text-[#1f8f55]">
+            <Check className="h-4 w-4" />
+          </span>
+          <span className="sr-only">Incluído</span>
+        </span>
+      ) : (
+        <span className="inline-flex items-center justify-center text-brand-ink" aria-label="Não incluído">
+          <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[#fdecee] text-[#d14a61]">
+            <X className="h-4 w-4" />
+          </span>
+          <span className="sr-only">Não incluído</span>
+        </span>
+      );
+    }
+
+    return value;
+  };
 
   return (
-    <section className="pt-28 sm:pt-32 lg:pt-36">
+    <section className="pt-28 pb-16 sm:pt-32 sm:pb-20 lg:pt-36 lg:pb-24">
       <div className="section-shell">
         <SectionHeading
           eyebrow="Planos"
           title="Escolha o plano certo para o momento da sua clínica."
-          text="Os mesmos blocos da landing, com mais clareza para comparar capacidade, operação e automação."
+          text="Compare por categoria o que entra em cada plano e entenda exatamente onde a clínica ganha operação, financeiro e automação."
           centered={true}
         />
 
@@ -961,19 +982,26 @@ function PricingPage() {
               </tr>
             </thead>
             <tbody>
-              {PLAN_COMPARISON_ROWS.map((row) => (
-                <tr key={row.label} className="border-b border-brand-line last:border-b-0">
-                  <td className="px-6 py-5 text-base font-semibold text-brand-ink">{row.label}</td>
-                  <td className="px-6 py-5 text-base text-brand-muted">{row.solo}</td>
-                  <td className="px-6 py-5 text-base text-brand-muted">{row.clinica}</td>
-                  <td className="px-6 py-5 text-base text-brand-muted">{row.automacao}</td>
-                </tr>
-              ))}
+              {PLAN_COMPARISON_ROWS.map((row) =>
+                row.kind === 'group' ? (
+                  <tr key={row.label} className="border-b border-brand-line bg-[#f5f7fc]">
+                    <td colSpan={4} className="px-6 py-4 text-sm font-semibold uppercase tracking-[0.14em] text-brand-primary">
+                      {row.label}
+                    </td>
+                  </tr>
+                ) : (
+                  <tr key={row.label} className="border-b border-brand-line last:border-b-0">
+                    <td className="px-6 py-5 text-base font-semibold text-brand-ink">{row.label}</td>
+                    <td className="px-6 py-5 text-base text-brand-muted">{renderComparisonCell(row.solo)}</td>
+                    <td className="px-6 py-5 text-base text-brand-muted">{renderComparisonCell(row.clinica)}</td>
+                    <td className="px-6 py-5 text-base text-brand-muted">{renderComparisonCell(row.automacao)}</td>
+                  </tr>
+                )
+              )}
             </tbody>
           </table>
         </div>
       </div>
-
     </section>
   );
 }
