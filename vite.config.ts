@@ -10,14 +10,11 @@ export default defineConfig(({mode}) => {
       react(),
       tailwindcss(),
       {
-        name: 'trial-route-rewrite',
+        name: 'static-route-rewrite',
         configureServer(server) {
           server.middlewares.use((req, _res, next) => {
             const url = req.url || '';
 
-            if (url === '/teste-gratuito' || url.startsWith('/teste-gratuito?')) {
-              req.url = url.replace('/teste-gratuito', '/teste-gratuito/index.html');
-            }
             if (url === '/planos' || url.startsWith('/planos?')) {
               req.url = url.replace('/planos', '/planos/index.html');
             }
@@ -45,7 +42,6 @@ export default defineConfig(({mode}) => {
         input: {
           main: path.resolve(__dirname, 'index.html'),
           pricing: path.resolve(__dirname, 'planos/index.html'),
-          trial: path.resolve(__dirname, 'teste-gratuito/index.html'),
           thankyou: path.resolve(__dirname, 'obrigado/index.html'),
           form: path.resolve(__dirname, 'formulario/index.html'),
         },
