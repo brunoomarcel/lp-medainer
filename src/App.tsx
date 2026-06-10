@@ -955,7 +955,6 @@ function PricingPage() {
         <SectionHeading
           eyebrow="Planos"
           title="Escolha o plano certo para o momento da sua clínica."
-          text="Compare por categoria o que entra em cada plano e entenda exatamente onde a clínica ganha operação, financeiro e automação."
           centered={true}
         />
 
