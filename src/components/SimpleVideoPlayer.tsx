@@ -10,6 +10,32 @@ type SimpleVideoPlayerProps = {
 export function SimpleVideoPlayer({ src, label, className }: SimpleVideoPlayerProps) {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [posterDataUrl, setPosterDataUrl] = useState<string | null>(null);
+
+  const capturePosterFrame = () => {
+    const video = videoRef.current;
+
+    if (!video || posterDataUrl) {
+      return;
+    }
+
+    const canvas = document.createElement('canvas');
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+
+    if (!canvas.width || !canvas.height) {
+      return;
+    }
+
+    const context = canvas.getContext('2d');
+
+    if (!context) {
+      return;
+    }
+
+    context.drawImage(video, 0, 0, canvas.width, canvas.height);
+    setPosterDataUrl(canvas.toDataURL('image/jpeg', 0.82));
+  };
 
   const togglePlayback = async () => {
     const video = videoRef.current;
@@ -42,10 +68,20 @@ export function SimpleVideoPlayer({ src, label, className }: SimpleVideoPlayerPr
         loop
         playsInline
         preload="auto"
+        onLoadedData={capturePosterFrame}
         onClick={togglePlayback}
         onPlay={() => setIsPlaying(true)}
         onPause={() => setIsPlaying(false)}
       />
+
+      {!isPlaying && posterDataUrl ? (
+        <img
+          src={posterDataUrl}
+          alt=""
+          aria-hidden="true"
+          className={`${className ?? ''} simple-video-poster`}
+        />
+      ) : null}
 
       <button
         type="button"
