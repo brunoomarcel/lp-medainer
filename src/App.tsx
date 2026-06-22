@@ -17,11 +17,11 @@ import {
   Zap,
 } from 'lucide-react';
 import { motion } from 'motion/react';
-import dashMainImage from './assets/images/dash-main.gif';
 import dashMainSecondaryImage from './assets/images/dash-maink.png';
 import { buildTrackedUrl, trackPageView } from './analytics';
 import { LandingFooter, LandingHeader } from './components/LandingChrome';
 import { LeadFlowProvider, useLeadFlow } from './components/LeadFlow';
+import { SimpleVideoPlayer } from './components/SimpleVideoPlayer';
 import { PLAN_COMPARISON_ROWS, PRODUCT_PLANS, type ProductPlan } from './constants/plans';
 
 declare global {
@@ -37,6 +37,7 @@ const WHATSAPP_URL = `https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(
 const APP_REGISTER_URL =
   (import.meta.env.VITE_APP_REGISTER_URL as string | undefined)?.trim() || 'https://app.medainer.com.br/register';
 const PRIMARY_CTA_LABEL = 'Quero organizar minha clínica';
+const HERO_VIDEO_SRC = '/videos/medainer.MOV';
 
 const HERO_PILLARS = [
   {
@@ -414,11 +415,10 @@ function HeroSection() {
           className="relative mt-10 w-full max-w-5xl sm:mt-14"
         >
           <div className="hero-dashboard-shell">
-            <img
-              src={dashMainImage}
-              alt="Painel do Medainer com agenda, pacientes e indicadores da clínica"
+            <SimpleVideoPlayer
+              src={HERO_VIDEO_SRC}
+              label="Painel do Medainer com agenda, pacientes e indicadores da clínica"
               className="hero-dashboard-image"
-              loading="eager"
             />
           </div>
         </motion.div>

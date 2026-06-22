@@ -1,8 +1,8 @@
 import React, { createContext, useContext, useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import { ArrowLeft, ArrowRight, LoaderCircle, X } from 'lucide-react';
-import dashMainImage from '../assets/images/dash-main.gif';
 import { buildTrackedUrl } from '../analytics';
+import { SimpleVideoPlayer } from './SimpleVideoPlayer';
 
 declare global {
   interface Window {
@@ -16,6 +16,7 @@ const LEAD_FORM_WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbye1LJfNY
 const LOCAL_LEAD_FALLBACK_KEY = 'medainer:pending-leads';
 const MIN_SUBMIT_LOADING_MS = 900;
 export const THANK_YOU_PATH = '/obrigado';
+const HERO_VIDEO_SRC = '/videos/medainer.MOV';
 
 type LeadFlowExperience = 'landing' | 'trial' | 'form';
 
@@ -845,11 +846,10 @@ export function LeadFormPage({
                     <div className="pointer-events-none absolute inset-x-[12%] bottom-[-8%] h-[22%] rounded-full bg-[rgba(45,108,246,0.14)] blur-[52px]" />
                     <div className="relative overflow-hidden rounded-[28px] border border-[#dfe6fb] bg-white p-3 shadow-[0_28px_80px_rgba(48,68,143,0.16)] sm:rounded-[34px] sm:p-4">
                       <div className="overflow-hidden rounded-[22px] border border-[#e7ecfa] bg-[#f7f9ff]">
-                        <img
-                          src={dashMainImage}
-                          alt="Mockup do sistema Medainer em funcionamento"
+                        <SimpleVideoPlayer
+                          src={HERO_VIDEO_SRC}
+                          label="Mockup do sistema Medainer em funcionamento"
                           className="block h-full w-full object-cover object-top"
-                          loading="eager"
                         />
                       </div>
                     </div>
