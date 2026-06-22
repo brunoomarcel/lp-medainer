@@ -13,7 +13,7 @@ const NAV_ITEMS = [
   { href: '/#automacao', label: 'WhatsApp + IA' },
   { href: PRICING_PATH, label: 'Planos' },
 ] as const;
-const PRIMARY_CTA_LABEL = 'Quero organizar minha clínica';
+const PRIMARY_CTA_LABEL = 'Quero testar o Medainer';
 
 type TrackEventFn = (eventName: string, payload?: Record<string, unknown>) => void;
 

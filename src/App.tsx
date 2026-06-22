@@ -36,7 +36,7 @@ const WHATSAPP_MESSAGE = 'Oi! Quero conhecer o plano Automação do Medainer.';
 const WHATSAPP_URL = `https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`;
 const APP_REGISTER_URL =
   (import.meta.env.VITE_APP_REGISTER_URL as string | undefined)?.trim() || 'https://app.medainer.com.br/register';
-const PRIMARY_CTA_LABEL = 'Quero organizar minha clínica';
+const PRIMARY_CTA_LABEL = 'Quero testar o Medainer';
 const HERO_VIDEO_SRC = '/videos/medainer.MOV';
 const HERO_VIDEO_POSTER_SRC = '/videos/medainer-poster.jpg';
 
@@ -399,13 +399,13 @@ function HeroSection() {
         >
 
           <h1 className="mt-8 text-[2.25rem] font-semibold leading-[1.04] tracking-[-0.06em] text-brand-ink sm:text-6xl sm:leading-[1] lg:text-7xl lg:leading-[0.98]">
-            O melhor software para organizar sua
-            <span className="pb-[0.26em] bg-[linear-gradient(135deg,#4150dd_0%,#6783ff_100%)] bg-clip-text text-transparent"> clínica odontológica
-            </span>
+            Reduza faltas com 
+            <span className="pb-[0.26em] bg-[linear-gradient(135deg,#4150dd_0%,#6783ff_100%)] bg-clip-text text-transparent"> confirmações automáticas 
+            </span> no WhatsApp
           </h1>
 
           <p className="mx-auto mt-6 max-w-3xl text-lg leading-relaxed text-brand-muted sm:mt-8 sm:text-[1.45rem]">
-            Agenda, pacientes, prontuário, financeiro e confirmações automáticas no WhatsApp
+            Organize agenda, pacientes, prontuários e financeiro em uma única plataforma
           </p>
         </motion.div>
 
