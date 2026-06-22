@@ -38,6 +38,7 @@ const APP_REGISTER_URL =
   (import.meta.env.VITE_APP_REGISTER_URL as string | undefined)?.trim() || 'https://app.medainer.com.br/register';
 const PRIMARY_CTA_LABEL = 'Quero organizar minha clínica';
 const HERO_VIDEO_SRC = '/videos/medainer.MOV';
+const HERO_VIDEO_POSTER_SRC = '/videos/medainer-poster.jpg';
 
 const HERO_PILLARS = [
   {
@@ -418,6 +419,7 @@ function HeroSection() {
             <SimpleVideoPlayer
               src={HERO_VIDEO_SRC}
               label="Painel do Medainer com agenda, pacientes e indicadores da clínica"
+              poster={HERO_VIDEO_POSTER_SRC}
               className="hero-dashboard-image"
             />
           </div>

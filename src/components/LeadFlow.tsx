@@ -17,6 +17,7 @@ const LOCAL_LEAD_FALLBACK_KEY = 'medainer:pending-leads';
 const MIN_SUBMIT_LOADING_MS = 900;
 export const THANK_YOU_PATH = '/obrigado';
 const HERO_VIDEO_SRC = '/videos/medainer.MOV';
+const HERO_VIDEO_POSTER_SRC = '/videos/medainer-poster.jpg';
 
 type LeadFlowExperience = 'landing' | 'trial' | 'form';
 
@@ -849,6 +850,7 @@ export function LeadFormPage({
                         <SimpleVideoPlayer
                           src={HERO_VIDEO_SRC}
                           label="Mockup do sistema Medainer em funcionamento"
+                          poster={HERO_VIDEO_POSTER_SRC}
                           className="block h-full w-full object-cover object-top"
                         />
                       </div>

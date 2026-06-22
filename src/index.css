@@ -165,10 +165,6 @@
   height: 100%;
 }
 
-.simple-video-poster {
-  pointer-events: none;
-}
-
 .simple-video-toggle {
   position: absolute;
   right: 1rem;
