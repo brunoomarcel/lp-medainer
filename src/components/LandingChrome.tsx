@@ -7,15 +7,13 @@ import medainerSymbol from '../assets/images/symbol-medainer.png';
 const PRICING_PATH = '/planos';
 const TERMS_URL = (import.meta.env.VITE_TERMS_URL as string | undefined)?.trim() || '/termos';
 const PRIVACY_URL = (import.meta.env.VITE_PRIVACY_URL as string | undefined)?.trim() || '/privacidade';
-const WHATSAPP_PHONE = '5579996018591';
-const WHATSAPP_MESSAGE = 'Olá Bruno, quero entender melhor sobre o Medainer para minha clínica odontológica!';
-const PRIMARY_CTA_URL = buildTrackedUrl(`https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`);
+const PRIMARY_CTA_URL = buildTrackedUrl('https://app.medainer.com.br/register');
 const NAV_ITEMS = [
   { href: '/#recursos', label: 'Recursos' },
   { href: '/#automacao', label: 'WhatsApp + IA' },
   { href: PRICING_PATH, label: 'Planos' },
 ] as const;
-const PRIMARY_CTA_LABEL = 'Falar com especialista';
+const PRIMARY_CTA_LABEL = 'Criar conta grátis';
 
 type TrackEventFn = (eventName: string, payload?: Record<string, unknown>) => void;
 
@@ -123,8 +121,6 @@ export function LandingHeader({
         <div className="hidden items-center gap-3 lg:flex">
           <a
             href={PRIMARY_CTA_URL}
-            target="_blank"
-            rel="noreferrer"
             className="inline-flex items-center justify-center rounded-full bg-[linear-gradient(135deg,#4457f3_0%,#6273ff_100%)] px-5 py-3 text-base font-semibold text-white shadow-[0_16px_36px_rgba(68,87,243,0.22)] transition-all duration-300 hover:-translate-y-0.5"
             onClick={() => {
               trackEvent('click_trial', { source: 'header' });
@@ -180,8 +176,6 @@ export function LandingHeader({
                 ))}
                 <a
                   href={PRIMARY_CTA_URL}
-                  target="_blank"
-                  rel="noreferrer"
                   className="mt-2 inline-flex w-full items-center justify-center rounded-full bg-[linear-gradient(135deg,#4457f3_0%,#6273ff_100%)] px-5 py-3.5 text-base font-semibold text-white"
                   onClick={() => {
                     trackEvent('click_trial', { source: 'header_mobile' });

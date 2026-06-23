@@ -31,14 +31,9 @@ declare global {
 }
 
 const PRICING_PATH = '/planos';
-const WHATSAPP_PHONE = '5579996018591';
-const WHATSAPP_MESSAGE = 'Olá Bruno, quero entender melhor sobre o Medainer para minha clínica odontológica!';
-const WHATSAPP_URL = `https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`;
-const AUTOMATION_WHATSAPP_MESSAGE = 'Oi! Quero conhecer o plano Automação do Medainer.';
-const AUTOMATION_WHATSAPP_URL = `https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(AUTOMATION_WHATSAPP_MESSAGE)}`;
 const APP_REGISTER_URL =
   (import.meta.env.VITE_APP_REGISTER_URL as string | undefined)?.trim() || 'https://app.medainer.com.br/register';
-const PRIMARY_CTA_LABEL = 'Falar com Especialista';
+const PRIMARY_CTA_LABEL = 'Criar conta grátis';
 const HERO_VIDEO_SRC = '/videos/medainer.MOV';
 const HERO_VIDEO_POSTER_SRC = '/videos/medainer-poster.jpg';
 
@@ -46,17 +41,17 @@ const HERO_PILLARS = [
   {
     icon: Layers3Icon,
     title: 'Organize',
-    text: 'Agenda, pacientes e prontuário em uma única operação fluida.'
+    text: 'Agenda, pacientes, prontuários e financeiro em uma rotina mais previsível.'
   },
   {
     icon: Zap,
-    title: 'Automatize',
-    text: 'Confirmações, lembretes e remarcações no WhatsApp sem esforço.'
+    title: 'Reduza faltas',
+    text: 'Confirmações, lembretes e remarcações no WhatsApp sem depender de cobrança manual.'
   },
   {
     icon: TrendingUpIcon,
-    title: 'Escale',
-    text: 'Mais pacientes atendidos com menos retrabalho e mais controle.'
+    title: 'Ganhe capacidade',
+    text: 'Atenda melhor e cresça sem aumentar o caos da operação.'
   }
 ] as const;
 
@@ -64,17 +59,17 @@ const AUDIENCE_PROFILES = [
   {
     icon: ToothIcon,
     title: 'Consultórios em início de operação',
-    text: 'Organize agenda, pacientes e evite faltas desde o início.',
+    text: 'Para começar com agenda organizada, rotina clara e menos faltas desde cedo.',
   },
   {
     icon: CalendarDays,
     title: 'Clínicas com recepção e equipe',
-    text: 'Para organizar agenda, equipe e rotina com mais clareza.',
+    text: 'Para dar previsibilidade à agenda, alinhar a equipe e reduzir retrabalho.',
   },
   {
     icon: MessageCircleMore,
     title: 'Clínicas com alto volume de WhatsApp',
-    text: 'Para automatizar confirmações, lembretes e remarcações.',
+    text: 'Para transformar mensagens em confirmações, lembretes e remarcações automáticas.',
   },
 ] as const;
 
@@ -115,24 +110,24 @@ const AUTOMATION_BENEFITS = [
   'Confirmação automática de consultas',
   'Lembretes com horários configuráveis',
   'Remarcação por link',
-  'Agente de IA atendendo 24/7 (consulte plano)'
+  'Mais pacientes comparecendo sem aumentar o esforço da recepção'
 ] as const;
 
 const HOW_IT_WORKS_STEPS = [
   {
     step: '01',
     title: 'Crie sua conta',
-    text: 'Configure a rotina da clínica sem depender de instalação.',
+    text: 'Comece online, sem instalação e com ativação rápida.',
   },
   {
     step: '02',
     title: 'Organize a operação',
-    text: 'Organize agenda, pacientes e prontuários.',
+    text: 'Centralize agenda, pacientes, prontuários e financeiro.',
   },
   {
     step: '03',
-    title: 'Ganhe ritmo',
-    text: 'Ative confirmações automáticas e reduza faltas.',
+    title: 'Ganhe previsibilidade',
+    text: 'Ative confirmações automáticas e reduza buracos na agenda.',
   },
 ] as const;
 
@@ -166,7 +161,7 @@ const FAQ_ITEMS = [
   },
   {
     question: 'O WhatsApp já faz parte da operação?',
-    answer: 'Sim. O Medainer foi desenhado para encaixar lembretes, confirmações e remarcações no fluxo da clínica com menos retrabalho manual.',
+    answer: 'Sim. O Medainer coloca lembretes, confirmações e remarcações dentro do fluxo da clínica para reduzir faltas e retrabalho.',
   },
 ] as const;
 
@@ -237,10 +232,6 @@ function trackEvent(eventName: string, payload: Record<string, unknown> = {}) {
 
 function getRegisterUrl() {
   return buildTrackedUrl(APP_REGISTER_URL);
-}
-
-function getPrimaryWhatsappUrl() {
-  return buildTrackedUrl(WHATSAPP_URL);
 }
 
 function getButtonLabel(children: React.ReactNode): string {
@@ -361,7 +352,7 @@ function Button({
   ctaLabel?: string;
 }) {
   const { openLeadForm } = useLeadFlow();
-  const isWhatsappLink = href.startsWith('https://wa.me/');
+  const isDirectRegisterLink = href.startsWith(APP_REGISTER_URL);
   const styles = {
     primary:
       'button-primary bg-[linear-gradient(135deg,#4457f3_0%,#6273ff_100%)] text-white shadow-[0_18px_48px_rgba(68,87,243,0.28)] hover:-translate-y-0.5',
@@ -373,15 +364,13 @@ function Button({
   return (
     <a
       href={href}
-      target={isWhatsappLink ? '_blank' : undefined}
-      rel={isWhatsappLink ? 'noreferrer' : undefined}
       className={`inline-flex w-full items-center justify-center gap-2 rounded-full px-6 py-3.5 text-center text-sm font-semibold transition-all duration-300 sm:w-auto ${styles[variant]} ${className}`}
       onClick={(event) => {
         if (trackEventName) {
           trackEvent(trackEventName, trackPayload);
         }
 
-        if (isWhatsappLink) {
+        if (isDirectRegisterLink) {
           return;
         }
 
@@ -413,13 +402,13 @@ function HeroSection() {
         >
 
           <h1 className="mt-8 text-[2.25rem] font-semibold leading-[1.04] tracking-[-0.06em] text-brand-ink sm:text-6xl sm:leading-[1] lg:text-7xl lg:leading-[0.98]">
-            Reduza faltas com 
-            <span className="pb-[0.26em] bg-[linear-gradient(135deg,#4150dd_0%,#6783ff_100%)] bg-clip-text text-transparent"> confirmações automáticas 
-            </span> no WhatsApp
+            Organize sua clínica e
+            <span className="pb-[0.26em] bg-[linear-gradient(135deg,#4150dd_0%,#6783ff_100%)] bg-clip-text text-transparent"> reduza faltas
+            </span> sem aumentar sua equipe
           </h1>
 
           <p className="mx-auto mt-6 max-w-3xl text-lg leading-relaxed text-brand-muted sm:mt-8 sm:text-[1.45rem]">
-            O Medainer ajuda clínicas odontológicas a confirmar pacientes, evitar horários vazios e deixar a agenda mais previsível e organizada
+            Agenda, pacientes, prontuários, financeiro e confirmações automáticas em uma única plataforma
           </p>
         </motion.div>
 
@@ -447,7 +436,7 @@ function HeroSection() {
         >
           <div className="flex w-full flex-col items-stretch justify-center gap-4 sm:flex-row sm:items-center">
             <Button
-              href={getPrimaryWhatsappUrl()}
+              href={getRegisterUrl()}
               className="w-full max-w-full px-8 py-4 text-base sm:min-w-[256px] sm:w-auto mb-10"
               trackEventName="click_trial"
               trackPayload={{ source: 'hero_primary' }}
@@ -502,7 +491,7 @@ function AudienceSection() {
       <Reveal>
         <SectionHeading
           eyebrow="Para quem é"
-          title="Para clínicas odontológicas que querem crescer com controle."
+          title="Para clínicas odontológicas que querem crescer com mais previsibilidade."
           centered={true}
         />
       </Reveal>
@@ -581,7 +570,7 @@ function BeforeAfterSection() {
 
       <Reveal className="mt-12 flex w-full justify-center" delay={0.08}>
         <Button
-          href={getPrimaryWhatsappUrl()}
+          href={getRegisterUrl()}
           className="w-full max-w-full sm:min-w-[220px] sm:w-auto"
           trackEventName="click_trial"
           trackPayload={{ source: 'before_after_cta' }}
@@ -598,7 +587,7 @@ function ResourcesSection() {
   return (
     <section id="recursos" className="section-shell section-spacing">
       <Reveal>
-        <SectionHeading eyebrow="Recursos" title="Seu consultório completo e organizado" centered={true} />
+        <SectionHeading eyebrow="Recursos" title="Tudo que sua clínica precisa para operar com clareza" centered={true} />
       </Reveal>
 
       <Reveal className="mx-auto mt-14 w-full max-w-5xl" delay={0.06}>
@@ -639,7 +628,7 @@ function HowItWorksSection() {
       <Reveal>
         <SectionHeading
           eyebrow="Como funciona"
-          title="Crie sua conta e configure sua clínica."
+          title="Comece rápido e organize a clínica em poucos passos."
           centered={true}
         />
       </Reveal>
@@ -719,7 +708,7 @@ function TrustSection() {
       <Reveal>
         <SectionHeading
           eyebrow="Segurança e confiança"
-          title="Sua rotina mais organizada, com mais controle no dia a dia."
+          title="Mais controle no dia a dia para a clínica crescer sem desorganizar."
           centered={true}
         />
       </Reveal>
@@ -752,10 +741,10 @@ function AutomationSection() {
         <Reveal className="max-w-2xl">
           <p className="section-eyebrow">WhatsApp + IA</p>
           <h2 className="mt-4 text-3xl font-semibold leading-[1.02] tracking-[-0.05em] text-brand-ink sm:text-5xl lg:text-6xl">
-            Reduza faltas e evite buracos na agenda.
+            Confirmações automáticas para sustentar uma agenda mais previsível.
           </h2>
           <p className="mt-5 text-base leading-relaxed text-brand-muted sm:mt-6 sm:text-lg">
-            Confirmações automáticas no WhatsApp, lembretes e remarcações sem esforço.
+            O WhatsApp entra como mecanismo: confirma consultas, envia lembretes e ajuda a reduzir horários vazios sem sobrecarregar a recepção.
           </p>
 
           <motion.ul
@@ -900,8 +889,6 @@ function PlanCard({
 }
 
 function PricingSection() {
-  const trackedWhatsappUrl = buildTrackedUrl(AUTOMATION_WHATSAPP_URL);
-
   return (
     <section id="planos" className="section-shell section-spacing">
       <SectionHeading
@@ -914,7 +901,7 @@ function PricingSection() {
       <div className="mt-12 grid gap-6 xl:mt-16 xl:grid-cols-3">
         {PRODUCT_PLANS.map((plan) => {
           const buttonLabel = PRIMARY_CTA_LABEL;
-          const buttonHref = plan.id === 'automacao' ? trackedWhatsappUrl : getRegisterUrl();
+          const buttonHref = getRegisterUrl();
           const buttonVariant = plan.featured ? 'primary' : 'secondary';
 
           return (
@@ -933,7 +920,6 @@ function PricingSection() {
 }
 
 function PricingPage() {
-  const trackedWhatsappUrl = buildTrackedUrl(AUTOMATION_WHATSAPP_URL);
   const renderComparisonCell = (value: string | boolean) => {
     if (typeof value === 'boolean') {
       return value ? (
@@ -971,7 +957,7 @@ function PricingPage() {
               key={plan.id}
               plan={plan}
               buttonLabel={PRIMARY_CTA_LABEL}
-              buttonHref={plan.id === 'automacao' ? trackedWhatsappUrl : getRegisterUrl()}
+              buttonHref={getRegisterUrl()}
               buttonVariant={plan.featured ? 'primary' : 'secondary'}
             />
           ))}
