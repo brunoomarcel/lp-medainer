@@ -3,17 +3,19 @@ import { Menu, X } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 import { buildTrackedUrl } from '../analytics';
 import medainerSymbol from '../assets/images/symbol-medainer.png';
-import { useLeadFlow } from './LeadFlow';
 
 const PRICING_PATH = '/planos';
 const TERMS_URL = (import.meta.env.VITE_TERMS_URL as string | undefined)?.trim() || '/termos';
 const PRIVACY_URL = (import.meta.env.VITE_PRIVACY_URL as string | undefined)?.trim() || '/privacidade';
+const WHATSAPP_PHONE = '5579996018591';
+const WHATSAPP_MESSAGE = 'Olá Bruno, quero entender melhor sobre o Medainer para minha clínica odontológica!';
+const PRIMARY_CTA_URL = buildTrackedUrl(`https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`);
 const NAV_ITEMS = [
   { href: '/#recursos', label: 'Recursos' },
   { href: '/#automacao', label: 'WhatsApp + IA' },
   { href: PRICING_PATH, label: 'Planos' },
 ] as const;
-const PRIMARY_CTA_LABEL = 'Quero testar o Medainer';
+const PRIMARY_CTA_LABEL = 'Falar com especialista';
 
 type TrackEventFn = (eventName: string, payload?: Record<string, unknown>) => void;
 
@@ -71,8 +73,6 @@ export function LandingHeader({
   trackEvent: TrackEventFn;
 }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const loginUrl = buildTrackedUrl('https://app.medainer.com.br/login');
-  const { openLeadForm } = useLeadFlow();
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -121,16 +121,17 @@ export function LandingHeader({
         </nav>
 
         <div className="hidden items-center gap-3 lg:flex">
-          <button
-            type="button"
+          <a
+            href={PRIMARY_CTA_URL}
+            target="_blank"
+            rel="noreferrer"
             className="inline-flex items-center justify-center rounded-full bg-[linear-gradient(135deg,#4457f3_0%,#6273ff_100%)] px-5 py-3 text-base font-semibold text-white shadow-[0_16px_36px_rgba(68,87,243,0.22)] transition-all duration-300 hover:-translate-y-0.5"
             onClick={() => {
               trackEvent('click_trial', { source: 'header' });
-              openLeadForm({ source: 'header', ctaLabel: PRIMARY_CTA_LABEL, targetHref: '/' });
             }}
           >
             {PRIMARY_CTA_LABEL}
-          </button>
+          </a>
           {/* <a
             href={loginUrl}
             className="inline-flex items-center justify-center rounded-full border border-brand-line bg-white px-4 py-3 text-base font-semibold text-brand-ink shadow-[0_10px_30px_rgba(15,28,77,0.08)] transition-colors hover:border-brand-primary hover:text-brand-primary"
@@ -177,17 +178,18 @@ export function LandingHeader({
                     {item.label}
                   </HeaderLink>
                 ))}
-                <button
-                  type="button"
+                <a
+                  href={PRIMARY_CTA_URL}
+                  target="_blank"
+                  rel="noreferrer"
                   className="mt-2 inline-flex w-full items-center justify-center rounded-full bg-[linear-gradient(135deg,#4457f3_0%,#6273ff_100%)] px-5 py-3.5 text-base font-semibold text-white"
                   onClick={() => {
                     trackEvent('click_trial', { source: 'header_mobile' });
-                    openLeadForm({ source: 'header_mobile', ctaLabel: PRIMARY_CTA_LABEL, targetHref: '/' });
                     setIsMobileMenuOpen(false);
                   }}
                 >
                   {PRIMARY_CTA_LABEL}
-                </button>
+                </a>
                 {/* <a
                   href={loginUrl}
                   className="w-full rounded-2xl border border-brand-line bg-white px-4 py-3 text-center text-base font-medium text-brand-ink transition-colors hover:bg-brand-panel"

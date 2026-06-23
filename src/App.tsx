@@ -32,11 +32,13 @@ declare global {
 
 const PRICING_PATH = '/planos';
 const WHATSAPP_PHONE = '5579996018591';
-const WHATSAPP_MESSAGE = 'Oi! Quero conhecer o plano Automação do Medainer.';
+const WHATSAPP_MESSAGE = 'Olá Bruno, quero entender melhor sobre o Medainer para minha clínica odontológica!';
 const WHATSAPP_URL = `https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`;
+const AUTOMATION_WHATSAPP_MESSAGE = 'Oi! Quero conhecer o plano Automação do Medainer.';
+const AUTOMATION_WHATSAPP_URL = `https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(AUTOMATION_WHATSAPP_MESSAGE)}`;
 const APP_REGISTER_URL =
   (import.meta.env.VITE_APP_REGISTER_URL as string | undefined)?.trim() || 'https://app.medainer.com.br/register';
-const PRIMARY_CTA_LABEL = 'Quero testar o Medainer';
+const PRIMARY_CTA_LABEL = 'Falar com Especialista';
 const HERO_VIDEO_SRC = '/videos/medainer.MOV';
 const HERO_VIDEO_POSTER_SRC = '/videos/medainer-poster.jpg';
 
@@ -237,6 +239,10 @@ function getRegisterUrl() {
   return buildTrackedUrl(APP_REGISTER_URL);
 }
 
+function getPrimaryWhatsappUrl() {
+  return buildTrackedUrl(WHATSAPP_URL);
+}
+
 function getButtonLabel(children: React.ReactNode): string {
   return React.Children.toArray(children)
     .map((child) => {
@@ -355,6 +361,7 @@ function Button({
   ctaLabel?: string;
 }) {
   const { openLeadForm } = useLeadFlow();
+  const isWhatsappLink = href.startsWith('https://wa.me/');
   const styles = {
     primary:
       'button-primary bg-[linear-gradient(135deg,#4457f3_0%,#6273ff_100%)] text-white shadow-[0_18px_48px_rgba(68,87,243,0.28)] hover:-translate-y-0.5',
@@ -366,12 +373,19 @@ function Button({
   return (
     <a
       href={href}
+      target={isWhatsappLink ? '_blank' : undefined}
+      rel={isWhatsappLink ? 'noreferrer' : undefined}
       className={`inline-flex w-full items-center justify-center gap-2 rounded-full px-6 py-3.5 text-center text-sm font-semibold transition-all duration-300 sm:w-auto ${styles[variant]} ${className}`}
       onClick={(event) => {
-        event.preventDefault();
         if (trackEventName) {
           trackEvent(trackEventName, trackPayload);
         }
+
+        if (isWhatsappLink) {
+          return;
+        }
+
+        event.preventDefault();
         openLeadForm({
           source: typeof trackPayload?.source === 'string' ? trackPayload.source : 'landing_cta',
           ctaLabel: ctaLabel || getButtonLabel(children) || 'Abrir formulário',
@@ -433,7 +447,7 @@ function HeroSection() {
         >
           <div className="flex w-full flex-col items-stretch justify-center gap-4 sm:flex-row sm:items-center">
             <Button
-              href={getRegisterUrl()}
+              href={getPrimaryWhatsappUrl()}
               className="w-full max-w-full px-8 py-4 text-base sm:min-w-[256px] sm:w-auto mb-10"
               trackEventName="click_trial"
               trackPayload={{ source: 'hero_primary' }}
@@ -567,7 +581,7 @@ function BeforeAfterSection() {
 
       <Reveal className="mt-12 flex w-full justify-center" delay={0.08}>
         <Button
-          href={getRegisterUrl()}
+          href={getPrimaryWhatsappUrl()}
           className="w-full max-w-full sm:min-w-[220px] sm:w-auto"
           trackEventName="click_trial"
           trackPayload={{ source: 'before_after_cta' }}
@@ -886,7 +900,7 @@ function PlanCard({
 }
 
 function PricingSection() {
-  const trackedWhatsappUrl = buildTrackedUrl(WHATSAPP_URL);
+  const trackedWhatsappUrl = buildTrackedUrl(AUTOMATION_WHATSAPP_URL);
 
   return (
     <section id="planos" className="section-shell section-spacing">
@@ -919,7 +933,7 @@ function PricingSection() {
 }
 
 function PricingPage() {
-  const trackedWhatsappUrl = buildTrackedUrl(WHATSAPP_URL);
+  const trackedWhatsappUrl = buildTrackedUrl(AUTOMATION_WHATSAPP_URL);
   const renderComparisonCell = (value: string | boolean) => {
     if (typeof value === 'boolean') {
       return value ? (
