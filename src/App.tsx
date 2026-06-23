@@ -405,7 +405,7 @@ function HeroSection() {
           </h1>
 
           <p className="mx-auto mt-6 max-w-3xl text-lg leading-relaxed text-brand-muted sm:mt-8 sm:text-[1.45rem]">
-            Organize agenda, pacientes, prontuários e financeiro em uma única plataforma
+            O Medainer ajuda clínicas odontológicas a confirmar pacientes, evitar horários vazios e deixar a agenda mais previsível e organizada
           </p>
         </motion.div>
 
