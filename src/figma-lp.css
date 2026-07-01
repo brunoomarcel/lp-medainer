@@ -1,0 +1,48 @@
+.figma-shell {
+  margin: 0 auto;
+  width: 100%;
+  max-width: 1240px;
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
+.figma-section {
+  padding-top: 96px;
+  padding-bottom: 96px;
+}
+
+.figma-lp-pricing {
+  background:
+    linear-gradient(180deg, #f7fbff 0%, #fbfdff 100%);
+}
+
+.figma-lp-access {
+  position: relative;
+  overflow: hidden;
+}
+
+.figma-lp-access::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 5rem;
+  width: min(1100px, 92vw);
+  height: 360px;
+  transform: translateX(-50%);
+  border-radius: 9999px;
+  background: rgba(36, 88, 246, 0.08);
+  filter: blur(70px);
+  pointer-events: none;
+}
+
+@media (max-width: 767px) {
+  .figma-shell {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .figma-section {
+    padding-top: 72px;
+    padding-bottom: 72px;
+  }
+}
