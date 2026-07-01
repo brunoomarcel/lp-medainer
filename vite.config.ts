@@ -24,6 +24,9 @@ export default defineConfig(({mode}) => {
             if (url === '/formulario' || url.startsWith('/formulario?')) {
               req.url = url.replace('/formulario', '/formulario/index.html');
             }
+            if (url === '/lp-figma-preview' || url.startsWith('/lp-figma-preview?')) {
+              req.url = url.replace('/lp-figma-preview', '/lp-figma-preview/index.html');
+            }
             next();
           });
         },
@@ -44,6 +47,7 @@ export default defineConfig(({mode}) => {
           pricing: path.resolve(__dirname, 'planos/index.html'),
           thankyou: path.resolve(__dirname, 'obrigado/index.html'),
           form: path.resolve(__dirname, 'formulario/index.html'),
+          figmaPreview: path.resolve(__dirname, 'lp-figma-preview/index.html'),
         },
       },
     },

@@ -23,6 +23,7 @@ import { LandingFooter, LandingHeader } from './components/LandingChrome';
 import { LeadFlowProvider, useLeadFlow } from './components/LeadFlow';
 import { SimpleVideoPlayer } from './components/SimpleVideoPlayer';
 import { PLAN_COMPARISON_ROWS, PRODUCT_PLANS, type ProductPlan } from './constants/plans';
+import { FigmaLandingPage } from './FigmaLandingPage';
 
 declare global {
   interface Window {
@@ -31,6 +32,7 @@ declare global {
 }
 
 const PRICING_PATH = '/planos';
+const FIGMA_PREVIEW_PATH = '/lp-figma-preview';
 const APP_REGISTER_URL =
   (import.meta.env.VITE_APP_REGISTER_URL as string | undefined)?.trim() || 'https://app.medainer.com.br/register';
 const PRIMARY_CTA_LABEL = 'Criar conta grátis';
@@ -1018,6 +1020,7 @@ export default function App() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [{ pathname, hash }, setLocationState] = useState(getCurrentLocationState);
   const isPricingPage = pathname === PRICING_PATH;
+  const isFigmaPreviewPage = pathname === FIGMA_PREVIEW_PATH;
   const previousPathRef = useRef(pathname);
 
   useEffect(() => {
@@ -1053,9 +1056,17 @@ export default function App() {
   return (
     <LeadFlowProvider experience="landing">
       <div className="min-h-screen bg-brand-page text-brand-ink">
-        <LandingHeader isScrolled={isScrolled} navigationMode="spa" trackEvent={trackEvent} />
-        <main>{isPricingPage ? <PricingPage /> : <HomePage />}</main>
-        <LandingFooter />
+        {isFigmaPreviewPage ? (
+          <main>
+            <FigmaLandingPage trackEvent={trackEvent} />
+          </main>
+        ) : (
+          <>
+            <LandingHeader isScrolled={isScrolled} navigationMode="spa" trackEvent={trackEvent} />
+            <main>{isPricingPage ? <PricingPage /> : <HomePage />}</main>
+            <LandingFooter />
+          </>
+        )}
       </div>
     </LeadFlowProvider>
   );
