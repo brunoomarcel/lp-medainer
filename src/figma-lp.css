@@ -11,9 +11,15 @@
   padding-bottom: 96px;
 }
 
+.figma-feature-media {
+  background:
+    radial-gradient(circle at 12% 100%, rgba(19, 184, 166, 0.2), transparent 48%),
+    linear-gradient(145deg, #f4fbf8 0%, #e2f5ee 100%);
+}
+
 .figma-lp-pricing {
   background:
-    linear-gradient(180deg, #f7fbff 0%, #fbfdff 100%);
+    linear-gradient(180deg, #edf7f7 0%, #f7fafc 100%);
 }
 
 .figma-lp-access {
@@ -30,7 +36,7 @@
   height: 360px;
   transform: translateX(-50%);
   border-radius: 9999px;
-  background: rgba(36, 88, 246, 0.08);
+  background: rgba(19, 184, 166, 0.12);
   filter: blur(70px);
   pointer-events: none;
 }

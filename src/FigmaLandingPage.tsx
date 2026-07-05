@@ -2,17 +2,34 @@ import React from 'react';
 import {
   ArrowRight,
   CalendarDays,
+  CalendarX,
   Check,
   ClipboardList,
   Files,
+  Headset,
+  History,
+  Hospital,
   MessageCircleMore,
   ShieldCheck,
   Sparkles,
   Stethoscope,
+  TrendingUp,
   Users,
 } from 'lucide-react';
 import { buildTrackedUrl } from './analytics';
 import { useLeadFlow } from './components/LeadFlow';
+import acessoTablet from './assets/images/acesso-tablet.png';
+import automacaoWhatsapp from './assets/images/automacao-whatsapp.png';
+import controleOperacional from './assets/images/controle-operacional.png';
+import galeriaAgenda from './assets/images/galeria-agenda.png';
+import galeriaAutomacoes from './assets/images/galeria-automacoes.png';
+import galeriaFinanceiro from './assets/images/galeria-financeiro.png';
+import galeriaPaciente from './assets/images/galeria-paciente.png';
+import galeriaProntuario from './assets/images/galeria-prontuario.png';
+import medainerHeroSection from './assets/images/medainer-hero-section.png';
+import prontuarioOdontologico from './assets/images/prontuario-odontologico.png';
+import recuperacaoPacientes from './assets/images/recuperacao-pacientes.png';
+import relacionamentoPacientes from './assets/images/relacionamento-pacientes.png';
 import medainerSymbol from './assets/images/symbol-medainer.png';
 
 const APP_REGISTER_URL =
@@ -35,18 +52,22 @@ const HERO_PROOFS = [
 
 const PAIN_POINTS = [
   {
+    icon: CalendarX,
     title: 'Pacientes esquecem consultas',
     text: 'Sem lembretes e confirmação, faltas acontecem e horários ficam vazios.',
   },
   {
+    icon: History,
     title: 'Retornos ficam perdidos',
     text: 'Conversas antigas no WhatsApp dificultam saber quem precisa voltar.',
   },
   {
+    icon: Files,
     title: 'Prontuários espalhados',
     text: 'Informações importantes ficam em papéis, planilhas ou mensagens soltas.',
   },
   {
+    icon: Users,
     title: 'Recepção sobrecarregada',
     text: 'A equipe tenta lembrar de tudo manualmente e acaba deixando algo passar.',
   },
@@ -58,36 +79,42 @@ const FEATURE_CARDS = [
     title: 'Agenda inteligente',
     subtitle: 'Organize consultas, retornos e horários livres',
     text: 'Visualize atendimentos, acompanhe status das consultas e reduza esquecimentos na rotina da equipe.',
+    image: medainerHeroSection,
   },
   {
     icon: Files,
     title: 'Prontuário odontológico',
     subtitle: 'Histórico do paciente sempre à mão',
     text: 'Centralize dados, observações, procedimentos, evolução clínica e informações importantes.',
+    image: prontuarioOdontologico,
   },
   {
     icon: MessageCircleMore,
     title: 'Automação WhatsApp',
     subtitle: 'Prepare o paciente antes da consulta',
     text: 'Envie confirmações, orientações e lembretes automáticos para diminuir faltas.',
+    image: automacaoWhatsapp,
   },
   {
     icon: Sparkles,
     title: 'Relacionamento',
     subtitle: 'Continue presente depois da consulta',
     text: 'Automatize acompanhamento, retorno, avaliação e cuidado pós-procedimento.',
+    image: relacionamentoPacientes,
   },
   {
     icon: Users,
     title: 'Recuperação',
     subtitle: 'Traga pacientes antigos de volta',
     text: 'Identifique pacientes parados, organize follow-ups e estimule revisões.',
+    image: recuperacaoPacientes,
   },
   {
     icon: ClipboardList,
     title: 'Controle operacional',
     subtitle: 'Menos planilhas, mais clareza',
     text: 'Tenha pacientes, atendimentos, agenda e comunicação em uma estrutura única.',
+    image: controleOperacional,
   },
 ] as const;
 
@@ -118,22 +145,52 @@ const SUPPORT_TOOLS = [
   },
 ] as const;
 
-const GALLERY_ITEMS = ['Agenda', 'Paciente', 'Prontuário', 'Automações', 'Mensagens'] as const;
+const GALLERY_ITEMS = [
+  {
+    title: 'Agenda',
+    text: 'Visualize consultas, horários livres e confirmações em um só lugar.',
+    image: galeriaAgenda,
+  },
+  {
+    title: 'Paciente',
+    text: 'Encontre rapidamente dados, contatos e o histórico de cada paciente.',
+    image: galeriaPaciente,
+  },
+  {
+    title: 'Prontuário',
+    text: 'Registre evoluções, procedimentos e informações clínicas com segurança.',
+    image: galeriaProntuario,
+  },
+  {
+    title: 'Automações',
+    text: 'Configure lembretes e acompanhamentos para cada etapa do atendimento.',
+    image: galeriaAutomacoes,
+  },
+  {
+    title: 'Financeiro',
+    text: 'Acompanhe receitas, despesas, contas a receber e o saldo da clínica.',
+    image: galeriaFinanceiro,
+  },
+] as const;
 
 const AUDIENCES = [
   {
+    icon: Stethoscope,
     title: 'Dentista solo',
     text: 'Quer acompanhar pacientes e melhorar o relacionamento sem contratar uma grande equipe.',
   },
   {
+    icon: Hospital,
     title: 'Clínica pequena',
     text: 'Precisa organizar pacientes, agenda e retornos sem depender de várias planilhas.',
   },
   {
+    icon: TrendingUp,
     title: 'Clínica em crescimento',
     text: 'Precisa padronizar atendimento, recepção e follow-up.',
   },
   {
+    icon: Headset,
     title: 'Recepção sobrecarregada',
     text: 'Precisa de uma rotina simples para lembrar retornos, confirmações e mensagens.',
   },
@@ -168,64 +225,67 @@ const DIFFERENTIALS = [
 
 const PLAN_COLUMNS = [
   {
-    name: 'Solo',
-    description: 'Base clínica para quem precisa atender bem, registrar o cuidado e sair do improviso.',
+    name: 'Medainer Solo',
+    description: 'Para dentistas que atendem sozinhos e querem organizar agenda, pacientes e prontuário sem depender de planilhas.',
     pricePrefix: 'R$',
-    price: '89,9',
+    price: '59',
     priceSuffix: '/mês',
     featured: false,
+    badge: null,
     features: [
-      'Até 1 profissional(is) de saúde',
-      'Até 2 administrativo(s)',
-      'Agenda completa da clínica',
-      'Gestão de pacientes',
-      'Anamnese, odontograma e evoluções',
-      'Receituário e atestado',
-      'Plano de tratamento e orçamento simples',
+      '1 profissional de saúde ativo',
+      'Até 2 usuários administrativos',
+      'Agenda, pacientes, profissionais e serviços',
+      'WhatsApp com lembretes e automações básicas',
+      'Prontuário essencial sem anexos',
+      'Planos de tratamento, receituários e atestados disponíveis a partir do plano Clínica',
+      'Suporte por chat e e-mail',
     ],
   },
   {
-    name: 'Clínica',
-    description: 'Camada de operação para clínicas com equipe, anexos no prontuário e financeiro básico.',
+    name: 'Medainer Clínica',
+    description: 'Para clínicas com recepção e equipe que precisam centralizar prontuário, documentos e financeiro.',
     pricePrefix: 'R$',
-    price: '129,9',
+    price: '149',
     priceSuffix: '/mês',
     featured: true,
-    badge: 'MAIS ESCOLHIDO',
+    badge: 'RECOMENDADO',
     features: [
-      'Até 3 profissional(is) de saúde',
-      'Até 5 administrativo(s)',
-      'Tudo do Solo',
-      'Upload de arquivos e imagens no prontuário',
-      'Documentos do paciente e histórico com anexos',
-      'Financeiro',
-      'Confirmações e remarcações automáticas',
-      'Gestão de equipe e permissões',
+      'Tudo do Medainer Solo',
+      'Até 3 profissionais de saúde ativos',
+      'Até 5 usuários administrativos',
+      'Controle financeiro da clínica',
+      'Arquivos e imagens no prontuário (2 GB)',
+      'Planos de tratamento',
+      'Receituários e atestados ilimitados',
+      'Onboarding ao vivo e suporte em horário comercial',
     ],
   },
   {
-    name: 'Automação',
-    description: 'Camada de escala para clínicas com mais volume no WhatsApp e menos retrabalho na recepção.',
-    pricePrefix: 'a partir de',
-    price: '497',
+    name: 'Medainer Pro',
+    description: 'Para clínicas com maior volume de atendimentos que precisam ampliar a equipe e escalar as automações.',
+    pricePrefix: 'R$',
+    price: '249',
     priceSuffix: '/mês',
     featured: false,
+    badge: 'MAIOR CAPACIDADE',
     features: [
-      'Até 6 profissional(is) de saúde',
-      'Até 8 administrativo(s)',
-      'Tudo do Clínica',
-      'Agente com IA no WhatsApp',
-      'Confirmações e remarcações automáticas',
-      'Lembretes',
+      'Tudo do Medainer Clínica',
+      'Até 6 profissionais de saúde ativos',
+      'Até 8 usuários administrativos',
+      'Maior capacidade para lembretes e fluxos automáticos',
+      'Suporte preparado para equipes em crescimento',
     ],
   },
 ] as const;
 
-function Logo() {
+function Logo({ inverted = false }: { inverted?: boolean }) {
   return (
     <div className="flex items-center gap-3">
       <img src={medainerSymbol} alt="Medainer" className="h-9 w-9 rounded-xl object-cover" />
-      <span className="text-[1.65rem] font-semibold tracking-[-0.05em] text-[#0c1730]">Medainer</span>
+      <span className={`text-[1.65rem] font-semibold tracking-[-0.05em] ${inverted ? 'text-white' : 'text-[#101c3d]'}`}>
+        Medainer
+      </span>
     </div>
   );
 }
@@ -249,10 +309,10 @@ function PreviewButton({
 
   const variantClass =
     variant === 'primary'
-      ? 'bg-[#2458f6] text-white shadow-[0_18px_36px_rgba(36,88,246,0.24)]'
+      ? 'bg-[#2357e8] text-white shadow-[0_18px_36px_rgba(35,87,232,0.24)]'
       : variant === 'dark'
-        ? 'bg-[#0d1630] text-white shadow-[0_18px_36px_rgba(13,22,48,0.22)]'
-        : 'border border-[#dbe4f5] bg-white text-[#0c1730] shadow-[0_10px_24px_rgba(12,23,48,0.08)]';
+        ? 'bg-[#101c3d] text-white shadow-[0_18px_36px_rgba(16,28,61,0.22)]'
+        : 'border border-[#d6e1ef] bg-white text-[#101c3d] shadow-[0_10px_24px_rgba(16,28,61,0.08)]';
 
   return (
     <a
@@ -270,20 +330,15 @@ function PreviewButton({
 }
 
 function SectionIntro({
-  eyebrow,
   title,
   text,
 }: {
-  eyebrow: string;
   title: string;
   text: string;
 }) {
   return (
     <div className="mx-auto max-w-[840px] text-center">
-      <div className="inline-flex rounded-full border border-[#dbe7ff] bg-[#f4f8ff] px-4 py-2 text-[11px] font-bold tracking-[0.18em] text-[#2458f6]">
-        {eyebrow}
-      </div>
-      <h2 className="mt-6 text-[2rem] font-semibold leading-[1.08] tracking-[-0.05em] text-[#0c1730] sm:text-[2.75rem]">
+      <h2 className="text-[2rem] font-semibold leading-[1.08] tracking-[-0.05em] text-[#101c3d] sm:text-[2.75rem]">
         {title}
       </h2>
       <p className="mt-5 text-[1rem] leading-7 text-[#60708d] sm:text-[1.05rem]">{text}</p>
@@ -297,7 +352,7 @@ export function FigmaLandingPage({
   trackEvent: (eventName: string, payload?: Record<string, unknown>) => void;
 }) {
   return (
-    <div className="figma-lp min-h-screen bg-[#fbfcfe] text-[#0c1730]">
+    <div className="figma-lp min-h-screen bg-[#f3f7fa] text-[#101c3d]">
       <header className="sticky top-0 z-40 border-b border-[#edf2fb]/90 bg-white/92 backdrop-blur">
         <div className="figma-shell flex min-h-[86px] items-center justify-between gap-6">
           <a href={FIGMA_PREVIEW_PATH} className="shrink-0">
@@ -305,16 +360,16 @@ export function FigmaLandingPage({
           </a>
 
           <nav className="hidden items-center gap-9 text-[0.95rem] text-[#55647e] lg:flex">
-            <a href={`${FIGMA_PREVIEW_PATH}#recursos`} className="hover:text-[#0c1730]">Recursos</a>
-            <a href={`${FIGMA_PREVIEW_PATH}#como-funciona`} className="hover:text-[#0c1730]">Como funciona</a>
-            <a href={`${FIGMA_PREVIEW_PATH}#planos`} className="hover:text-[#0c1730]">Planos</a>
-            <a href={`${FIGMA_PREVIEW_PATH}#contato`} className="hover:text-[#0c1730]">Dúvidas</a>
+            <a href={`${FIGMA_PREVIEW_PATH}#recursos`} className="hover:text-[#101c3d]">Recursos</a>
+            <a href={`${FIGMA_PREVIEW_PATH}#como-funciona`} className="hover:text-[#101c3d]">Como funciona</a>
+            <a href={`${FIGMA_PREVIEW_PATH}#planos`} className="hover:text-[#101c3d]">Planos</a>
+            <a href={`${FIGMA_PREVIEW_PATH}#contato`} className="hover:text-[#101c3d]">Dúvidas</a>
           </nav>
 
           <div className="flex items-center gap-3">
             <a
               href={APP_LOGIN_URL}
-              className="hidden rounded-full border border-[#dbe4f5] px-5 py-3 text-sm font-semibold text-[#0c1730] md:inline-flex"
+              className="hidden rounded-full border border-[#d6e1ef] px-5 py-3 text-sm font-semibold text-[#101c3d] md:inline-flex"
             >
               Entrar
             </a>
@@ -331,19 +386,18 @@ export function FigmaLandingPage({
       </header>
 
       <main>
-        <section className="figma-shell relative pt-10 pb-12 sm:pt-14 sm:pb-18">
-          <div className="absolute right-[-14%] top-[-2.5rem] hidden h-[760px] w-[760px] rounded-full bg-[#d9edff] lg:block" />
-          <div className="relative grid gap-10 lg:grid-cols-[640px_minmax(0,1fr)] lg:items-center">
-            <div>
-              <div className="inline-flex rounded-full border border-[#d9e7ff] bg-white px-4 py-2 text-[11px] font-bold uppercase tracking-[0.12em] text-[#2458f6]">
-                Prontuário, agenda e automações para clínicas odontológicas
+        <section className="figma-shell relative overflow-hidden pt-10 pb-12 sm:pt-14 sm:pb-18">
+          <div className="absolute right-[-14%] top-[-2.5rem] hidden h-[760px] w-[760px] rounded-full bg-[#dff7f3] lg:block" />
+          <div className="relative grid gap-10 lg:min-h-[560px] lg:grid-cols-[52%_48%] lg:items-center">
+            <div className="relative z-10 max-w-[640px]">
+              <div className="inline-flex rounded-full border border-[#bce8e1] bg-white px-4 py-2 text-[11px] font-bold uppercase tracking-[0.12em] text-[#0d8f82]">
+                GESTÃO E AUTOMAÇÃO PARA CLÍNICAS ODONTOLÓGICAS
               </div>
-              <h1 className="mt-8 max-w-[640px] text-[2.8rem] font-semibold leading-[1.02] tracking-[-0.06em] text-[#0c1730] sm:text-[4.2rem]">
-                Organize sua clínica odontológica e automatize o cuidado com seus pacientes
+              <h1 className="mt-8 max-w-[640px] text-[2.8rem] font-semibold leading-[1.02] tracking-[-0.06em] text-[#101c3d] sm:text-[4rem]">
+                Sua clínica organizada. Seus pacientes acompanhados.
               </h1>
               <p className="mt-6 max-w-[600px] text-[1.03rem] leading-7 text-[#5d6c87]">
-                O Medainer centraliza agenda, prontuário, pacientes e automações de pré e pós-atendimento para reduzir esquecimentos,
-                melhorar a rotina da equipe e aumentar as chances de retorno dos pacientes.
+                Agenda, prontuário e automações em um só lugar para reduzir faltas e trazer pacientes de volta.
               </p>
 
               <div className="mt-10 flex flex-col gap-4 sm:flex-row">
@@ -369,50 +423,23 @@ export function FigmaLandingPage({
               <p className="mt-5 text-sm text-[#6d7c95]">Sem fidelidade. Comece simples e cancele quando quiser.</p>
             </div>
 
-            <div className="relative mx-auto w-full max-w-[590px]">
-              <div className="rounded-[28px] border border-[#d7e7fb] bg-[#f4fbff] p-6 shadow-[0_28px_70px_rgba(28,76,148,0.12)]">
-                <div className="rounded-[26px] border-[10px] border-[#1f2937] bg-white p-5 shadow-[0_18px_40px_rgba(15,23,42,0.18)]">
-                  <div className="grid grid-cols-[126px_1fr] gap-8">
-                    <div className="rounded-[18px] bg-[#f8fbff] p-4">
-                      <p className="text-sm font-semibold text-[#0c1730]">Agenda</p>
-                      <div className="mt-4 space-y-3">
-                        {['09:00', '10:30', '14:00', '16:30'].map((time) => (
-                          <div key={time} className="rounded-xl bg-white px-3 py-2 text-center text-[11px] font-semibold text-[#50617b] shadow-[0_6px_16px_rgba(12,23,48,0.06)]">
-                            {time}
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div>
-                      <p className="text-lg font-semibold text-[#0c1730]">Prontuário digital</p>
-                      <div className="mt-4 space-y-3">
-                        {[
-                          'Paciente: Ana Carvalho',
-                          'Procedimento: Avaliação inicial',
-                          'Observações clínicas e histórico',
-                        ].map((item) => (
-                          <div key={item} className="rounded-xl bg-[#f8fbff] px-4 py-3 text-[11px] font-semibold text-[#50617b]">
-                            {item}
-                          </div>
-                        ))}
-                      </div>
-                      <div className="mt-8 inline-flex rounded-2xl bg-[#2458f6] px-6 py-4 text-sm font-semibold text-white shadow-[0_18px_32px_rgba(36,88,246,0.28)]">
-                        Automação: pós-atendimento
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="mx-auto mt-6 h-6 w-[420px] max-w-full rounded-full bg-[#0e1728]" />
-              </div>
-            </div>
           </div>
 
-          <div className="relative mt-12 rounded-[26px] border border-[#edf2fa] bg-white px-8 py-7 shadow-[0_18px_42px_rgba(12,23,48,0.06)]">
+          <div className="relative mx-auto mt-10 w-full max-w-[620px] lg:absolute lg:inset-y-0 lg:left-[52%] lg:right-[-12%] lg:mt-0 lg:max-w-none lg:overflow-hidden">
+            <img
+              src={medainerHeroSection}
+              alt="Agenda do Medainer exibida no computador e no celular"
+              className="h-auto w-full lg:h-full lg:w-auto lg:max-w-none lg:object-cover lg:object-left"
+              decoding="async"
+              fetchPriority="high"
+            />
+          </div>
+
+          <div className="relative mt-20 rounded-[26px] border border-[#edf2fa] bg-white px-8 py-7 shadow-[0_18px_42px_rgba(12,23,48,0.06)] lg:mt-28">
             <div className="grid gap-6 md:grid-cols-5">
               {HERO_PROOFS.map((item) => (
                 <div key={item} className="flex items-center gap-4">
-                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#edf4ff] text-[#2458f6]">
+                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#e3f7f3] text-[#0d8f82]">
                     <Check className="h-5 w-5" />
                   </span>
                   <span className="text-sm font-semibold leading-5 text-[#20304b]">{item}</span>
@@ -424,16 +451,17 @@ export function FigmaLandingPage({
 
         <section className="figma-shell figma-section">
           <SectionIntro
-            eyebrow="DOR PRINCIPAL"
             title="Sua clínica pode estar perdendo pacientes por falta de acompanhamento"
-            text="Antes de vender funcionalidades, a página deixa claro o problema: pacientes esquecidos, retornos perdidos e equipe dependendo da memória."
+            text=""
           />
 
           <div className="mt-16 grid gap-8 lg:grid-cols-2">
             {PAIN_POINTS.map((item) => (
               <article key={item.title} className="rounded-[22px] border border-[#e9eef7] bg-white px-6 py-7 shadow-[0_14px_34px_rgba(12,23,48,0.05)]">
                 <div className="flex items-start gap-4">
-                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#edf4ff] text-[#2458f6]">!</span>
+                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#e3f7f3] text-[#0d8f82]">
+                    <item.icon className="h-5 w-5" />
+                  </span>
                   <div>
                     <h3 className="text-[1.15rem] font-semibold tracking-[-0.03em] text-[#0c1730]">{item.title}</h3>
                     <p className="mt-3 text-[0.98rem] leading-7 text-[#60708d]">{item.text}</p>
@@ -446,40 +474,51 @@ export function FigmaLandingPage({
 
         <section id="recursos" className="figma-shell figma-section">
           <SectionIntro
-            eyebrow="RECURSOS PRINCIPAIS"
             title="Tecnologia para simplificar a rotina da sua clínica"
-            text="Cards visuais com prints simulados ajudam o visitante a entender rapidamente o que o Medainer faz."
+            text=""
           />
 
           <div className="mt-16 grid gap-8 lg:grid-cols-3">
             {FEATURE_CARDS.map((item, index) => (
               <article key={item.title} className="rounded-[28px] border border-[#e9eef7] bg-white p-6 shadow-[0_18px_38px_rgba(12,23,48,0.06)]">
-                <div className="rounded-[24px] border border-[#e7eefb] bg-[#f8fbff] p-5">
-                  <div className="h-[18px] w-[272px] max-w-full rounded-full bg-[#2458f6]" />
-                  <div className="mt-4 flex items-center gap-4">
-                    <div className="h-[42px] w-[98px] rounded-2xl bg-[#2458f6]" />
-                    <div className="space-y-3">
-                      <div className="h-[10px] w-[136px] rounded-full bg-[#d7e3f7]" />
-                      <div className="h-[10px] w-[96px] rounded-full bg-[#d7e3f7]" />
+                <div className="figma-feature-media h-[160px] overflow-hidden rounded-[24px] border border-[#ccebe2]">
+                  {item.image ? (
+                    <img
+                      src={item.image}
+                      alt={`Tela de ${item.title} do Medainer`}
+                      className="h-full w-full object-cover object-left-top"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  ) : (
+                    <div className="p-5">
+                      <div className="h-[18px] w-[272px] max-w-full rounded-full bg-[#2357e8]" />
+                      <div className="mt-4 flex items-center gap-4">
+                        <div className="h-[42px] w-[98px] rounded-2xl bg-[#13b8a6]" />
+                        <div className="space-y-3">
+                          <div className="h-[10px] w-[136px] rounded-full bg-[#d7e3f7]" />
+                          <div className="h-[10px] w-[96px] rounded-full bg-[#d7e3f7]" />
+                        </div>
+                      </div>
                     </div>
-                  </div>
+                  )}
                 </div>
 
                 <div className="mt-5 flex items-start justify-between gap-5">
                   <div className="pr-2">
                     <div className="flex items-center gap-3">
-                      <item.icon className="h-5 w-5 text-[#2458f6]" />
+                      <item.icon className="h-5 w-5 text-[#0d8f82]" />
                       <h3 className="text-[1rem] font-semibold text-[#0c1730]">{item.title}</h3>
                     </div>
                     <p className="mt-4 text-[1.02rem] font-medium leading-7 text-[#20304b]">{item.subtitle}</p>
                     <p className="mt-4 text-[0.96rem] leading-7 text-[#60708d]">{item.text}</p>
                   </div>
-                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#edf4ff] text-sm font-semibold text-[#2458f6]">
+                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#e3f7f3] text-sm font-semibold text-[#0d8f82]">
                     {index + 1}
                   </span>
                 </div>
 
-                <PreviewButton
+                {/* <PreviewButton
                   href={PRIMARY_CTA_URL}
                   source={`figma_feature_${index + 1}`}
                   label={`Ver recurso: ${item.title}`}
@@ -487,20 +526,17 @@ export function FigmaLandingPage({
                   variant="secondary"
                 >
                   Ver recurso
-                </PreviewButton>
+                </PreviewButton> */}
               </article>
             ))}
           </div>
         </section>
 
         <section id="como-funciona" className="figma-shell figma-section">
-          <div className="rounded-[28px] bg-[#2458f6] px-10 py-12 text-white shadow-[0_26px_70px_rgba(36,88,246,0.22)]">
+          <div className="rounded-[28px] bg-[#101c3d] px-10 py-12 text-white shadow-[0_26px_70px_rgba(16,28,61,0.22)]">
             <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_360px] lg:items-center">
               <div>
-                <div className="inline-flex rounded-full border border-white/20 bg-white/10 px-4 py-2 text-[11px] font-bold tracking-[0.18em]">
-                  Diferencial do Medainer
-                </div>
-                <h2 className="mt-6 max-w-[640px] text-[2.2rem] font-semibold leading-[1.08] tracking-[-0.05em] sm:text-[3rem]">
+                <h2 className="max-w-[640px] text-[2.2rem] font-semibold leading-[1.08] tracking-[-0.05em] sm:text-[3rem]">
                   Automatize o pré e pós-atendimento sem depender da memória da equipe
                 </h2>
                 <p className="mt-6 max-w-[600px] text-[1.02rem] leading-8 text-white/82">
@@ -522,7 +558,7 @@ export function FigmaLandingPage({
 
               <div className="rounded-[28px] bg-white p-8 text-[#0c1730] shadow-[0_18px_40px_rgba(15,23,42,0.16)]">
                 <div className="flex items-center gap-3">
-                  <MessageCircleMore className="h-5 w-5 text-[#2458f6]" />
+                  <MessageCircleMore className="h-5 w-5 text-[#13b8a6]" />
                   <h3 className="text-[1.5rem] font-semibold">Fluxo automático</h3>
                 </div>
                 <div className="mt-6 space-y-3">
@@ -545,16 +581,15 @@ export function FigmaLandingPage({
 
         <section className="figma-shell figma-section">
           <SectionIntro
-            eyebrow="FERRAMENTAS DE APOIO"
             title="Recursos que deixam a operação mais previsível"
-            text="Uma segunda camada mostra que o sistema também organiza equipe, status e relacionamento."
+            text=""
           />
 
           <div className="mt-16 grid gap-8 lg:grid-cols-3">
             {SUPPORT_TOOLS.map((item, index) => (
               <article key={item.title} className="rounded-[22px] border border-[#e9eef7] bg-white px-6 py-7 shadow-[0_14px_34px_rgba(12,23,48,0.05)]">
                 <div className="flex items-start gap-4">
-                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#edf4ff] text-sm font-semibold text-[#2458f6]">
+                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#e3f7f3] text-sm font-semibold text-[#0d8f82]">
                     {index + 1}
                   </span>
                   <div>
@@ -567,12 +602,11 @@ export function FigmaLandingPage({
           </div>
         </section>
 
-        <section className="figma-lp-access bg-[#edf8ff] py-22">
+        <section className="figma-lp-access bg-[#e9f7f5] py-22">
           <div className="figma-shell">
             <SectionIntro
-              eyebrow="ACESSO"
               title="Acesse sua clínica de onde estiver"
-              text="Uma ilustração simples reforça mobilidade, acompanhamento e visibilidade operacional."
+              text=""
             />
 
             <div className="mt-18 grid gap-8 lg:grid-cols-[280px_1fr_280px] lg:items-center">
@@ -581,24 +615,14 @@ export function FigmaLandingPage({
                 <p className="mt-3 text-sm leading-7 text-[#60708d]">Visualize agenda, confirmações e próximos passos sem depender do desktop.</p>
               </article>
 
-              <div className="mx-auto flex w-full max-w-[260px] justify-center">
-                <div className="w-[230px] rounded-[38px] border-[12px] border-[#111827] bg-white p-5 shadow-[0_28px_60px_rgba(15,23,42,0.18)]">
-                  <div className="mx-auto h-2 w-16 rounded-full bg-[#111827]" />
-                  <div className="mt-6 rounded-[22px] bg-[#f4f8ff] p-4">
-                    <div className="flex items-center gap-3">
-                      <div className="h-10 w-10 rounded-2xl bg-[#2458f6]" />
-                      <div>
-                        <div className="h-3 w-20 rounded-full bg-[#d4dff3]" />
-                        <div className="mt-2 h-3 w-14 rounded-full bg-[#d4dff3]" />
-                      </div>
-                    </div>
-                    <div className="mt-5 space-y-3">
-                      <div className="h-10 rounded-2xl bg-white" />
-                      <div className="h-10 rounded-2xl bg-white" />
-                      <div className="h-10 rounded-2xl bg-white" />
-                    </div>
-                  </div>
-                </div>
+              <div className="mx-auto flex w-full max-w-[620px] justify-center">
+                <img
+                  src={acessoTablet}
+                  alt="Agenda do Medainer acessada em um tablet"
+                  className="h-auto w-full"
+                  loading="lazy"
+                  decoding="async"
+                />
               </div>
 
               <article className="rounded-[22px] border border-white/90 bg-white px-6 py-6 shadow-[0_18px_36px_rgba(12,23,48,0.06)]">
@@ -611,25 +635,36 @@ export function FigmaLandingPage({
 
         <section className="figma-shell figma-section">
           <SectionIntro
-            eyebrow="MOSTRE O PRODUTO"
-            title="Mostre o produto para tornar a oferta tangível"
-            text="Este bloco deve receber prints reais do Medainer quando as telas finais estiverem prontas."
+            title="Conheça o Medainer por dentro"
+            text="Uma plataforma simples e visual para acompanhar a rotina da clínica do agendamento ao pós-atendimento."
           />
 
           <div className="mt-16 grid gap-8 sm:grid-cols-2 xl:grid-cols-5">
             {GALLERY_ITEMS.map((item) => (
-              <article key={item} className="rounded-[20px] border border-[#e9eef7] bg-white p-5 shadow-[0_14px_34px_rgba(12,23,48,0.05)]">
-                <div className="rounded-[18px] bg-[#f8fbff] p-4">
-                  <div className="flex items-center gap-3">
-                    <div className="h-12 w-12 rounded-2xl bg-[#2458f6]" />
-                    <div>
-                      <div className="h-[10px] w-16 rounded-full bg-[#d7e3f7]" />
-                      <div className="mt-3 h-[10px] w-12 rounded-full bg-[#d7e3f7]" />
+              <article key={item.title} className="rounded-[20px] border border-[#e9eef7] bg-white p-5 shadow-[0_14px_34px_rgba(12,23,48,0.05)]">
+                <div className="h-[130px] overflow-hidden rounded-[18px] bg-[#f8fbff]">
+                  {item.image ? (
+                    <img
+                      src={item.image}
+                      alt={`Tela de ${item.title} do Medainer`}
+                      className="h-full w-full object-cover object-left-top"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  ) : (
+                    <div className="p-4">
+                      <div className="flex items-center gap-3">
+                        <div className="h-12 w-12 rounded-2xl bg-[#2357e8]" />
+                        <div>
+                          <div className="h-[10px] w-16 rounded-full bg-[#d7e3f7]" />
+                          <div className="mt-3 h-[10px] w-12 rounded-full bg-[#d7e3f7]" />
+                        </div>
+                      </div>
                     </div>
-                  </div>
+                  )}
                 </div>
-                <h3 className="mt-5 text-[1.08rem] font-semibold text-[#0c1730]">{item}</h3>
-                <p className="mt-3 text-sm leading-6 text-[#60708d]">Substituir por print real da tela.</p>
+                <h3 className="mt-5 text-[1.08rem] font-semibold text-[#0c1730]">{item.title}</h3>
+                <p className="mt-3 text-sm leading-6 text-[#60708d]">{item.text}</p>
               </article>
             ))}
           </div>
@@ -637,16 +672,17 @@ export function FigmaLandingPage({
 
         <section className="figma-shell figma-section">
           <SectionIntro
-            eyebrow="PARA QUEM É"
             title="Criado para clínicas que precisam de controle real"
-            text="Em vez de inventar depoimentos, este bloco ajuda cada perfil de cliente a se reconhecer na oferta."
+            text=""
           />
 
           <div className="mt-16 grid gap-8 lg:grid-cols-2">
             {AUDIENCES.map((item) => (
               <article key={item.title} className="rounded-[22px] border border-[#e9eef7] bg-white px-6 py-7 shadow-[0_14px_34px_rgba(12,23,48,0.05)]">
                 <div className="flex items-start gap-4">
-                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#edf4ff] text-[#2458f6]">•</span>
+                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#e3f7f3] text-[#0d8f82]">
+                    <item.icon className="h-5 w-5" />
+                  </span>
                   <div>
                     <h3 className="text-[1.15rem] font-semibold tracking-[-0.03em] text-[#0c1730]">{item.title}</h3>
                     <p className="mt-3 text-[0.98rem] leading-7 text-[#60708d]">{item.text}</p>
@@ -660,7 +696,6 @@ export function FigmaLandingPage({
         <section id="planos" className="figma-lp-pricing py-22">
           <div className="figma-shell">
             <SectionIntro
-              eyebrow="PLANOS"
               title="Planos simples para cada momento da clínica"
               text="Comece com a estrutura essencial e evolua para automações conforme a operação da clínica crescer."
             />
@@ -669,15 +704,15 @@ export function FigmaLandingPage({
               {PLAN_COLUMNS.map((plan) => (
                 <article
                   key={plan.name}
-                  className={`rounded-[30px] border p-8 shadow-[0_24px_60px_rgba(12,23,48,0.08)] ${
+                  className={`relative h-full rounded-[30px] border p-8 pb-[104px] shadow-[0_24px_60px_rgba(12,23,48,0.08)] ${
                     plan.featured
-                      ? 'border-[#0d1630] bg-[#0d1630] text-white'
+                      ? 'border-[#101c3d] bg-[#101c3d] text-white'
                       : 'border-[#e9eef7] bg-white text-[#0c1730]'
                   }`}
                 >
                   <div className="min-h-10">
                     {plan.badge ? (
-                      <span className="inline-flex rounded-full bg-[#2458f6] px-4 py-2 text-[11px] font-bold tracking-[0.14em] text-white">
+                      <span className="inline-flex rounded-full bg-[#13b8a6] px-4 py-2 text-[11px] font-bold tracking-[0.14em] text-[#101c3d]">
                         {plan.badge}
                       </span>
                     ) : null}
@@ -691,7 +726,16 @@ export function FigmaLandingPage({
                     <span className={`pb-3 text-sm ${plan.featured ? 'text-white/72' : 'text-[#60708d]'}`}>{plan.priceSuffix}</span>
                   </div>
 
-                  <div className="mt-8">
+                  <ul className="mt-8 space-y-4">
+                    {plan.features.map((feature) => (
+                      <li key={feature} className={`flex items-start gap-3 text-[0.98rem] leading-7 ${plan.featured ? 'text-white/84' : 'text-[#20304b]'}`}>
+                        <Check className={`mt-1 h-4 w-4 shrink-0 ${plan.featured ? 'text-[#56d7c8]' : 'text-[#0d8f82]'}`} />
+                        <span>{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+
+                  <div className="absolute inset-x-8 bottom-8 [&>a]:w-full">
                     <PreviewButton
                       href={PRIMARY_CTA_URL}
                       source={`figma_plan_${plan.name.toLowerCase()}`}
@@ -702,15 +746,6 @@ export function FigmaLandingPage({
                       Criar conta grátis
                     </PreviewButton>
                   </div>
-
-                  <ul className="mt-8 space-y-4">
-                    {plan.features.map((feature) => (
-                      <li key={feature} className={`flex items-start gap-3 text-[0.98rem] leading-7 ${plan.featured ? 'text-white/84' : 'text-[#20304b]'}`}>
-                        <Check className={`mt-1 h-4 w-4 shrink-0 ${plan.featured ? 'text-white' : 'text-[#2458f6]'}`} />
-                        <span>{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
                 </article>
               ))}
             </div>
@@ -719,7 +754,6 @@ export function FigmaLandingPage({
 
         <section className="figma-shell figma-section">
           <SectionIntro
-            eyebrow="DIFERENCIAIS"
             title="Um bom software não se resume apenas em funcionalidades"
             text="Este bloco quebra objeções sobre suporte, implantação, fidelidade e facilidade de uso."
           />
@@ -728,7 +762,7 @@ export function FigmaLandingPage({
             {DIFFERENTIALS.map((item) => (
               <article key={item.title} className="rounded-[22px] border border-[#e9eef7] bg-white px-6 py-7 shadow-[0_14px_34px_rgba(12,23,48,0.05)]">
                 <div className="flex items-start gap-4">
-                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#edf4ff] text-[#2458f6]">
+                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#e3f7f3] text-[#0d8f82]">
                     <Check className="h-4 w-4" />
                   </span>
                   <div>
@@ -742,13 +776,25 @@ export function FigmaLandingPage({
         </section>
 
         <section id="contato" className="figma-shell py-18">
-          <div className="rounded-[28px] bg-[#2458f6] px-10 py-12 text-white shadow-[0_26px_70px_rgba(36,88,246,0.22)]">
+          <div className="rounded-[28px] bg-[#2357e8] px-10 py-12 text-white shadow-[0_26px_70px_rgba(35,87,232,0.22)]">
             <div className="grid gap-8 lg:grid-cols-[1fr_250px] lg:items-center">
               <div>
                 <div className="mb-6 flex -space-x-3">
-                  {[0, 1, 2, 3, 4].map((item) => (
-                    <span key={item} className="h-11 w-11 rounded-full border-2 border-[#2458f6] bg-[#d9edff]" />
-                  ))}
+                  <span title="Equipe Medainer" className="relative z-50 flex h-11 w-11 items-center justify-center overflow-hidden rounded-full border-2 border-[#2357e8] bg-white p-1.5">
+                    <img src={medainerSymbol} alt="Equipe Medainer" className="h-full w-full object-contain" />
+                  </span>
+                  <span title="WhatsApp" className="relative z-40 flex h-11 w-11 items-center justify-center rounded-full border-2 border-[#2357e8] bg-[#dff7f3] text-[#0d8f82]">
+                    <MessageCircleMore className="h-5 w-5" />
+                  </span>
+                  <span title="Agenda" className="relative z-30 flex h-11 w-11 items-center justify-center rounded-full border-2 border-[#2357e8] bg-[#dff7f3] text-[#0d8f82]">
+                    <CalendarDays className="h-5 w-5" />
+                  </span>
+                  <span title="Prontuário" className="relative z-20 flex h-11 w-11 items-center justify-center rounded-full border-2 border-[#2357e8] bg-[#dff7f3] text-[#0d8f82]">
+                    <Files className="h-5 w-5" />
+                  </span>
+                  <span title="Automações" className="relative z-10 flex h-11 w-11 items-center justify-center rounded-full border-2 border-[#2357e8] bg-[#dff7f3] text-[#0d8f82]">
+                    <Sparkles className="h-5 w-5" />
+                  </span>
                 </div>
                 <div className="inline-flex rounded-full border border-white/20 bg-white/10 px-4 py-2 text-[11px] font-bold tracking-[0.18em]">
                   Fale com a gente
@@ -782,7 +828,7 @@ export function FigmaLandingPage({
         <div className="figma-shell">
           <div className="grid gap-10 border-b border-white/10 pb-10 md:grid-cols-[1.2fr_230px_230px]">
             <div>
-              <Logo />
+              <Logo inverted />
               <p className="mt-6 max-w-[380px] text-sm leading-7 text-white/62">
                 Software de gestão e automação para clínicas odontológicas.
               </p>
@@ -807,7 +853,7 @@ export function FigmaLandingPage({
           </div>
 
           <p className="pt-8 text-xs leading-6 text-white/46">
-            © 2026 Medainer. Estrutura de landing page esboçada para validação comercial.
+            © 2026 Medainer. Todos os direitos reservados.
           </p>
         </div>
       </footer>
