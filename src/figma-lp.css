@@ -6,6 +6,10 @@
   padding-right: 24px;
 }
 
+.figma-lp {
+  overflow-x: clip;
+}
+
 .figma-section {
   padding-top: 96px;
   padding-bottom: 96px;
@@ -15,6 +19,94 @@
   background:
     radial-gradient(circle at 12% 100%, rgba(19, 184, 166, 0.2), transparent 48%),
     linear-gradient(145deg, #f4fbf8 0%, #e2f5ee 100%);
+}
+
+.figma-hero-kicker-text {
+  position: relative;
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.figma-hero-kicker-text::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  border-left: 2px solid currentColor;
+  background: white;
+  animation:
+    figma-kicker-reveal 5s steps(48, end) infinite,
+    figma-kicker-cursor 0.75s step-end infinite;
+}
+
+@keyframes figma-kicker-reveal {
+  0% {
+    width: 100%;
+  }
+
+  55%,
+  88% {
+    width: 0;
+  }
+
+  100% {
+    width: 100%;
+  }
+}
+
+@keyframes figma-kicker-cursor {
+  50% {
+    border-left-color: transparent;
+  }
+}
+
+.figma-proof-band {
+  left: 50%;
+  width: 100vw;
+  transform: translateX(-50%);
+}
+
+.figma-proof-marquee {
+  overflow: hidden;
+  mask-image: linear-gradient(to right, transparent, black 4%, black 96%, transparent);
+}
+
+.figma-proof-track {
+  display: flex;
+  width: max-content;
+  animation: figma-proof-scroll 24s linear infinite;
+  will-change: transform;
+}
+
+.figma-proof-marquee:hover .figma-proof-track {
+  animation-play-state: paused;
+}
+
+@keyframes figma-proof-scroll {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .figma-hero-kicker-text {
+    white-space: normal;
+  }
+
+  .figma-hero-kicker-text::after {
+    content: none;
+  }
+
+  .figma-proof-track {
+    animation: none;
+    transform: none;
+  }
 }
 
 .figma-lp-pricing {
@@ -50,5 +142,53 @@
   .figma-section {
     padding-top: 64px;
     padding-bottom: 64px;
+  }
+}
+
+/* Tighter layout for very small screens to avoid an aggressive hero height */
+@media (max-width: 380px) {
+  .figma-shell {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .figma-section {
+    padding-top: 32px;
+    padding-bottom: 32px;
+  }
+
+  /* Reduce hero kicker size and spacing */
+  .figma-hero-kicker {
+    padding-left: 8px;
+    padding-right: 8px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    margin-bottom: 0.6rem;
+  }
+
+  /* Reduce main hero title size and spacing in the first section */
+  .figma-lp main > section:first-of-type h1 {
+    font-size: 1.6rem;
+    margin-top: 0.6rem;
+    line-height: 1.08;
+  }
+
+  .figma-lp main > section:first-of-type p {
+    font-size: 0.92rem;
+  }
+
+  /* Make hero image smaller to reduce overall height */
+  img[alt^="Agenda do Medainer"] {
+    max-width: 420px;
+    width: 100%;
+    height: auto;
+    display: block;
+    margin-top: 0.5rem;
+  }
+
+  /* Tighten proof band spacing */
+  .figma-proof-band {
+    padding-top: 6px;
+    padding-bottom: 6px;
   }
 }

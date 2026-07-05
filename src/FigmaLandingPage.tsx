@@ -9,12 +9,14 @@ import {
   Headset,
   History,
   Hospital,
+  Menu,
   MessageCircleMore,
   ShieldCheck,
   Sparkles,
   Stethoscope,
   TrendingUp,
   Users,
+  X,
 } from 'lucide-react';
 import { buildTrackedUrl } from './analytics';
 import { useLeadFlow } from './components/LeadFlow';
@@ -351,6 +353,8 @@ export function FigmaLandingPage({
 }: {
   trackEvent: (eventName: string, payload?: Record<string, unknown>) => void;
 }) {
+  const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
+
   return (
     <div className="figma-lp min-h-screen bg-[#f3f7fa] text-[#101c3d]">
       <header className="sticky top-0 z-40 border-b border-[#edf2fb]/90 bg-white/92 backdrop-blur">
@@ -373,78 +377,124 @@ export function FigmaLandingPage({
             >
               Entrar
             </a>
-            <PreviewButton
-              href={PRIMARY_CTA_URL}
-              source="figma_header_trial"
-              label="Testar grátis"
-              trackEvent={trackEvent}
+            <div className="hidden sm:block">
+              <PreviewButton
+                href={PRIMARY_CTA_URL}
+                source="figma_header_trial"
+                label="Testar grátis"
+                trackEvent={trackEvent}
+              >
+                Testar grátis
+              </PreviewButton>
+            </div>
+            <button
+              type="button"
+              aria-label={mobileMenuOpen ? 'Fechar menu' : 'Abrir menu'}
+              aria-expanded={mobileMenuOpen}
+              aria-controls="figma-mobile-menu"
+              className="flex h-11 w-11 items-center justify-center rounded-full border border-[#d6e1ef] bg-white text-[#101c3d] lg:hidden"
+              onClick={() => setMobileMenuOpen((open) => !open)}
             >
-              Testar grátis
-            </PreviewButton>
+              {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            </button>
           </div>
         </div>
+
+        {mobileMenuOpen ? (
+          <nav id="figma-mobile-menu" className="figma-shell border-t border-[#edf2fb] py-5 lg:hidden">
+            <div className="flex flex-col gap-1 text-[0.95rem] font-medium text-[#55647e]">
+              {[
+                ['Recursos', `${FIGMA_PREVIEW_PATH}#recursos`],
+                ['Como funciona', `${FIGMA_PREVIEW_PATH}#como-funciona`],
+                ['Planos', `${FIGMA_PREVIEW_PATH}#planos`],
+                ['Dúvidas', `${FIGMA_PREVIEW_PATH}#contato`],
+              ].map(([label, href]) => (
+                <a
+                  key={label}
+                  href={href}
+                  className="rounded-xl px-4 py-3 hover:bg-[#f3f7fa] hover:text-[#101c3d]"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  {label}
+                </a>
+              ))}
+              <a href={APP_LOGIN_URL} className="rounded-xl px-4 py-3 hover:bg-[#f3f7fa] hover:text-[#101c3d] md:hidden">
+                Entrar
+              </a>
+              <div className="mt-3 px-4 sm:hidden [&>a]:w-full">
+                <PreviewButton
+                  href={PRIMARY_CTA_URL}
+                  source="figma_mobile_menu_trial"
+                  label="Testar grátis"
+                  trackEvent={trackEvent}
+                >
+                  Testar grátis
+                </PreviewButton>
+              </div>
+            </div>
+          </nav>
+        ) : null}
       </header>
 
       <main>
-        <section className="figma-shell relative overflow-hidden pt-10 pb-12 sm:pt-14 sm:pb-18">
+        <section className="figma-shell relative pt-10 pb-12 sm:pt-14 sm:pb-18">
           <div className="absolute right-[-14%] top-[-2.5rem] hidden h-[760px] w-[760px] rounded-full bg-[#dff7f3] lg:block" />
-          <div className="relative grid gap-10 lg:min-h-[560px] lg:grid-cols-[52%_48%] lg:items-center">
-            <div className="relative z-10 max-w-[640px]">
-              <div className="inline-flex rounded-full border border-[#bce8e1] bg-white px-4 py-2 text-[11px] font-bold uppercase tracking-[0.12em] text-[#0d8f82]">
-                GESTÃO E AUTOMAÇÃO PARA CLÍNICAS ODONTOLÓGICAS
-              </div>
-              <h1 className="mt-7 max-w-[640px] text-[2rem] font-semibold leading-[1.06] tracking-[-0.05em] text-[#101c3d] sm:mt-8 sm:text-[3.2rem]">
-                Sua clínica organizada. Seus pacientes acompanhados.
-              </h1>
-              <p className="mt-5 max-w-[600px] text-[0.95rem] leading-6 text-[#5d6c87] sm:mt-6 sm:text-[1.03rem] sm:leading-7">
-                Agenda, prontuário e automações em um só lugar para reduzir faltas e trazer pacientes de volta.
-              </p>
+          <div className="relative">
+            <div className="relative grid gap-10 lg:min-h-[560px] lg:grid-cols-[52%_48%] lg:items-center">
+              <div className="relative z-10 max-w-[640px] text-center lg:text-left">
+                <div className="figma-hero-kicker inline-flex max-w-full items-center gap-2 rounded-full border border-[#bce8e1] bg-white px-4 py-2 text-[10px] font-bold uppercase tracking-[0.06em] text-[#0d8f82] sm:text-[11px] sm:tracking-[0.12em]">
+                  <Sparkles className="h-3.5 w-3.5 shrink-0" />
+                  <span className="figma-hero-kicker-text">GESTÃO E AUTOMAÇÃO PARA CLÍNICAS ODONTOLÓGICAS</span>
+                </div>
+                <h1 className="mx-auto mt-7 max-w-[640px] text-[2rem] font-semibold leading-[1.06] tracking-[-0.05em] text-[#101c3d] sm:mt-8 sm:text-[3.2rem] lg:mx-0">
+                  Sua clínica organizada. Seus pacientes acompanhados.
+                </h1>
+                <p className="mx-auto mt-5 max-w-[600px] text-[0.95rem] leading-6 text-[#5d6c87] sm:mt-6 sm:text-[1.03rem] sm:leading-7 lg:mx-0">
+                  Agenda, prontuário e automações em um só lugar para reduzir faltas e trazer pacientes de volta.
+                </p>
 
-              <div className="mt-10 flex flex-col gap-4 sm:flex-row">
-                <PreviewButton
-                  href={PRIMARY_CTA_URL}
-                  source="figma_hero_trial"
-                  label="Testar grátis por 7 dias"
-                  trackEvent={trackEvent}
-                >
-                  Testar grátis por 7 dias
-                </PreviewButton>
-                <PreviewButton
-                  href={PRIMARY_CTA_URL}
-                  source="figma_hero_whatsapp"
-                  label="Conversar pelo WhatsApp"
-                  variant="secondary"
-                  trackEvent={trackEvent}
-                >
-                  Conversar pelo WhatsApp
-                </PreviewButton>
-              </div>
+                <div className="mt-10 flex flex-col justify-center gap-4 sm:flex-row lg:justify-start">
+                  <PreviewButton
+                    href={PRIMARY_CTA_URL}
+                    source="figma_hero_trial"
+                    label="Testar grátis por 7 dias"
+                    trackEvent={trackEvent}
+                  >
+                    Testar grátis por 7 dias
+                  </PreviewButton>
+                </div>
 
-              <p className="mt-5 text-sm text-[#6d7c95]">Sem fidelidade. Comece simples e cancele quando quiser.</p>
+                <p className="mt-5 text-sm text-[#6d7c95]">Sem fidelidade.</p>
+              </div>
             </div>
 
+            <div className="relative mx-auto mt-10 w-full max-w-[620px] lg:absolute lg:inset-y-0 lg:left-[52%] lg:right-[-12%] lg:mt-0 lg:max-w-none lg:overflow-hidden">
+              <img
+                src={medainerHeroSection}
+                alt="Agenda do Medainer exibida no computador e no celular"
+                className="h-auto w-full lg:h-full lg:w-auto lg:max-w-none lg:object-cover lg:object-left"
+                decoding="async"
+                fetchPriority="high"
+              />
+            </div>
           </div>
 
-          <div className="relative mx-auto mt-10 w-full max-w-[620px] lg:absolute lg:inset-y-0 lg:left-[52%] lg:right-[-12%] lg:mt-0 lg:max-w-none lg:overflow-hidden">
-            <img
-              src={medainerHeroSection}
-              alt="Agenda do Medainer exibida no computador e no celular"
-              className="h-auto w-full lg:h-full lg:w-auto lg:max-w-none lg:object-cover lg:object-left"
-              decoding="async"
-              fetchPriority="high"
-            />
-          </div>
-
-          <div className="relative mt-16 rounded-[26px] border border-[#edf2fa] bg-white px-5 py-6 shadow-[0_18px_42px_rgba(12,23,48,0.06)] sm:mt-20 sm:px-8 sm:py-7 lg:mt-28">
-            <div className="grid gap-6 md:grid-cols-5">
-              {HERO_PROOFS.map((item) => (
-                <div key={item} className="flex items-center gap-4">
-                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#e3f7f3] text-[#0d8f82]">
-                    <Check className="h-5 w-5" />
-                  </span>
-                  <span className="text-sm font-semibold leading-5 text-[#20304b]">{item}</span>
-                </div>
-              ))}
+          <div className="figma-proof-band relative mt-16 border-y border-[#edf2fa] bg-white py-6 shadow-[0_18px_42px_rgba(12,23,48,0.06)] sm:mt-20 sm:py-7 lg:mt-28">
+            <div className="figma-proof-marquee">
+              <div className="figma-proof-track">
+                {[0, 1].map((group) => (
+                  <div key={group} className="flex shrink-0 items-center gap-10 pr-10" aria-hidden={group === 1}>
+                    {HERO_PROOFS.map((item) => (
+                      <div key={item} className="flex min-w-max items-center gap-4">
+                        <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#e3f7f3] text-[#0d8f82]">
+                          <Check className="h-5 w-5" />
+                        </span>
+                        <span className="text-sm font-semibold leading-5 text-[#20304b]">{item}</span>
+                      </div>
+                    ))}
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </section>
