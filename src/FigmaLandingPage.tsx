@@ -338,10 +338,10 @@ function SectionIntro({
 }) {
   return (
     <div className="mx-auto max-w-[840px] text-center">
-      <h2 className="text-[2rem] font-semibold leading-[1.08] tracking-[-0.05em] text-[#101c3d] sm:text-[2.75rem]">
+      <h2 className="text-[1.55rem] font-semibold leading-[1.14] tracking-[-0.04em] text-[#101c3d] sm:text-[2.75rem]">
         {title}
       </h2>
-      <p className="mt-5 text-[1rem] leading-7 text-[#60708d] sm:text-[1.05rem]">{text}</p>
+      <p className="mt-4 text-[0.92rem] leading-6 text-[#60708d] sm:mt-5 sm:text-[1.05rem] sm:leading-7">{text}</p>
     </div>
   );
 }
@@ -393,10 +393,10 @@ export function FigmaLandingPage({
               <div className="inline-flex rounded-full border border-[#bce8e1] bg-white px-4 py-2 text-[11px] font-bold uppercase tracking-[0.12em] text-[#0d8f82]">
                 GESTÃO E AUTOMAÇÃO PARA CLÍNICAS ODONTOLÓGICAS
               </div>
-              <h1 className="mt-8 max-w-[640px] text-[2.8rem] font-semibold leading-[1.02] tracking-[-0.06em] text-[#101c3d] sm:text-[4rem]">
+              <h1 className="mt-7 max-w-[640px] text-[2rem] font-semibold leading-[1.06] tracking-[-0.05em] text-[#101c3d] sm:mt-8 sm:text-[3.2rem]">
                 Sua clínica organizada. Seus pacientes acompanhados.
               </h1>
-              <p className="mt-6 max-w-[600px] text-[1.03rem] leading-7 text-[#5d6c87]">
+              <p className="mt-5 max-w-[600px] text-[0.95rem] leading-6 text-[#5d6c87] sm:mt-6 sm:text-[1.03rem] sm:leading-7">
                 Agenda, prontuário e automações em um só lugar para reduzir faltas e trazer pacientes de volta.
               </p>
 
@@ -435,7 +435,7 @@ export function FigmaLandingPage({
             />
           </div>
 
-          <div className="relative mt-20 rounded-[26px] border border-[#edf2fa] bg-white px-8 py-7 shadow-[0_18px_42px_rgba(12,23,48,0.06)] lg:mt-28">
+          <div className="relative mt-16 rounded-[26px] border border-[#edf2fa] bg-white px-5 py-6 shadow-[0_18px_42px_rgba(12,23,48,0.06)] sm:mt-20 sm:px-8 sm:py-7 lg:mt-28">
             <div className="grid gap-6 md:grid-cols-5">
               {HERO_PROOFS.map((item) => (
                 <div key={item} className="flex items-center gap-4">
@@ -455,16 +455,16 @@ export function FigmaLandingPage({
             text=""
           />
 
-          <div className="mt-16 grid gap-8 lg:grid-cols-2">
+          <div className="mt-10 grid gap-6 sm:mt-16 sm:gap-8 lg:grid-cols-2">
             {PAIN_POINTS.map((item) => (
-              <article key={item.title} className="rounded-[22px] border border-[#e9eef7] bg-white px-6 py-7 shadow-[0_14px_34px_rgba(12,23,48,0.05)]">
-                <div className="flex items-start gap-4">
-                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#e3f7f3] text-[#0d8f82]">
+              <article key={item.title} className="rounded-[22px] border border-[#e9eef7] bg-white px-5 py-6 shadow-[0_14px_34px_rgba(12,23,48,0.05)] sm:px-6 sm:py-7">
+                <div className="flex flex-col items-start gap-3 sm:flex-row sm:gap-4">
+                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#e3f7f3] text-[#0d8f82] sm:h-11 sm:w-11">
                     <item.icon className="h-5 w-5" />
                   </span>
                   <div>
-                    <h3 className="text-[1.15rem] font-semibold tracking-[-0.03em] text-[#0c1730]">{item.title}</h3>
-                    <p className="mt-3 text-[0.98rem] leading-7 text-[#60708d]">{item.text}</p>
+                    <h3 className="text-[1rem] font-semibold tracking-[-0.03em] text-[#0c1730] sm:text-[1.15rem]">{item.title}</h3>
+                    <p className="mt-2 text-[0.9rem] leading-6 text-[#60708d] sm:mt-3 sm:text-[0.98rem] sm:leading-7">{item.text}</p>
                   </div>
                 </div>
               </article>
@@ -478,10 +478,10 @@ export function FigmaLandingPage({
             text=""
           />
 
-          <div className="mt-16 grid gap-8 lg:grid-cols-3">
+          <div className="mt-10 grid gap-6 sm:mt-16 sm:gap-8 lg:grid-cols-3">
             {FEATURE_CARDS.map((item, index) => (
-              <article key={item.title} className="rounded-[28px] border border-[#e9eef7] bg-white p-6 shadow-[0_18px_38px_rgba(12,23,48,0.06)]">
-                <div className="figma-feature-media h-[160px] overflow-hidden rounded-[24px] border border-[#ccebe2]">
+              <article key={item.title} className="rounded-[28px] border border-[#e9eef7] bg-white p-4 shadow-[0_18px_38px_rgba(12,23,48,0.06)] sm:p-6">
+                <div className="figma-feature-media h-[140px] overflow-hidden rounded-[20px] border border-[#ccebe2] sm:h-[160px] sm:rounded-[24px]">
                   {item.image ? (
                     <img
                       src={item.image}
@@ -504,14 +504,14 @@ export function FigmaLandingPage({
                   )}
                 </div>
 
-                <div className="mt-5 flex items-start justify-between gap-5">
+                <div className="mt-5 flex items-start justify-between gap-3 sm:gap-5">
                   <div className="pr-2">
                     <div className="flex items-center gap-3">
                       <item.icon className="h-5 w-5 text-[#0d8f82]" />
                       <h3 className="text-[1rem] font-semibold text-[#0c1730]">{item.title}</h3>
                     </div>
-                    <p className="mt-4 text-[1.02rem] font-medium leading-7 text-[#20304b]">{item.subtitle}</p>
-                    <p className="mt-4 text-[0.96rem] leading-7 text-[#60708d]">{item.text}</p>
+                    <p className="mt-3 text-[0.95rem] font-medium leading-6 text-[#20304b] sm:mt-4 sm:text-[1.02rem] sm:leading-7">{item.subtitle}</p>
+                    <p className="mt-3 text-[0.9rem] leading-6 text-[#60708d] sm:mt-4 sm:text-[0.96rem] sm:leading-7">{item.text}</p>
                   </div>
                   <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#e3f7f3] text-sm font-semibold text-[#0d8f82]">
                     {index + 1}
@@ -533,13 +533,13 @@ export function FigmaLandingPage({
         </section>
 
         <section id="como-funciona" className="figma-shell figma-section">
-          <div className="rounded-[28px] bg-[#101c3d] px-10 py-12 text-white shadow-[0_26px_70px_rgba(16,28,61,0.22)]">
+          <div className="rounded-[28px] bg-[#101c3d] px-5 py-8 text-white shadow-[0_26px_70px_rgba(16,28,61,0.22)] sm:px-10 sm:py-12">
             <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_360px] lg:items-center">
               <div>
-                <h2 className="max-w-[640px] text-[2.2rem] font-semibold leading-[1.08] tracking-[-0.05em] sm:text-[3rem]">
+                <h2 className="max-w-[640px] text-[1.65rem] font-semibold leading-[1.12] tracking-[-0.04em] sm:text-[3rem]">
                   Automatize o pré e pós-atendimento sem depender da memória da equipe
                 </h2>
-                <p className="mt-6 max-w-[600px] text-[1.02rem] leading-8 text-white/82">
+                <p className="mt-5 max-w-[600px] text-[0.92rem] leading-6 text-white/82 sm:mt-6 sm:text-[1.02rem] sm:leading-8">
                   Confirmações, orientações, lembretes, mensagens de retorno e acompanhamento podem ser organizados para que nenhum paciente importante fique esquecido.
                 </p>
 
@@ -556,7 +556,7 @@ export function FigmaLandingPage({
                 </div>
               </div>
 
-              <div className="rounded-[28px] bg-white p-8 text-[#0c1730] shadow-[0_18px_40px_rgba(15,23,42,0.16)]">
+              <div className="rounded-[28px] bg-white p-5 text-[#0c1730] shadow-[0_18px_40px_rgba(15,23,42,0.16)] sm:p-8">
                 <div className="flex items-center gap-3">
                   <MessageCircleMore className="h-5 w-5 text-[#13b8a6]" />
                   <h3 className="text-[1.5rem] font-semibold">Fluxo automático</h3>
@@ -585,16 +585,16 @@ export function FigmaLandingPage({
             text=""
           />
 
-          <div className="mt-16 grid gap-8 lg:grid-cols-3">
+          <div className="mt-10 grid gap-6 sm:mt-16 sm:gap-8 lg:grid-cols-3">
             {SUPPORT_TOOLS.map((item, index) => (
-              <article key={item.title} className="rounded-[22px] border border-[#e9eef7] bg-white px-6 py-7 shadow-[0_14px_34px_rgba(12,23,48,0.05)]">
-                <div className="flex items-start gap-4">
+              <article key={item.title} className="rounded-[22px] border border-[#e9eef7] bg-white px-5 py-6 shadow-[0_14px_34px_rgba(12,23,48,0.05)] sm:px-6 sm:py-7">
+                <div className="flex flex-col items-start gap-3 sm:flex-row sm:gap-4">
                   <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#e3f7f3] text-sm font-semibold text-[#0d8f82]">
                     {index + 1}
                   </span>
                   <div>
-                    <h3 className="text-[1.12rem] font-semibold tracking-[-0.03em] text-[#0c1730]">{item.title}</h3>
-                    <p className="mt-3 text-[0.98rem] leading-7 text-[#60708d]">{item.text}</p>
+                    <h3 className="text-[1rem] font-semibold tracking-[-0.03em] text-[#0c1730] sm:text-[1.12rem]">{item.title}</h3>
+                    <p className="mt-2 text-[0.9rem] leading-6 text-[#60708d] sm:mt-3 sm:text-[0.98rem] sm:leading-7">{item.text}</p>
                   </div>
                 </div>
               </article>
@@ -610,7 +610,7 @@ export function FigmaLandingPage({
             />
 
             <div className="mt-18 grid gap-8 lg:grid-cols-[280px_1fr_280px] lg:items-center">
-              <article className="rounded-[22px] border border-white/90 bg-white px-6 py-6 shadow-[0_18px_36px_rgba(12,23,48,0.06)]">
+              <article className="rounded-[22px] border border-white/90 bg-white px-5 py-5 shadow-[0_18px_36px_rgba(12,23,48,0.06)] sm:px-6 sm:py-6">
                 <h3 className="text-[1.05rem] font-semibold text-[#0c1730]">Painel no bolso certo</h3>
                 <p className="mt-3 text-sm leading-7 text-[#60708d]">Visualize agenda, confirmações e próximos passos sem depender do desktop.</p>
               </article>
@@ -625,7 +625,7 @@ export function FigmaLandingPage({
                 />
               </div>
 
-              <article className="rounded-[22px] border border-white/90 bg-white px-6 py-6 shadow-[0_18px_36px_rgba(12,23,48,0.06)]">
+              <article className="rounded-[22px] border border-white/90 bg-white px-5 py-5 shadow-[0_18px_36px_rgba(12,23,48,0.06)] sm:px-6 sm:py-6">
                 <h3 className="text-[1.05rem] font-semibold text-[#0c1730]">Acompanhe sempre</h3>
                 <p className="mt-3 text-sm leading-7 text-[#60708d]">Recepção, dentista e gestão enxergam o mesmo fluxo com mais clareza.</p>
               </article>
@@ -639,7 +639,7 @@ export function FigmaLandingPage({
             text="Uma plataforma simples e visual para acompanhar a rotina da clínica do agendamento ao pós-atendimento."
           />
 
-          <div className="mt-16 grid gap-8 sm:grid-cols-2 xl:grid-cols-5">
+          <div className="mt-10 grid gap-6 sm:mt-16 sm:grid-cols-2 sm:gap-8 xl:grid-cols-5">
             {GALLERY_ITEMS.map((item) => (
               <article key={item.title} className="rounded-[20px] border border-[#e9eef7] bg-white p-5 shadow-[0_14px_34px_rgba(12,23,48,0.05)]">
                 <div className="h-[130px] overflow-hidden rounded-[18px] bg-[#f8fbff]">
@@ -676,16 +676,16 @@ export function FigmaLandingPage({
             text=""
           />
 
-          <div className="mt-16 grid gap-8 lg:grid-cols-2">
+          <div className="mt-10 grid gap-6 sm:mt-16 sm:gap-8 lg:grid-cols-2">
             {AUDIENCES.map((item) => (
-              <article key={item.title} className="rounded-[22px] border border-[#e9eef7] bg-white px-6 py-7 shadow-[0_14px_34px_rgba(12,23,48,0.05)]">
-                <div className="flex items-start gap-4">
-                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#e3f7f3] text-[#0d8f82]">
+              <article key={item.title} className="rounded-[22px] border border-[#e9eef7] bg-white px-5 py-6 shadow-[0_14px_34px_rgba(12,23,48,0.05)] sm:px-6 sm:py-7">
+                <div className="flex flex-col items-start gap-3 sm:flex-row sm:gap-4">
+                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#e3f7f3] text-[#0d8f82] sm:h-11 sm:w-11">
                     <item.icon className="h-5 w-5" />
                   </span>
                   <div>
-                    <h3 className="text-[1.15rem] font-semibold tracking-[-0.03em] text-[#0c1730]">{item.title}</h3>
-                    <p className="mt-3 text-[0.98rem] leading-7 text-[#60708d]">{item.text}</p>
+                    <h3 className="text-[1rem] font-semibold tracking-[-0.03em] text-[#0c1730] sm:text-[1.15rem]">{item.title}</h3>
+                    <p className="mt-2 text-[0.9rem] leading-6 text-[#60708d] sm:mt-3 sm:text-[0.98rem] sm:leading-7">{item.text}</p>
                   </div>
                 </div>
               </article>
@@ -700,11 +700,11 @@ export function FigmaLandingPage({
               text="Comece com a estrutura essencial e evolua para automações conforme a operação da clínica crescer."
             />
 
-            <div className="mt-16 grid gap-8 xl:grid-cols-3">
+            <div className="mt-10 grid gap-6 sm:mt-16 sm:gap-8 xl:grid-cols-3">
               {PLAN_COLUMNS.map((plan) => (
                 <article
                   key={plan.name}
-                  className={`relative h-full rounded-[30px] border p-8 pb-[104px] shadow-[0_24px_60px_rgba(12,23,48,0.08)] ${
+                  className={`relative h-full rounded-[30px] border p-6 pb-[96px] shadow-[0_24px_60px_rgba(12,23,48,0.08)] sm:p-8 sm:pb-[104px] ${
                     plan.featured
                       ? 'border-[#101c3d] bg-[#101c3d] text-white'
                       : 'border-[#e9eef7] bg-white text-[#0c1730]'
@@ -717,30 +717,30 @@ export function FigmaLandingPage({
                       </span>
                     ) : null}
                   </div>
-                  <h3 className="mt-5 text-[2rem] font-semibold tracking-[-0.05em]">{plan.name}</h3>
-                  <p className={`mt-3 text-[0.97rem] leading-7 ${plan.featured ? 'text-white/74' : 'text-[#60708d]'}`}>{plan.description}</p>
+                  <h3 className="mt-5 text-[1.75rem] font-semibold tracking-[-0.05em] sm:text-[2rem]">{plan.name}</h3>
+                  <p className={`mt-3 text-[0.9rem] leading-6 sm:text-[0.97rem] sm:leading-7 ${plan.featured ? 'text-white/74' : 'text-[#60708d]'}`}>{plan.description}</p>
 
                   <div className="mt-10 flex items-end gap-3">
                     <span className={`pb-3 text-sm ${plan.featured ? 'text-white/72' : 'text-[#60708d]'}`}>{plan.pricePrefix}</span>
-                    <span className="text-[3.45rem] font-semibold leading-none tracking-[-0.06em]">{plan.price}</span>
+                    <span className="text-[2.9rem] font-semibold leading-none tracking-[-0.06em] sm:text-[3.45rem]">{plan.price}</span>
                     <span className={`pb-3 text-sm ${plan.featured ? 'text-white/72' : 'text-[#60708d]'}`}>{plan.priceSuffix}</span>
                   </div>
 
                   <ul className="mt-8 space-y-4">
                     {plan.features.map((feature) => (
-                      <li key={feature} className={`flex items-start gap-3 text-[0.98rem] leading-7 ${plan.featured ? 'text-white/84' : 'text-[#20304b]'}`}>
+                      <li key={feature} className={`flex items-start gap-3 text-[0.9rem] leading-6 sm:text-[0.98rem] sm:leading-7 ${plan.featured ? 'text-white/84' : 'text-[#20304b]'}`}>
                         <Check className={`mt-1 h-4 w-4 shrink-0 ${plan.featured ? 'text-[#56d7c8]' : 'text-[#0d8f82]'}`} />
                         <span>{feature}</span>
                       </li>
                     ))}
                   </ul>
 
-                  <div className="absolute inset-x-8 bottom-8 [&>a]:w-full">
+                  <div className="absolute inset-x-6 bottom-6 sm:inset-x-8 sm:bottom-8 [&>a]:w-full">
                     <PreviewButton
                       href={PRIMARY_CTA_URL}
                       source={`figma_plan_${plan.name.toLowerCase()}`}
                       label={`Criar conta grátis - ${plan.name}`}
-                      variant={plan.featured ? 'primary' : 'secondary'}
+                      variant="primary"
                       trackEvent={trackEvent}
                     >
                       Criar conta grátis
@@ -758,16 +758,16 @@ export function FigmaLandingPage({
             text="Este bloco quebra objeções sobre suporte, implantação, fidelidade e facilidade de uso."
           />
 
-          <div className="mt-16 grid gap-8 lg:grid-cols-3">
+          <div className="mt-10 grid gap-6 sm:mt-16 sm:gap-8 lg:grid-cols-3">
             {DIFFERENTIALS.map((item) => (
-              <article key={item.title} className="rounded-[22px] border border-[#e9eef7] bg-white px-6 py-7 shadow-[0_14px_34px_rgba(12,23,48,0.05)]">
-                <div className="flex items-start gap-4">
+              <article key={item.title} className="rounded-[22px] border border-[#e9eef7] bg-white px-5 py-6 shadow-[0_14px_34px_rgba(12,23,48,0.05)] sm:px-6 sm:py-7">
+                <div className="flex flex-col items-start gap-3 sm:flex-row sm:gap-4">
                   <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#e3f7f3] text-[#0d8f82]">
                     <Check className="h-4 w-4" />
                   </span>
                   <div>
-                    <h3 className="text-[1.12rem] font-semibold tracking-[-0.03em] text-[#0c1730]">{item.title}</h3>
-                    <p className="mt-3 text-[0.98rem] leading-7 text-[#60708d]">{item.text}</p>
+                    <h3 className="text-[1rem] font-semibold tracking-[-0.03em] text-[#0c1730] sm:text-[1.12rem]">{item.title}</h3>
+                    <p className="mt-2 text-[0.9rem] leading-6 text-[#60708d] sm:mt-3 sm:text-[0.98rem] sm:leading-7">{item.text}</p>
                   </div>
                 </div>
               </article>
@@ -776,7 +776,7 @@ export function FigmaLandingPage({
         </section>
 
         <section id="contato" className="figma-shell py-18">
-          <div className="rounded-[28px] bg-[#2357e8] px-10 py-12 text-white shadow-[0_26px_70px_rgba(35,87,232,0.22)]">
+          <div className="rounded-[28px] bg-[#2357e8] px-6 py-8 text-white shadow-[0_26px_70px_rgba(35,87,232,0.22)] sm:px-10 sm:py-12">
             <div className="grid gap-8 lg:grid-cols-[1fr_250px] lg:items-center">
               <div>
                 <div className="mb-6 flex -space-x-3">
@@ -799,7 +799,7 @@ export function FigmaLandingPage({
                 <div className="inline-flex rounded-full border border-white/20 bg-white/10 px-4 py-2 text-[11px] font-bold tracking-[0.18em]">
                   Fale com a gente
                 </div>
-                <h2 className="mt-6 max-w-[650px] text-[2rem] font-semibold leading-[1.08] tracking-[-0.05em] sm:text-[2.85rem]">
+                <h2 className="mt-6 max-w-[650px] text-[1.65rem] font-semibold leading-[1.12] tracking-[-0.04em] sm:text-[2.85rem]">
                   Quer ver se o Medainer faz sentido para sua clínica?
                 </h2>
                 <p className="mt-5 max-w-[620px] text-[1rem] leading-8 text-white/82">
