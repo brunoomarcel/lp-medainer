@@ -746,8 +746,8 @@ export function FigmaLandingPage({
         <section id="planos" className="figma-lp-pricing py-22">
           <div className="figma-shell">
             <SectionIntro
-              title="Planos simples para cada momento da clínica"
-              text="Comece com a estrutura essencial e evolua para automações conforme a operação da clínica crescer."
+              title="Escolha o plano que se encaixa na sua clínica"
+              text=""
             />
 
             <div className="mt-10 grid gap-6 sm:mt-16 sm:gap-8 xl:grid-cols-3">
@@ -805,7 +805,7 @@ export function FigmaLandingPage({
         <section className="figma-shell figma-section">
           <SectionIntro
             title="Um bom software não se resume apenas em funcionalidades"
-            text="Este bloco quebra objeções sobre suporte, implantação, fidelidade e facilidade de uso."
+            text=""
           />
 
           <div className="mt-10 grid gap-6 sm:mt-16 sm:gap-8 lg:grid-cols-3">
