@@ -1,4 +1,4 @@
-.figma-shell {
+.home-shell {
   margin: 0 auto;
   width: 100%;
   max-width: 1240px;
@@ -6,28 +6,28 @@
   padding-right: 24px;
 }
 
-.figma-lp {
+.home-lp {
   overflow-x: clip;
 }
 
-.figma-section {
+.home-section {
   padding-top: 96px;
   padding-bottom: 96px;
 }
 
-.figma-feature-media {
+.home-feature-media {
   background:
     radial-gradient(circle at 12% 100%, rgba(19, 184, 166, 0.2), transparent 48%),
     linear-gradient(145deg, #f4fbf8 0%, #e2f5ee 100%);
 }
 
-.figma-hero-kicker-text {
+.home-hero-kicker-text {
   position: relative;
   display: inline-block;
   white-space: nowrap;
 }
 
-.figma-hero-kicker-text::after {
+.home-hero-kicker-text::after {
   content: "";
   position: absolute;
   top: 0;
@@ -37,11 +37,11 @@
   border-left: 2px solid currentColor;
   background: white;
   animation:
-    figma-kicker-reveal 5s steps(48, end) infinite,
-    figma-kicker-cursor 0.75s step-end infinite;
+    home-kicker-reveal 5s steps(48, end) infinite,
+    home-kicker-cursor 0.75s step-end infinite;
 }
 
-@keyframes figma-kicker-reveal {
+@keyframes home-kicker-reveal {
   0% {
     width: 100%;
   }
@@ -56,35 +56,35 @@
   }
 }
 
-@keyframes figma-kicker-cursor {
+@keyframes home-kicker-cursor {
   50% {
     border-left-color: transparent;
   }
 }
 
-.figma-proof-band {
+.home-proof-band {
   left: 50%;
   width: 100vw;
   transform: translateX(-50%);
 }
 
-.figma-proof-marquee {
+.home-proof-marquee {
   overflow: hidden;
   mask-image: linear-gradient(to right, transparent, black 4%, black 96%, transparent);
 }
 
-.figma-proof-track {
+.home-proof-track {
   display: flex;
   width: max-content;
-  animation: figma-proof-scroll 24s linear infinite;
+  animation: home-proof-scroll 24s linear infinite;
   will-change: transform;
 }
 
-.figma-proof-marquee:hover .figma-proof-track {
+.home-proof-marquee:hover .home-proof-track {
   animation-play-state: paused;
 }
 
-@keyframes figma-proof-scroll {
+@keyframes home-proof-scroll {
   from {
     transform: translateX(0);
   }
@@ -95,31 +95,56 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .figma-hero-kicker-text {
+  .home-hero-kicker-text {
     white-space: normal;
   }
 
-  .figma-hero-kicker-text::after {
+  .home-hero-kicker-text::after {
     content: none;
   }
 
-  .figma-proof-track {
+  .home-proof-track {
     animation: none;
     transform: none;
   }
 }
 
-.figma-lp-pricing {
+@keyframes home-glow-pulse {
+  0%,
+  100% {
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  }
+
+  50% {
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.35), 0 0 30px rgba(35, 87, 232, 0.3);
+  }
+}
+
+@keyframes home-emoji-spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.home-chatgpt-button:hover .home-emoji-icon {
+  animation: home-emoji-spin 1s linear infinite;
+}
+
+.home-lp-pricing {
   background:
     linear-gradient(180deg, #edf7f7 0%, #f7fafc 100%);
 }
 
-.figma-lp-access {
+.home-lp-access {
   position: relative;
   overflow: hidden;
 }
 
-.figma-lp-access::before {
+.home-lp-access::before {
   content: "";
   position: absolute;
   left: 50%;
@@ -134,12 +159,12 @@
 }
 
 @media (max-width: 767px) {
-  .figma-shell {
+  .home-shell {
     padding-left: 16px;
     padding-right: 16px;
   }
 
-  .figma-section {
+  .home-section {
     padding-top: 64px;
     padding-bottom: 64px;
   }
@@ -147,18 +172,18 @@
 
 /* Tighter layout for very small screens to avoid an aggressive hero height */
 @media (max-width: 380px) {
-  .figma-shell {
+  .home-shell {
     padding-left: 12px;
     padding-right: 12px;
   }
 
-  .figma-section {
+  .home-section {
     padding-top: 32px;
     padding-bottom: 32px;
   }
 
   /* Reduce hero kicker size and spacing */
-  .figma-hero-kicker {
+  .home-hero-kicker {
     padding-left: 8px;
     padding-right: 8px;
     padding-top: 4px;
@@ -167,13 +192,13 @@
   }
 
   /* Reduce main hero title size and spacing in the first section */
-  .figma-lp main > section:first-of-type h1 {
+  .home-lp main > section:first-of-type h1 {
     font-size: 1.6rem;
     margin-top: 0.6rem;
     line-height: 1.08;
   }
 
-  .figma-lp main > section:first-of-type p {
+  .home-lp main > section:first-of-type p {
     font-size: 0.92rem;
   }
 
@@ -187,7 +212,7 @@
   }
 
   /* Tighten proof band spacing */
-  .figma-proof-band {
+  .home-proof-band {
     padding-top: 6px;
     padding-bottom: 6px;
   }
