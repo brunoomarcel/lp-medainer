@@ -18,21 +18,21 @@ import {
   Users,
   X,
 } from 'lucide-react';
-import { buildTrackedUrl } from './analytics';
-import { useLeadFlow } from './components/LeadFlow';
-import acessoTablet from './assets/images/acesso-tablet.png';
-import automacaoWhatsapp from './assets/images/automacao-whatsapp.png';
-import controleOperacional from './assets/images/controle-operacional.png';
-import galeriaAgenda from './assets/images/galeria-agenda.png';
-import galeriaAutomacoes from './assets/images/galeria-automacoes.png';
-import galeriaFinanceiro from './assets/images/galeria-financeiro.png';
-import galeriaPaciente from './assets/images/galeria-paciente.png';
-import galeriaProntuario from './assets/images/galeria-prontuario.png';
-import medainerHeroSection from './assets/images/medainer-hero-section.png';
-import prontuarioOdontologico from './assets/images/prontuario-odontologico.png';
-import recuperacaoPacientes from './assets/images/recuperacao-pacientes.png';
-import relacionamentoPacientes from './assets/images/relacionamento-pacientes.png';
-import medainerSymbol from './assets/images/symbol-medainer.png';
+import { buildTrackedUrl } from '../analytics';
+import acessoTablet from '../assets/images/acesso-tablet.png';
+import automacaoWhatsapp from '../assets/images/automacao-whatsapp.png';
+import controleOperacional from '../assets/images/controle-operacional.png';
+import galeriaAgenda from '../assets/images/galeria-agenda.png';
+import galeriaAutomacoes from '../assets/images/galeria-automacoes.png';
+import galeriaFinanceiro from '../assets/images/galeria-financeiro.png';
+import galeriaPaciente from '../assets/images/galeria-paciente.png';
+import galeriaProntuario from '../assets/images/galeria-prontuario.png';
+import chatgptIcon from '../assets/images/chatgpt-icon.svg';
+import medainerHeroSection from '../assets/images/medainer-hero-section.png';
+import prontuarioOdontologico from '../assets/images/prontuario-odontologico.png';
+import recuperacaoPacientes from '../assets/images/recuperacao-pacientes.png';
+import relacionamentoPacientes from '../assets/images/relacionamento-pacientes.png';
+import medainerSymbol from '../assets/images/symbol-medainer.png';
 
 const APP_REGISTER_URL =
   (import.meta.env.VITE_APP_REGISTER_URL as string | undefined)?.trim() || 'https://app.medainer.com.br/register';
@@ -40,9 +40,10 @@ const APP_LOGIN_URL =
   (import.meta.env.VITE_APP_LOGIN_URL as string | undefined)?.trim() || 'https://app.medainer.com.br';
 const TERMS_URL = (import.meta.env.VITE_TERMS_URL as string | undefined)?.trim() || '/termos';
 const PRIVACY_URL = (import.meta.env.VITE_PRIVACY_URL as string | undefined)?.trim() || '/privacidade';
+const WHATSAPP_URL = 'https://wa.me/5579996018591?text=Olá%2C%20me%20interessei%20pelo%20Medainer%20e%20gostaria%20de%20tirar%20uma%20dúvida%21';
 
 const PRIMARY_CTA_URL = buildTrackedUrl(APP_REGISTER_URL);
-const FIGMA_PREVIEW_PATH = '/lp-figma-preview';
+const HOME_PATH = '/';
 
 const HERO_PROOFS = [
   'Agenda organizada',
@@ -225,6 +226,15 @@ const DIFFERENTIALS = [
   },
 ] as const;
 
+const DIFFERENTIAL_ICONS = [
+  ClipboardList,
+  Headset,
+  ShieldCheck,
+  MessageCircleMore,
+  Hospital,
+  TrendingUp,
+] as const;
+
 const PLAN_COLUMNS = [
   {
     name: 'Medainer Solo',
@@ -307,23 +317,19 @@ function PreviewButton({
   variant?: 'primary' | 'secondary' | 'dark';
   trackEvent: (eventName: string, payload?: Record<string, unknown>) => void;
 }) {
-  const { openLeadForm } = useLeadFlow();
-
   const variantClass =
     variant === 'primary'
-      ? 'bg-[#2357e8] text-white shadow-[0_18px_36px_rgba(35,87,232,0.24)]'
+      ? 'button-primary bg-[linear-gradient(135deg,#4150dd_0%,#5f73ff_100%)] text-white shadow-[0_18px_48px_rgba(65,80,221,0.28)] hover:-translate-y-0.5'
       : variant === 'dark'
-        ? 'bg-[#101c3d] text-white shadow-[0_18px_36px_rgba(16,28,61,0.22)]'
-        : 'border border-[#d6e1ef] bg-white text-[#101c3d] shadow-[0_10px_24px_rgba(16,28,61,0.08)]';
+        ? 'button-primary bg-[#101c3d] text-white shadow-[0_18px_36px_rgba(16,28,61,0.22)] hover:-translate-y-0.5'
+        : 'button-primary border border-[#d6e1ef] bg-white text-[#101c3d] shadow-[0_10px_24px_rgba(16,28,61,0.08)] hover:-translate-y-0.5 hover:border-[#4150dd] hover:text-[#4150dd]';
 
   return (
     <a
       href={href}
-      className={`inline-flex items-center justify-center rounded-full px-6 py-3.5 text-sm font-semibold transition-transform duration-200 hover:-translate-y-0.5 ${variantClass}`}
-      onClick={(event) => {
-        event.preventDefault();
+      className={`inline-flex items-center justify-center rounded-full px-6 py-3.5 text-sm font-semibold transition-all duration-300 ${variantClass}`}
+      onClick={() => {
         trackEvent('click_trial', { source });
-        openLeadForm({ source, ctaLabel: label, targetHref: href });
       }}
     >
       {children}
@@ -348,7 +354,13 @@ function SectionIntro({
   );
 }
 
-export function FigmaLandingPage({
+function openChatGPT() {
+  const prompt = 'Por que o Medainer pode ser uma ótima escolha para a minha clínica?';
+  const url = `https://chatgpt.com/?prompt=${encodeURIComponent(prompt)}`;
+  window.open(url, '_blank', 'noopener,noreferrer');
+}
+
+export function HomePage({
   trackEvent,
 }: {
   trackEvent: (eventName: string, payload?: Record<string, unknown>) => void;
@@ -356,18 +368,18 @@ export function FigmaLandingPage({
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
 
   return (
-    <div className="figma-lp min-h-screen bg-[#f3f7fa] text-[#101c3d]">
-      <header className="sticky top-0 z-40 border-b border-[#edf2fb]/90 bg-white/92 backdrop-blur">
-        <div className="figma-shell flex min-h-[86px] items-center justify-between gap-6">
-          <a href={FIGMA_PREVIEW_PATH} className="shrink-0">
+    <div className="home-lp min-h-screen bg-[#f3f7fa] text-[#101c3d]">
+      <header className="fixed top-0 left-0 right-0 z-40 border-b border-[#edf2fb]/90 bg-white/92 backdrop-blur">
+        <div className="home-shell flex min-h-[86px] items-center justify-between gap-6">
+          <a href={HOME_PATH} className="shrink-0">
             <Logo />
           </a>
 
           <nav className="hidden items-center gap-9 text-[0.95rem] text-[#55647e] lg:flex">
-            <a href={`${FIGMA_PREVIEW_PATH}#recursos`} className="hover:text-[#101c3d]">Recursos</a>
-            <a href={`${FIGMA_PREVIEW_PATH}#como-funciona`} className="hover:text-[#101c3d]">Como funciona</a>
-            <a href={`${FIGMA_PREVIEW_PATH}#planos`} className="hover:text-[#101c3d]">Planos</a>
-            <a href={`${FIGMA_PREVIEW_PATH}#contato`} className="hover:text-[#101c3d]">Dúvidas</a>
+            <a href={`${HOME_PATH}#recursos`} className="hover:text-[#101c3d]">Recursos</a>
+            <a href={`${HOME_PATH}#como-funciona`} className="hover:text-[#101c3d]">Como funciona</a>
+            <a href={`${HOME_PATH}#planos`} className="hover:text-[#101c3d]">Planos</a>
+            <a href={`${HOME_PATH}#chatgpt`} className="hover:text-[#101c3d]">Dúvidas</a>
           </nav>
 
           <div className="flex items-center gap-3">
@@ -380,7 +392,7 @@ export function FigmaLandingPage({
             <div className="hidden sm:block">
               <PreviewButton
                 href={PRIMARY_CTA_URL}
-                source="figma_header_trial"
+                source="home_header_trial"
                 label="Testar grátis"
                 trackEvent={trackEvent}
               >
@@ -391,7 +403,7 @@ export function FigmaLandingPage({
               type="button"
               aria-label={mobileMenuOpen ? 'Fechar menu' : 'Abrir menu'}
               aria-expanded={mobileMenuOpen}
-              aria-controls="figma-mobile-menu"
+              aria-controls="home-mobile-menu"
               className="flex h-11 w-11 items-center justify-center rounded-full border border-[#d6e1ef] bg-white text-[#101c3d] lg:hidden"
               onClick={() => setMobileMenuOpen((open) => !open)}
             >
@@ -401,13 +413,13 @@ export function FigmaLandingPage({
         </div>
 
         {mobileMenuOpen ? (
-          <nav id="figma-mobile-menu" className="figma-shell border-t border-[#edf2fb] py-5 lg:hidden">
+          <nav id="home-mobile-menu" className="home-shell border-t border-[#edf2fb] py-5 lg:hidden">
             <div className="flex flex-col gap-1 text-[0.95rem] font-medium text-[#55647e]">
               {[
-                ['Recursos', `${FIGMA_PREVIEW_PATH}#recursos`],
-                ['Como funciona', `${FIGMA_PREVIEW_PATH}#como-funciona`],
-                ['Planos', `${FIGMA_PREVIEW_PATH}#planos`],
-                ['Dúvidas', `${FIGMA_PREVIEW_PATH}#contato`],
+                ['Recursos', `${HOME_PATH}#recursos`],
+                ['Como funciona', `${HOME_PATH}#como-funciona`],
+                ['Planos', `${HOME_PATH}#planos`],
+                ['Dúvidas', `${HOME_PATH}#chatgpt`],
               ].map(([label, href]) => (
                 <a
                   key={label}
@@ -424,7 +436,7 @@ export function FigmaLandingPage({
               <div className="mt-3 px-4 sm:hidden [&>a]:w-full">
                 <PreviewButton
                   href={PRIMARY_CTA_URL}
-                  source="figma_mobile_menu_trial"
+                  source="home_mobile_menu_trial"
                   label="Testar grátis"
                   trackEvent={trackEvent}
                 >
@@ -436,15 +448,15 @@ export function FigmaLandingPage({
         ) : null}
       </header>
 
-      <main>
-        <section className="figma-shell relative pt-10 pb-12 sm:pt-14 sm:pb-18">
+      <main className="pt-[86px]">
+        <section className="home-shell relative pt-10 pb-12 sm:pt-14 sm:pb-18">
           <div className="absolute right-[-14%] top-[-2.5rem] hidden h-[760px] w-[760px] rounded-full bg-[#dff7f3] lg:block" />
           <div className="relative">
             <div className="relative grid gap-10 lg:min-h-[560px] lg:grid-cols-[52%_48%] lg:items-center">
               <div className="relative z-10 max-w-[640px] text-center lg:text-left">
-                <div className="figma-hero-kicker inline-flex max-w-full items-center gap-2 rounded-full border border-[#bce8e1] bg-white px-4 py-2 text-[10px] font-bold uppercase tracking-[0.06em] text-[#0d8f82] sm:text-[11px] sm:tracking-[0.12em]">
+                <div className="home-hero-kicker inline-flex max-w-full items-center gap-2 rounded-full border border-[#bce8e1] bg-white px-4 py-2 text-[10px] font-bold uppercase tracking-[0.06em] text-[#0d8f82] sm:text-[11px] sm:tracking-[0.12em]">
                   <Sparkles className="h-3.5 w-3.5 shrink-0" />
-                  <span className="figma-hero-kicker-text">GESTÃO E AUTOMAÇÃO PARA CLÍNICAS ODONTOLÓGICAS</span>
+                  <span className="home-hero-kicker-text">GESTÃO E AUTOMAÇÃO PARA CLÍNICAS ODONTOLÓGICAS</span>
                 </div>
                 <h1 className="mx-auto mt-7 max-w-[640px] text-[2rem] font-semibold leading-[1.06] tracking-[-0.05em] text-[#101c3d] sm:mt-8 sm:text-[3.2rem] lg:mx-0">
                   Sua clínica organizada. Seus pacientes acompanhados.
@@ -456,7 +468,7 @@ export function FigmaLandingPage({
                 <div className="mt-10 flex flex-col justify-center gap-4 sm:flex-row lg:justify-start">
                   <PreviewButton
                     href={PRIMARY_CTA_URL}
-                    source="figma_hero_trial"
+                    source="home_hero_trial"
                     label="Testar grátis por 7 dias"
                     trackEvent={trackEvent}
                   >
@@ -479,9 +491,9 @@ export function FigmaLandingPage({
             </div>
           </div>
 
-          <div className="figma-proof-band relative mt-16 border-y border-[#edf2fa] bg-white py-6 shadow-[0_18px_42px_rgba(12,23,48,0.06)] sm:mt-20 sm:py-7 lg:mt-28">
-            <div className="figma-proof-marquee">
-              <div className="figma-proof-track">
+          <div className="home-proof-band relative mt-16 border-y border-[#edf2fa] bg-white py-6 shadow-[0_18px_42px_rgba(12,23,48,0.06)] sm:mt-20 sm:py-7 lg:mt-28">
+            <div className="home-proof-marquee">
+              <div className="home-proof-track">
                 {[0, 1].map((group) => (
                   <div key={group} className="flex shrink-0 items-center gap-10 pr-10" aria-hidden={group === 1}>
                     {HERO_PROOFS.map((item) => (
@@ -499,7 +511,7 @@ export function FigmaLandingPage({
           </div>
         </section>
 
-        <section className="figma-shell figma-section">
+        <section className="home-shell home-section">
           <SectionIntro
             title="Sua clínica pode estar perdendo pacientes por falta de acompanhamento"
             text=""
@@ -522,7 +534,7 @@ export function FigmaLandingPage({
           </div>
         </section>
 
-        <section id="recursos" className="figma-shell figma-section">
+        <section id="recursos" className="home-shell home-section">
           <SectionIntro
             title="Tecnologia para simplificar a rotina da sua clínica"
             text=""
@@ -531,7 +543,7 @@ export function FigmaLandingPage({
           <div className="mt-10 grid gap-6 sm:mt-16 sm:gap-8 lg:grid-cols-3">
             {FEATURE_CARDS.map((item, index) => (
               <article key={item.title} className="rounded-[28px] border border-[#e9eef7] bg-white p-4 shadow-[0_18px_38px_rgba(12,23,48,0.06)] sm:p-6">
-                <div className="figma-feature-media h-[140px] overflow-hidden rounded-[20px] border border-[#ccebe2] sm:h-[160px] sm:rounded-[24px]">
+                <div className="home-feature-media h-[140px] overflow-hidden rounded-[20px] border border-[#ccebe2] sm:h-[160px] sm:rounded-[24px]">
                   {item.image ? (
                     <img
                       src={item.image}
@@ -542,7 +554,7 @@ export function FigmaLandingPage({
                     />
                   ) : (
                     <div className="p-5">
-                      <div className="h-[18px] w-[272px] max-w-full rounded-full bg-[#2357e8]" />
+                      <div className="h-[18px] w-[272px] max-w-full rounded-full bg-[#4150dd]" />
                       <div className="mt-4 flex items-center gap-4">
                         <div className="h-[42px] w-[98px] rounded-2xl bg-[#13b8a6]" />
                         <div className="space-y-3">
@@ -570,7 +582,7 @@ export function FigmaLandingPage({
 
                 {/* <PreviewButton
                   href={PRIMARY_CTA_URL}
-                  source={`figma_feature_${index + 1}`}
+                  source={`home_feature_${index + 1}`}
                   label={`Ver recurso: ${item.title}`}
                   trackEvent={trackEvent}
                   variant="secondary"
@@ -582,7 +594,7 @@ export function FigmaLandingPage({
           </div>
         </section>
 
-        <section id="como-funciona" className="figma-shell figma-section">
+        <section id="como-funciona" className="home-shell home-section">
           <div className="rounded-[28px] bg-[#101c3d] px-5 py-8 text-white shadow-[0_26px_70px_rgba(16,28,61,0.22)] sm:px-10 sm:py-12">
             <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_360px] lg:items-center">
               <div>
@@ -596,7 +608,7 @@ export function FigmaLandingPage({
                 <div className="mt-8">
                   <PreviewButton
                     href={PRIMARY_CTA_URL}
-                    source="figma_automation_cta"
+                    source="home_automation_cta"
                     label="Ver automações do Medainer"
                     variant="secondary"
                     trackEvent={trackEvent}
@@ -629,7 +641,7 @@ export function FigmaLandingPage({
           </div>
         </section>
 
-        <section className="figma-shell figma-section">
+        <section className="home-shell home-section">
           <SectionIntro
             title="Recursos que deixam a operação mais previsível"
             text=""
@@ -652,8 +664,8 @@ export function FigmaLandingPage({
           </div>
         </section>
 
-        <section className="figma-lp-access bg-[#e9f7f5] py-22">
-          <div className="figma-shell">
+        <section className="home-lp-access bg-[#e9f7f5] py-22">
+          <div className="home-shell">
             <SectionIntro
               title="Acesse sua clínica de onde estiver"
               text=""
@@ -683,16 +695,16 @@ export function FigmaLandingPage({
           </div>
         </section>
 
-        <section className="figma-shell figma-section">
+        <section className="home-shell home-section">
           <SectionIntro
             title="Conheça o Medainer por dentro"
             text="Uma plataforma simples e visual para acompanhar a rotina da clínica do agendamento ao pós-atendimento."
           />
 
-          <div className="mt-10 grid gap-6 sm:mt-16 sm:grid-cols-2 sm:gap-8 xl:grid-cols-5">
+          <div className="mt-10 grid gap-6 sm:mt-16 sm:gap-8 lg:grid-cols-6 [&>:nth-child(1)]:lg:col-span-2 [&>:nth-child(2)]:lg:col-span-2 [&>:nth-child(3)]:lg:col-span-2 [&>:nth-child(4)]:lg:col-span-2 [&>:nth-child(4)]:lg:col-start-2 [&>:nth-child(5)]:lg:col-span-2">
             {GALLERY_ITEMS.map((item) => (
               <article key={item.title} className="rounded-[20px] border border-[#e9eef7] bg-white p-5 shadow-[0_14px_34px_rgba(12,23,48,0.05)]">
-                <div className="h-[130px] overflow-hidden rounded-[18px] bg-[#f8fbff]">
+                <div className="aspect-video overflow-hidden rounded-[18px] bg-[#f8fbff]">
                   {item.image ? (
                     <img
                       src={item.image}
@@ -704,7 +716,7 @@ export function FigmaLandingPage({
                   ) : (
                     <div className="p-4">
                       <div className="flex items-center gap-3">
-                        <div className="h-12 w-12 rounded-2xl bg-[#2357e8]" />
+                        <div className="h-12 w-12 rounded-2xl bg-[#4150dd]" />
                         <div>
                           <div className="h-[10px] w-16 rounded-full bg-[#d7e3f7]" />
                           <div className="mt-3 h-[10px] w-12 rounded-full bg-[#d7e3f7]" />
@@ -720,7 +732,7 @@ export function FigmaLandingPage({
           </div>
         </section>
 
-        <section className="figma-shell figma-section">
+        <section className="home-shell home-section">
           <SectionIntro
             title="Criado para clínicas que precisam de controle real"
             text=""
@@ -743,8 +755,8 @@ export function FigmaLandingPage({
           </div>
         </section>
 
-        <section id="planos" className="figma-lp-pricing py-22">
-          <div className="figma-shell">
+        <section id="planos" className="home-lp-pricing py-22">
+          <div className="home-shell">
             <SectionIntro
               title="Escolha o plano que se encaixa na sua clínica"
               text=""
@@ -788,7 +800,7 @@ export function FigmaLandingPage({
                   <div className="absolute inset-x-6 bottom-6 sm:inset-x-8 sm:bottom-8 [&>a]:w-full">
                     <PreviewButton
                       href={PRIMARY_CTA_URL}
-                      source={`figma_plan_${plan.name.toLowerCase()}`}
+                      source={`home_plan_${plan.name.toLowerCase()}`}
                       label={`Criar conta grátis - ${plan.name}`}
                       variant="primary"
                       trackEvent={trackEvent}
@@ -802,65 +814,87 @@ export function FigmaLandingPage({
           </div>
         </section>
 
-        <section className="figma-shell figma-section">
+        <section className="home-shell home-section rounded-[40px] bg-[linear-gradient(180deg,#f7f9ff_0%,#eef3ff_100%)] px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
           <SectionIntro
-            title="Um bom software não se resume apenas em funcionalidades"
+            title="Um bom software precisa acompanhar sua empresa em tempo integral"
             text=""
           />
 
-          <div className="mt-10 grid gap-6 sm:mt-16 sm:gap-8 lg:grid-cols-3">
-            {DIFFERENTIALS.map((item) => (
-              <article key={item.title} className="rounded-[22px] border border-[#e9eef7] bg-white px-5 py-6 shadow-[0_14px_34px_rgba(12,23,48,0.05)] sm:px-6 sm:py-7">
-                <div className="flex flex-col items-start gap-3 sm:flex-row sm:gap-4">
-                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#e3f7f3] text-[#0d8f82]">
-                    <Check className="h-4 w-4" />
-                  </span>
-                  <div>
-                    <h3 className="text-[1rem] font-semibold tracking-[-0.03em] text-[#0c1730] sm:text-[1.12rem]">{item.title}</h3>
-                    <p className="mt-2 text-[0.9rem] leading-6 text-[#60708d] sm:mt-3 sm:text-[0.98rem] sm:leading-7">{item.text}</p>
-                  </div>
+          <div className="mt-12 grid gap-6 md:grid-cols-2 xl:grid-cols-3 sm:gap-8">
+            {DIFFERENTIALS.map((item, index) => {
+              const Icon = DIFFERENTIAL_ICONS[index];
+
+              return (
+                <article
+                  key={item.title}
+                className="flex min-h-[250px] flex-col items-center rounded-[30px] border border-[#d7e0ff] bg-white px-7 py-8 text-center shadow-[0_18px_40px_rgba(68,87,243,0.08)] sm:px-9 sm:py-10"
+              >
+                <span className="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-[#e7ecff] text-[#0d8f82] shadow-[0_0_30px_rgba(65,80,221,0.14)]">
+                  <Icon className="h-5 w-5" />
+                </span>
+                <div className="flex max-w-[320px] flex-1 flex-col">
+                  <h3 className="text-[1.08rem] font-semibold tracking-[-0.03em] text-[#16235a] sm:text-[1.18rem]">{item.title}</h3>
+                  <p className="mt-4 text-[0.96rem] leading-7 text-[#60708d] sm:text-[1.02rem] sm:leading-8">{item.text}</p>
                 </div>
               </article>
-            ))}
-          </div>
+            );
+          })}
+        </div>
         </section>
 
-        <section id="contato" className="figma-shell py-18">
-          <div className="rounded-[28px] bg-[#2357e8] px-6 py-8 text-white shadow-[0_26px_70px_rgba(35,87,232,0.22)] sm:px-10 sm:py-12">
-            <div className="grid gap-8 lg:grid-cols-[1fr_250px] lg:items-center">
-              <div>
-                <div className="mb-6 flex -space-x-3">
-                  <span title="Equipe Medainer" className="relative z-50 flex h-11 w-11 items-center justify-center overflow-hidden rounded-full border-2 border-[#2357e8] bg-white p-1.5">
+        <section id="chatgpt" className="home-shell py-18">
+          <div className="relative overflow-hidden rounded-[28px] bg-[linear-gradient(135deg,#4150dd_0%,#5f73ff_100%)] px-6 py-8 text-white shadow-[0_26px_70px_rgba(65,80,221,0.24)] sm:px-10 sm:py-12">
+            <div className="absolute top-[-100px] right-[-100px] h-[400px] w-[400px] rounded-full bg-white/10 blur-3xl" />
+            <div className="absolute bottom-[-50px] left-[-50px] h-[300px] w-[300px] rounded-full bg-white/10 blur-3xl" />
+
+            <div className="relative z-10 grid gap-10 lg:grid-cols-[1fr_260px] lg:items-center">
+              <div className="text-center lg:text-left">
+                <div className="mb-6 flex justify-center -space-x-3 lg:justify-start">
+                  <span title="Equipe Medainer" className="relative z-50 flex h-11 w-11 items-center justify-center overflow-hidden rounded-full border-2 border-white/30 bg-white p-1.5">
                     <img src={medainerSymbol} alt="Equipe Medainer" className="h-full w-full object-contain" />
                   </span>
-                  <span title="WhatsApp" className="relative z-40 flex h-11 w-11 items-center justify-center rounded-full border-2 border-[#2357e8] bg-[#dff7f3] text-[#0d8f82]">
+                  <span title="WhatsApp" className="relative z-40 flex h-11 w-11 items-center justify-center rounded-full border-2 border-white/25 bg-[#dff7f3] text-[#0d8f82]">
                     <MessageCircleMore className="h-5 w-5" />
                   </span>
-                  <span title="Agenda" className="relative z-30 flex h-11 w-11 items-center justify-center rounded-full border-2 border-[#2357e8] bg-[#dff7f3] text-[#0d8f82]">
+                  <span title="Agenda" className="relative z-30 flex h-11 w-11 items-center justify-center rounded-full border-2 border-white/25 bg-[#dff7f3] text-[#0d8f82]">
                     <CalendarDays className="h-5 w-5" />
                   </span>
-                  <span title="Prontuário" className="relative z-20 flex h-11 w-11 items-center justify-center rounded-full border-2 border-[#2357e8] bg-[#dff7f3] text-[#0d8f82]">
+                  <span title="Prontuário" className="relative z-20 flex h-11 w-11 items-center justify-center rounded-full border-2 border-white/25 bg-[#dff7f3] text-[#0d8f82]">
                     <Files className="h-5 w-5" />
                   </span>
-                  <span title="Automações" className="relative z-10 flex h-11 w-11 items-center justify-center rounded-full border-2 border-[#2357e8] bg-[#dff7f3] text-[#0d8f82]">
+                  <span title="Automações" className="relative z-10 flex h-11 w-11 items-center justify-center rounded-full border-2 border-white/25 bg-[#dff7f3] text-[#0d8f82]">
                     <Sparkles className="h-5 w-5" />
                   </span>
                 </div>
-                <div className="inline-flex rounded-full border border-white/20 bg-white/10 px-4 py-2 text-[11px] font-bold tracking-[0.18em]">
-                  Fale com a gente
+                <div className="inline-flex rounded-full border border-white/20 bg-white/12 px-4 py-2 text-[11px] font-bold tracking-[0.18em]">
+                  Dúvidas e comparação
                 </div>
-                <h2 className="mt-6 max-w-[650px] text-[1.65rem] font-semibold leading-[1.12] tracking-[-0.04em] sm:text-[2.85rem]">
-                  Quer ver se o Medainer faz sentido para sua clínica?
+                <h2 className="mt-6 max-w-[680px] text-[1.65rem] font-semibold leading-[1.12] tracking-[-0.04em] sm:text-[2.85rem]">
+                  Ainda tem dúvidas? Compare com o ChatGPT ou fale com a gente.
                 </h2>
-                <p className="mt-5 max-w-[620px] text-[1rem] leading-8 text-white/82">
-                  Converse pelo WhatsApp, veja a plataforma e entenda como organizar agenda, prontuário e automações de atendimento.
+                <p className="mt-5 max-w-[640px] text-[1rem] leading-8 text-white/82">
+                  Use o ChatGPT para analisar o Medainer ou chame nossa equipe no WhatsApp para entender como a plataforma organiza agenda, prontuário e automações de atendimento.
                 </p>
               </div>
 
-              <div className="flex justify-start lg:justify-end">
+              <div className="flex flex-col gap-4 lg:justify-self-end">
+                <button
+                  type="button"
+                  onClick={() => {
+                    trackEvent('click_chatgpt_button', { source: 'home_unified_help_section' });
+                    openChatGPT();
+                  }}
+                  className="home-chatgpt-button button-primary group relative inline-flex items-center justify-center rounded-full bg-white px-8 py-4 text-base font-semibold text-[#4150dd] shadow-[0_20px_40px_rgba(17,29,103,0.22)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_25px_50px_rgba(17,29,103,0.28)] active:scale-95"
+                >
+                  <span className="relative flex items-center gap-2">
+                    Perguntar ao ChatGPT
+                    <img src={chatgptIcon} alt="" aria-hidden="true" className="h-4 w-4 shrink-0" />
+                  </span>
+                </button>
+
                 <PreviewButton
-                  href={PRIMARY_CTA_URL}
-                  source="figma_footer_whatsapp"
+                  href={WHATSAPP_URL}
+                  source="home_unified_help_whatsapp"
                   label="Conversar pelo WhatsApp"
                   variant="secondary"
                   trackEvent={trackEvent}
@@ -875,7 +909,7 @@ export function FigmaLandingPage({
       </main>
 
       <footer className="mt-8 bg-[#0b1324] py-16 text-white">
-        <div className="figma-shell">
+        <div className="home-shell">
           <div className="grid gap-10 border-b border-white/10 pb-10 md:grid-cols-[1.2fr_230px_230px]">
             <div>
               <Logo inverted />
@@ -887,7 +921,7 @@ export function FigmaLandingPage({
             <div>
               <h3 className="text-sm font-semibold tracking-[0.08em] text-white/90">Recursos</h3>
               <div className="mt-5 space-y-3 text-sm text-white/62">
-                <a href={`${FIGMA_PREVIEW_PATH}#recursos`} className="block hover:text-white">Recursos</a>
+                <a href={`${HOME_PATH}#recursos`} className="block hover:text-white">Recursos</a>
                 <a href="mailto:suporte@medainer.com.br" className="block hover:text-white">Suporte</a>
               </div>
             </div>
@@ -895,7 +929,7 @@ export function FigmaLandingPage({
             <div>
               <h3 className="text-sm font-semibold tracking-[0.08em] text-white/90">Extras</h3>
               <div className="mt-5 space-y-3 text-sm text-white/62">
-                <a href={`${FIGMA_PREVIEW_PATH}#planos`} className="block hover:text-white">Planos</a>
+                <a href={`${HOME_PATH}#planos`} className="block hover:text-white">Planos</a>
                 <a href={PRIVACY_URL} className="block hover:text-white">Política de privacidade</a>
                 <a href={TERMS_URL} className="block hover:text-white">Termos de uso</a>
               </div>

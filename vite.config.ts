@@ -9,28 +9,6 @@ export default defineConfig(({mode}) => {
     plugins: [
       react(),
       tailwindcss(),
-      {
-        name: 'static-route-rewrite',
-        configureServer(server) {
-          server.middlewares.use((req, _res, next) => {
-            const url = req.url || '';
-
-            if (url === '/planos' || url.startsWith('/planos?')) {
-              req.url = url.replace('/planos', '/planos/index.html');
-            }
-            if (url === '/obrigado' || url.startsWith('/obrigado?')) {
-              req.url = url.replace('/obrigado', '/obrigado/index.html');
-            }
-            if (url === '/formulario' || url.startsWith('/formulario?')) {
-              req.url = url.replace('/formulario', '/formulario/index.html');
-            }
-            if (url === '/lp-figma-preview' || url.startsWith('/lp-figma-preview?')) {
-              req.url = url.replace('/lp-figma-preview', '/lp-figma-preview/index.html');
-            }
-            next();
-          });
-        },
-      },
     ],
     define: {
       'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY),
@@ -44,10 +22,6 @@ export default defineConfig(({mode}) => {
       rollupOptions: {
         input: {
           main: path.resolve(__dirname, 'index.html'),
-          pricing: path.resolve(__dirname, 'planos/index.html'),
-          thankyou: path.resolve(__dirname, 'obrigado/index.html'),
-          form: path.resolve(__dirname, 'formulario/index.html'),
-          figmaPreview: path.resolve(__dirname, 'lp-figma-preview/index.html'),
         },
       },
     },

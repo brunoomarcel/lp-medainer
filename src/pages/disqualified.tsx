@@ -1,8 +1,8 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import { initAnalytics } from './analytics';
-import { DisqualifiedPage } from './components/DisqualifiedPage';
-import './index.css';
+import { initAnalytics } from '../analytics';
+import { DisqualifiedPage } from '../components/DisqualifiedPage';
+import '../index.css';
 
 initAnalytics();
 
