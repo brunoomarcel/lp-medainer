@@ -754,11 +754,11 @@ export function HomePage({
                   <PreviewButton
                     href={PRIMARY_CTA_URL}
                     source="home_automation_cta"
-                    label="Ver automações do Medainer"
+                    label="Testar automações do Medainer"
                     variant="secondary"
                     trackEvent={trackEvent}
                   >
-                    Ver automações do Medainer
+                    Testar automações do Medainer
                   </PreviewButton>
                 </div>
               </div>
