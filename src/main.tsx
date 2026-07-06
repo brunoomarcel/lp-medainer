@@ -4,8 +4,8 @@ import { initAnalytics } from './analytics';
 import { LeadFormPage } from './components/LeadFlow';
 import { ThankYouPage } from './components/ThankYouPage';
 import { DisqualifiedPage } from './components/DisqualifiedPage';
-import { HomePage as NewHomePage } from './pages/HomePage';
-import { HomePage as OldLandingPage } from './pages/OldLandingPage';
+import { HomePage } from './pages/HomePage';
+import { OldLandingPage } from './pages/OldLandingPage';
 import './index.css';
 import './home-lp.css';
 
@@ -13,7 +13,7 @@ initAnalytics();
 
 function resolvePage() {
   if (typeof window === 'undefined') {
-    return <NewHomePage />;
+    return <HomePage />;
   }
 
   const pathname = window.location.pathname.replace(/\/index\.html$/, '').replace(/\/$/, '') || '/';
@@ -30,11 +30,11 @@ function resolvePage() {
     return <DisqualifiedPage />;
   }
 
-  if (pathname === '/old-lp') {
+  if (pathname === '/planos' || pathname === '/old-lp') {
     return <OldLandingPage />;
   }
 
-  return <NewHomePage />;
+  return <HomePage />;
 }
 
 createRoot(document.getElementById('root')!).render(

@@ -22,6 +22,11 @@ export default defineConfig(({mode}) => {
       rollupOptions: {
         input: {
           main: path.resolve(__dirname, 'index.html'),
+          formulario: path.resolve(__dirname, 'formulario/index.html'),
+          obrigado: path.resolve(__dirname, 'obrigado/index.html'),
+          planos: path.resolve(__dirname, 'planos/index.html'),
+          proximo_passo: path.resolve(__dirname, 'proximo-passo/index.html'),
+          old_lp: path.resolve(__dirname, 'old-lp/index.html'),
         },
       },
     },

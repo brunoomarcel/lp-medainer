@@ -23,8 +23,6 @@ import { LandingFooter, LandingHeader } from '../components/LandingChrome';
 import { LeadFlowProvider, useLeadFlow } from '../components/LeadFlow';
 import { SimpleVideoPlayer } from '../components/SimpleVideoPlayer';
 import { PLAN_COMPARISON_ROWS, PRODUCT_PLANS, type ProductPlan } from '../constants/plans';
-import { HomePage as NewHomePage } from './HomePage';
-
 declare global {
   interface Window {
     gtag?: (...args: unknown[]) => void;
@@ -1016,12 +1014,10 @@ function HomePageContent() {
   );
 }
 
-export function HomePage() {
+export function OldLandingPage() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [{ pathname, hash }, setLocationState] = useState(getCurrentLocationState);
   const isPricingPage = pathname === PRICING_PATH;
-  const isNewLandingPage = pathname === '/' || pathname === '/old-lp';
-  const isOldLandingPage = pathname === OLD_LP_PATH;
   const previousPathRef = useRef(pathname);
 
   useEffect(() => {
@@ -1057,23 +1053,9 @@ export function HomePage() {
   return (
     <LeadFlowProvider experience="landing">
       <div className="min-h-screen bg-brand-page text-brand-ink">
-        {isNewLandingPage ? (
-          <main>
-            <NewHomePage trackEvent={trackEvent} />
-          </main>
-        ) : isOldLandingPage ? (
-          <>
-            <LandingHeader isScrolled={isScrolled} navigationMode="spa" trackEvent={trackEvent} />
-            <main>{isPricingPage ? <PricingPage /> : <HomePageContent />}</main>
-            <LandingFooter />
-          </>
-        ) : (
-          <>
-            <LandingHeader isScrolled={isScrolled} navigationMode="spa" trackEvent={trackEvent} />
-            <main>{isPricingPage ? <PricingPage /> : <HomePageContent />}</main>
-            <LandingFooter />
-          </>
-        )}
+        <LandingHeader isScrolled={isScrolled} navigationMode="spa" trackEvent={trackEvent} />
+        <main>{isPricingPage ? <PricingPage /> : <HomePageContent />}</main>
+        <LandingFooter />
       </div>
     </LeadFlowProvider>
   );
