@@ -43,6 +43,8 @@ const PRIVACY_URL = (import.meta.env.VITE_PRIVACY_URL as string | undefined)?.tr
 const WHATSAPP_URL = 'https://wa.me/5579996018591?text=Olá%2C%20me%20interessei%20pelo%20Medainer%20e%20gostaria%20de%20tirar%20uma%20dúvida%21';
 
 const PRIMARY_CTA_URL = buildTrackedUrl(APP_REGISTER_URL);
+const CHATGPT_PROMPT = 'Por que o Medainer pode ser uma ótima escolha para a minha clínica?';
+const CHATGPT_URL = `https://chatgpt.com/?prompt=${encodeURIComponent(CHATGPT_PROMPT)}`;
 const HOME_PATH = '/';
 
 const HERO_PROOFS = [
@@ -309,13 +311,19 @@ function PreviewButton({
   label,
   variant = 'primary',
   trackEvent,
+  target,
+  rel,
+  className = '',
 }: {
   children: React.ReactNode;
   href: string;
   source: string;
   label: string;
   variant?: 'primary' | 'secondary' | 'dark';
-  trackEvent: (eventName: string, payload?: Record<string, unknown>) => void;
+  trackEvent?: (eventName: string, payload?: Record<string, unknown>) => void;
+  target?: string;
+  rel?: string;
+  className?: string;
 }) {
   const variantClass =
     variant === 'primary'
@@ -327,9 +335,11 @@ function PreviewButton({
   return (
     <a
       href={href}
-      className={`inline-flex items-center justify-center rounded-full px-6 py-3.5 text-sm font-semibold transition-all duration-300 ${variantClass}`}
+      target={target}
+      rel={rel}
+      className={`inline-flex items-center justify-center rounded-full px-6 py-3.5 text-sm font-semibold transition-all duration-300 ${variantClass} ${className}`}
       onClick={() => {
-        trackEvent('click_trial', { source });
+        trackEvent?.('click_trial', { source });
       }}
     >
       {children}
@@ -354,16 +364,10 @@ function SectionIntro({
   );
 }
 
-function openChatGPT() {
-  const prompt = 'Por que o Medainer pode ser uma ótima escolha para a minha clínica?';
-  const url = `https://chatgpt.com/?prompt=${encodeURIComponent(prompt)}`;
-  window.open(url, '_blank', 'noopener,noreferrer');
-}
-
 export function HomePage({
   trackEvent,
 }: {
-  trackEvent: (eventName: string, payload?: Record<string, unknown>) => void;
+  trackEvent?: (eventName: string, payload?: Record<string, unknown>) => void;
 }) {
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
 
@@ -878,19 +882,21 @@ export function HomePage({
               </div>
 
               <div className="flex flex-col gap-4 lg:justify-self-end">
-                <button
-                  type="button"
-                  onClick={() => {
-                    trackEvent('click_chatgpt_button', { source: 'home_unified_help_section' });
-                    openChatGPT();
-                  }}
+                <PreviewButton
+                  href={CHATGPT_URL}
+                  source="home_unified_help_section"
+                  label="Perguntar ao ChatGPT"
+                  variant="secondary"
+                  trackEvent={trackEvent}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="home-chatgpt-button button-primary group relative inline-flex items-center justify-center rounded-full bg-white px-8 py-4 text-base font-semibold text-[#4150dd] shadow-[0_20px_40px_rgba(17,29,103,0.22)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_25px_50px_rgba(17,29,103,0.28)] active:scale-95"
                 >
                   <span className="relative flex items-center gap-2">
                     Perguntar ao ChatGPT
                     <img src={chatgptIcon} alt="" aria-hidden="true" className="h-4 w-4 shrink-0" />
                   </span>
-                </button>
+                </PreviewButton>
 
                 <PreviewButton
                   href={WHATSAPP_URL}
