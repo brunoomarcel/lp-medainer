@@ -1,0 +1,10 @@
+RewriteEngine On
+RewriteBase /
+
+# Keep real files and folders working as-is.
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# Fallback for SPA routes like /formulario, /obrigado, /proximo-passo.
+RewriteRule ^ index.html [L]
