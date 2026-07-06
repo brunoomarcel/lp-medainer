@@ -461,7 +461,7 @@ export function HomePage({
 
   return (
     <div className="home-lp min-h-screen bg-[#f3f7fa] text-[#101c3d]">
-      <header className={`home-header fixed top-0 left-0 right-0 z-40 border-b backdrop-blur ${headerScrolled ? 'home-header-scrolled' : 'border-transparent bg-transparent'}`}>
+      <header className={`home-header fixed top-0 left-0 right-0 z-40 border-b backdrop-blur ${headerScrolled || mobileMenuOpen ? 'home-header-scrolled' : 'border-transparent bg-transparent'}`}>
         <div className="home-shell flex min-h-[86px] items-center justify-between gap-6">
           <a href={HOME_PATH} className="shrink-0">
             <Logo />
