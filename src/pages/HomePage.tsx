@@ -21,6 +21,7 @@ import {
   X,
 } from 'lucide-react';
 import { buildTrackedUrl } from '../analytics';
+import agendaMobile from '../assets/images/agenda-mobile.png';
 import acessoTablet from '../assets/images/acesso-tablet.png';
 import automacaoWhatsapp from '../assets/images/automacao-whatsapp.png';
 import controleOperacional from '../assets/images/controle-operacional.png';
@@ -838,23 +839,32 @@ export function HomePage({
                 variants={slideFromLeftVariants}
               >
                 <h3 className="text-[1.05rem] font-semibold text-[#0c1730]">Painel no bolso certo</h3>
-                <p className="mt-3 text-sm leading-7 text-[#60708d]">Visualize agenda, confirmações e próximos passos sem depender do desktop.</p>
+                <p className="mt-3 text-sm leading-7 text-[#60708d]">Visualize agenda, confirmações e próximos passos sem depender do desktop. Aplicativo web instalável.</p>
               </motion.article>
 
               <motion.div
-                className="home-tablet-media mx-auto flex w-full max-w-[620px] justify-center"
+                className="home-tablet-media home-access-media mx-auto flex w-full max-w-[700px] justify-center"
                 initial={shouldReduceMotion ? false : { opacity: 0, y: 24, scale: 0.97 }}
                 whileInView={{ opacity: 1, y: 0, scale: 1 }}
                 viewport={{ once: true, amount: 0.3 }}
                 transition={{ duration: 0.7, ease: 'easeOut' }}
               >
-                <img
-                  src={acessoTablet}
-                  alt="Agenda do Medainer acessada em um tablet"
-                  className="h-auto w-full"
-                  loading="lazy"
-                  decoding="async"
-                />
+                <div className="relative w-full">
+                  <img
+                    src={acessoTablet}
+                    alt="Agenda do Medainer acessada em um tablet"
+                    className="h-auto w-full"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <img
+                    src={agendaMobile}
+                    alt="Agenda do Medainer acessada em um celular"
+                    className="home-access-phone pointer-events-none absolute right-[-3%] top-1/2 z-20 h-[92%] w-auto max-w-none -translate-y-1/2 drop-shadow-[0_22px_40px_rgba(12,23,48,0.18)]"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </div>
               </motion.div>
 
               <motion.article

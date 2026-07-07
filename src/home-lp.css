@@ -114,9 +114,19 @@
 }
 
 .home-hero-media img,
-.home-tablet-media img {
+.home-tablet-media img,
+.home-access-phone {
   animation: home-soft-float 7s ease-in-out infinite;
   transform-origin: center;
+}
+
+.home-access-media {
+  position: relative;
+  overflow: visible;
+}
+
+.home-access-phone {
+  animation-duration: 8s;
 }
 
 .home-feature-media {
@@ -523,12 +533,23 @@
   }
 
   /* Make hero image smaller to reduce overall height */
-  img[alt^="Agenda do Medainer"] {
+  .home-tablet-media > img {
     max-width: 420px;
     width: 100%;
     height: auto;
     display: block;
     margin-top: 0.5rem;
+  }
+
+  .home-access-phone {
+    right: 1%;
+    top: 50%;
+    bottom: auto;
+    height: 88%;
+    width: auto;
+    max-width: none;
+    margin-top: 0;
+    transform: translateY(-50%);
   }
 
   /* Tighten proof band spacing */
