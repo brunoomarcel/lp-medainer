@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from 'motion/react';
 import { ArrowLeft, ArrowRight, LoaderCircle, X } from 'lucide-react';
 import { buildTrackedUrl } from '../analytics';
 import { SimpleVideoPlayer } from './SimpleVideoPlayer';
+import medainerSymbol from '../assets/images/symbol-medainer.png';
 
 declare global {
   interface Window {
@@ -973,6 +974,73 @@ export function LeadFormPage({
           </div>
         </motion.div>
       </div>
+    </div>
+  );
+}
+
+export function DemoPage({
+  videoSrc = '/videos/apresentacao-4min.mp4',
+  registerUrl = 'https://app.medainer.com.br/register',
+}: {
+  videoSrc?: string;
+  registerUrl?: string;
+}) {
+  return (
+    <div className="relative min-h-screen overflow-hidden bg-white">
+      <div className="relative mx-auto flex min-h-screen w-full max-w-[1280px] items-center justify-center px-6 py-10 sm:px-10 lg:px-14">
+        <motion.div
+          initial={{ opacity: 0, y: 24, scale: 0.98 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ duration: 0.24, ease: 'easeOut' }}
+          className="relative flex min-h-[calc(100vh-5rem)] w-full items-center justify-center"
+        >
+          <div className="w-full max-w-[1120px]">
+            <div className="mx-auto flex min-h-[62vh] w-full items-center py-6 sm:py-8">
+              <div className="grid w-full items-start gap-14 lg:grid-cols-[minmax(0,420px)_minmax(0,1fr)] lg:items-center lg:gap-20">
+                <div className="w-full max-w-[700px]">
+                  <div className="flex items-center gap-3">
+                    <img
+                      src={medainerSymbol}
+                      alt="Logo da Medainer"
+                      className="h-10 w-10 rounded-full object-cover shadow-[0_12px_26px_rgba(68,87,243,0.24)] sm:h-11 sm:w-11"
+                    />
+                    <span className="text-xl font-semibold tracking-[-0.04em] text-[#2f3b44] sm:text-2xl">Medainer</span>
+                  </div>
+                  <h1 className="mt-5 max-w-[18ch] text-[2.1rem] font-medium leading-[1.12] tracking-[-0.05em] text-[#2f3b44] sm:mt-6 sm:text-[2.85rem]">
+                    Organize sua clínica e reduza faltas sem aumentar sua equipe
+                  </h1>
+                  <p className="mt-7 max-w-[52ch] text-base leading-relaxed text-[#4f5c65] sm:mt-8">
+                    Agenda, pacientes, prontuários, financeiro e confirmações automáticas em uma única plataforma
+                  </p>
+                  <a
+                    href={registerUrl}
+                    className="mt-9 inline-flex w-full items-center justify-center gap-2 rounded-lg bg-[#2d6cf6] px-6 py-3 text-sm font-medium text-white shadow-[0_10px_24px_rgba(45,108,246,0.22)] transition-transform duration-200 hover:-translate-y-0.5 sm:mt-10 sm:w-auto"
+                  >
+                    Testar grátis
+                    <ArrowRight className="h-4 w-4" />
+                  </a>
+                </div>
+
+                <div className="relative mx-auto mt-1 w-full max-w-[620px] sm:mt-2 lg:mt-0">
+                  <div className="pointer-events-none absolute inset-x-[12%] bottom-[-8%] h-[22%] rounded-full bg-[rgba(45,108,246,0.14)] blur-[52px]" />
+                  <div className="relative overflow-hidden rounded-[28px] border border-[#dfe6fb] bg-white p-3 shadow-[0_28px_80px_rgba(48,68,143,0.16)] sm:rounded-[34px] sm:p-4">
+                    <div className="overflow-hidden rounded-[22px] border border-[#e7ecfa] bg-[#f7f9ff]">
+                      <SimpleVideoPlayer
+                        src={videoSrc}
+                        label="Vídeo de apresentação Medainer"
+                        className="block h-full w-full object-cover object-top"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+      <footer className="w-full border-t border-[#edf1ff] bg-white py-6 text-center text-sm text-[#66737c]">
+        <p>© {new Date().getFullYear()} Medainer. Todos os direitos reservados.</p>
+      </footer>
     </div>
   );
 }

@@ -1,7 +1,7 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { initAnalytics } from './analytics';
-import { LeadFormPage } from './components/LeadFlow';
+import { DemoPage, LeadFormPage } from './components/LeadFlow';
 import { ThankYouPage } from './components/ThankYouPage';
 import { DisqualifiedPage } from './components/DisqualifiedPage';
 import { HomePage as NewHomePage } from './pages/HomePage';
@@ -20,6 +20,10 @@ function resolvePage() {
 
   if (pathname === '/formulario') {
     return <LeadFormPage />;
+  }
+
+  if (pathname === '/demo') {
+    return <DemoPage />;
   }
 
   if (pathname === '/obrigado') {
