@@ -33,6 +33,7 @@ import galeriaProntuario from '../assets/images/galeria-prontuario.png';
 import chatgptIcon from '../assets/images/chatgpt-icon.svg';
 import medainerHeroSection from '../assets/images/medainer-hero-section.png';
 import prontuarioOdontologico from '../assets/images/prontuario-odontologico.png';
+import provaSocialMyrella from '../assets/images/prova-social-myrella.png';
 import recuperacaoPacientes from '../assets/images/recuperacao-pacientes.png';
 import relacionamentoPacientes from '../assets/images/relacionamento-pacientes.png';
 import medainerSymbol from '../assets/images/symbol-medainer.png';
@@ -507,46 +508,46 @@ export function HomePage({
 
         <AnimatePresence>
           {mobileMenuOpen ? (
-          <motion.nav
-            id="home-mobile-menu"
-            className="home-shell border-t border-[#edf2fb] py-5 lg:hidden"
-            initial={shouldReduceMotion ? false : { opacity: 0, y: -8 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={shouldReduceMotion ? undefined : { opacity: 0, y: -8 }}
-            transition={{ duration: 0.22, ease: 'easeOut' }}
-          >
-            <div className="flex flex-col gap-1 text-[0.95rem] font-medium text-[#55647e]">
-              {[
-                ['Recursos', `${HOME_PATH}#recursos`],
-                ['Como funciona', `${HOME_PATH}#como-funciona`],
-                ['Planos', `${HOME_PATH}#planos`],
-                ['Dúvidas', `${HOME_PATH}#chatgpt`],
-              ].map(([label, href]) => (
-                <a
-                  key={label}
-                  href={href}
-                  className="rounded-xl px-4 py-3 hover:bg-[#f3f7fa] hover:text-[#101c3d]"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  {label}
+            <motion.nav
+              id="home-mobile-menu"
+              className="home-shell border-t border-[#edf2fb] py-5 lg:hidden"
+              initial={shouldReduceMotion ? false : { opacity: 0, y: -8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={shouldReduceMotion ? undefined : { opacity: 0, y: -8 }}
+              transition={{ duration: 0.22, ease: 'easeOut' }}
+            >
+              <div className="flex flex-col gap-1 text-[0.95rem] font-medium text-[#55647e]">
+                {[
+                  ['Recursos', `${HOME_PATH}#recursos`],
+                  ['Como funciona', `${HOME_PATH}#como-funciona`],
+                  ['Planos', `${HOME_PATH}#planos`],
+                  ['Dúvidas', `${HOME_PATH}#chatgpt`],
+                ].map(([label, href]) => (
+                  <a
+                    key={label}
+                    href={href}
+                    className="rounded-xl px-4 py-3 hover:bg-[#f3f7fa] hover:text-[#101c3d]"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    {label}
+                  </a>
+                ))}
+                <a href={APP_LOGIN_URL} className="rounded-xl px-4 py-3 hover:bg-[#f3f7fa] hover:text-[#101c3d] md:hidden">
+                  Entrar
                 </a>
-              ))}
-              <a href={APP_LOGIN_URL} className="rounded-xl px-4 py-3 hover:bg-[#f3f7fa] hover:text-[#101c3d] md:hidden">
-                Entrar
-              </a>
-              <div className="mt-3 px-4 sm:hidden [&>a]:w-full">
-                <PreviewButton
-                  href={PRIMARY_CTA_URL}
-                  source="home_mobile_menu_trial"
-                  label="Testar grátis"
-                  trackEvent={trackEvent}
-                >
-                  Testar grátis
-                </PreviewButton>
+                <div className="mt-3 px-4 sm:hidden [&>a]:w-full">
+                  <PreviewButton
+                    href={PRIMARY_CTA_URL}
+                    source="home_mobile_menu_trial"
+                    label="Testar grátis"
+                    trackEvent={trackEvent}
+                  >
+                    Testar grátis
+                  </PreviewButton>
+                </div>
               </div>
-            </div>
-          </motion.nav>
-        ) : null}
+            </motion.nav>
+          ) : null}
         </AnimatePresence>
       </header>
 
@@ -731,6 +732,36 @@ export function HomePage({
                 </PreviewButton> */}
               </motion.article>
             ))}
+          </div>
+        </section>
+
+        <section className="border-y border-[#d8ebe6]/80 bg-gradient-to-b from-[#eaf6f4]/80 via-[#f5faf8] to-[#eaf6f4]/80 py-16 sm:py-24">
+          <div className="home-shell flex flex-col items-center text-center">
+
+            <motion.h2
+              className="mt-4 max-w-[840px] text-[1.55rem] font-semibold leading-[1.18] tracking-[-0.04em] text-[#101c3d] sm:text-[2.5rem]"
+              initial={shouldReduceMotion ? false : 'hidden'}
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.3 }}
+              variants={fadeUpVariants}
+            >
+              Quem usa, recomenda!
+            </motion.h2>
+
+            <motion.div
+              className="mt-8 overflow-hidden rounded-2xl border border-[#e2e8f0]/80 bg-white p-2.5 shadow-[0_14px_34px_rgba(12,23,48,0.06)] sm:p-3.5 max-w-[420px] sm:max-w-[460px] w-full"
+              initial={shouldReduceMotion ? false : 'hidden'}
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.2 }}
+              variants={scaleInVariants}
+            >
+              <img
+                src={provaSocialMyrella}
+                alt="Conversa de WhatsApp real da Dra. Myrella Moreira testando o sistema Medainer"
+                className="h-auto w-full rounded-xl object-cover"
+                loading="lazy"
+              />
+            </motion.div>
           </div>
         </section>
 
@@ -968,11 +999,10 @@ export function HomePage({
               {PLAN_COLUMNS.map((plan, index) => (
                 <motion.article
                   key={plan.name}
-                  className={`home-pricing-card relative h-full rounded-[30px] border p-6 pb-[96px] shadow-[0_24px_60px_rgba(12,23,48,0.08)] sm:p-8 sm:pb-[104px] ${
-                    plan.featured
-                      ? 'home-pricing-card-featured border-[#101c3d] bg-[#101c3d] text-white'
-                      : 'border-[#e9eef7] bg-white text-[#0c1730]'
-                  }`}
+                  className={`home-pricing-card relative h-full rounded-[30px] border p-6 pb-[96px] shadow-[0_24px_60px_rgba(12,23,48,0.08)] sm:p-8 sm:pb-[104px] ${plan.featured
+                    ? 'home-pricing-card-featured border-[#101c3d] bg-[#101c3d] text-white'
+                    : 'border-[#e9eef7] bg-white text-[#0c1730]'
+                    }`}
                   initial={shouldReduceMotion ? false : 'hidden'}
                   whileInView="visible"
                   viewport={{ once: true, amount: 0.18 }}
@@ -1034,24 +1064,24 @@ export function HomePage({
               return (
                 <motion.article
                   key={item.title}
-                className="home-interactive-card flex min-h-[250px] flex-col items-center rounded-[30px] border border-[#d7e0ff] bg-white px-7 py-8 text-center shadow-[0_18px_40px_rgba(68,87,243,0.08)] sm:px-9 sm:py-10"
-                initial={shouldReduceMotion ? false : 'hidden'}
-                whileInView="visible"
-                viewport={{ once: true, amount: 0.2 }}
-                variants={scaleInVariants}
-                custom={index}
-              >
-                <span className="home-card-icon mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-[#e7ecff] text-[#0d8f82] shadow-[0_0_30px_rgba(65,80,221,0.14)]">
-                  <Icon className="h-5 w-5" />
-                </span>
-                <div className="flex max-w-[320px] flex-1 flex-col">
-                  <h3 className="text-[1.08rem] font-semibold tracking-[-0.03em] text-[#16235a] sm:text-[1.18rem]">{item.title}</h3>
-                  <p className="mt-4 text-[0.96rem] leading-7 text-[#60708d] sm:text-[1.02rem] sm:leading-8">{item.text}</p>
-                </div>
-              </motion.article>
-            );
-          })}
-        </div>
+                  className="home-interactive-card flex min-h-[250px] flex-col items-center rounded-[30px] border border-[#d7e0ff] bg-white px-7 py-8 text-center shadow-[0_18px_40px_rgba(68,87,243,0.08)] sm:px-9 sm:py-10"
+                  initial={shouldReduceMotion ? false : 'hidden'}
+                  whileInView="visible"
+                  viewport={{ once: true, amount: 0.2 }}
+                  variants={scaleInVariants}
+                  custom={index}
+                >
+                  <span className="home-card-icon mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-[#e7ecff] text-[#0d8f82] shadow-[0_0_30px_rgba(65,80,221,0.14)]">
+                    <Icon className="h-5 w-5" />
+                  </span>
+                  <div className="flex max-w-[320px] flex-1 flex-col">
+                    <h3 className="text-[1.08rem] font-semibold tracking-[-0.03em] text-[#16235a] sm:text-[1.18rem]">{item.title}</h3>
+                    <p className="mt-4 text-[0.96rem] leading-7 text-[#60708d] sm:text-[1.02rem] sm:leading-8">{item.text}</p>
+                  </div>
+                </motion.article>
+              );
+            })}
+          </div>
         </section>
 
         <section id="chatgpt" className="home-shell py-18">
