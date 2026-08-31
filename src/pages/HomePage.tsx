@@ -735,36 +735,6 @@ export function HomePage({
           </div>
         </section>
 
-        <section className="border-y border-[#d8ebe6]/80 bg-gradient-to-b from-[#eaf6f4]/80 via-[#f5faf8] to-[#eaf6f4]/80 py-16 sm:py-24">
-          <div className="home-shell flex flex-col items-center text-center">
-
-            <motion.h2
-              className="mt-4 max-w-[840px] text-[1.55rem] font-semibold leading-[1.18] tracking-[-0.04em] text-[#101c3d] sm:text-[2.5rem]"
-              initial={shouldReduceMotion ? false : 'hidden'}
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.3 }}
-              variants={fadeUpVariants}
-            >
-              Quem usa, recomenda!
-            </motion.h2>
-
-            <motion.div
-              className="mt-8 overflow-hidden rounded-2xl border border-[#e2e8f0]/80 bg-white p-2.5 shadow-[0_14px_34px_rgba(12,23,48,0.06)] sm:p-3.5 max-w-[420px] sm:max-w-[460px] w-full"
-              initial={shouldReduceMotion ? false : 'hidden'}
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.2 }}
-              variants={scaleInVariants}
-            >
-              <img
-                src={provaSocialMyrella}
-                alt="Conversa de WhatsApp real da Dra. Myrella Moreira testando o sistema Medainer"
-                className="h-auto w-full rounded-xl object-cover"
-                loading="lazy"
-              />
-            </motion.div>
-          </div>
-        </section>
-
         <section id="como-funciona" className="home-shell home-section">
           <motion.div
             className="home-automation-panel rounded-[28px] bg-[#101c3d] px-5 py-8 text-white shadow-[0_26px_70px_rgba(16,28,61,0.22)] sm:px-10 sm:py-12"
@@ -1082,6 +1052,33 @@ export function HomePage({
               );
             })}
           </div>
+        </section>
+
+        <section className="home-shell py-16 sm:py-24 flex flex-col items-center text-center">
+            <motion.h2
+              className="mt-4 max-w-[840px] text-[1.55rem] font-semibold leading-[1.18] tracking-[-0.04em] text-[#101c3d] sm:text-[2.5rem]"
+              initial={shouldReduceMotion ? false : 'hidden'}
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.3 }}
+              variants={fadeUpVariants}
+            >
+              Quem usa, recomenda!
+            </motion.h2>
+
+            <motion.div
+              className="mt-8 overflow-hidden rounded-2xl border border-[#e2e8f0]/80 bg-white p-2.5 shadow-[0_14px_34px_rgba(12,23,48,0.06)] sm:p-3.5 max-w-[420px] sm:max-w-[460px] w-full"
+              initial={shouldReduceMotion ? false : 'hidden'}
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.2 }}
+              variants={scaleInVariants}
+            >
+              <img
+                src={provaSocialMyrella}
+                alt="Conversa de WhatsApp real da Dra. Myrella Moreira testando o sistema Medainer"
+                className="h-auto w-full rounded-xl object-cover"
+                loading="lazy"
+              />
+            </motion.div>
         </section>
 
         <section id="chatgpt" className="home-shell py-18">
