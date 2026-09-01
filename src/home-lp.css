@@ -7,7 +7,8 @@
 }
 
 .home-lp {
-  overflow-x: clip;
+  overflow-x: hidden;
+  max-width: 100vw;
 }
 
 .home-header {
@@ -192,7 +193,14 @@
 .home-hero-kicker-text {
   position: relative;
   display: inline-block;
-  white-space: nowrap;
+  white-space: normal;
+  text-align: center;
+}
+
+@media (min-width: 640px) {
+  .home-hero-kicker-text {
+    white-space: nowrap;
+  }
 }
 
 .home-hero-kicker-text::after {
@@ -202,6 +210,8 @@
 .home-proof-band {
   left: 50%;
   width: 100vw;
+  max-width: 100vw;
+  overflow: hidden;
   transform: translateX(-50%);
 }
 

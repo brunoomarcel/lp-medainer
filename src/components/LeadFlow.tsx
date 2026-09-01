@@ -1057,7 +1057,7 @@ export function LeadFlowProvider({
   const [formData, setFormData] = useState(INITIAL_FORM_DATA);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-  const [contextSource, setContextSource] = useState(experience);
+  const [contextSource, setContextSource] = useState<string>(experience);
   const [ctaLabel, setCtaLabel] = useState('');
   const [targetHref, setTargetHref] = useState('');
 

@@ -563,7 +563,7 @@ export function HomePage({
                 variants={fadeUpVariants}
               >
                 <motion.div
-                  className="home-hero-kicker inline-flex max-w-full items-center gap-2 rounded-full border border-[#bce8e1] bg-white px-4 py-2 text-[10px] font-bold uppercase tracking-[0.06em] text-[#0d8f82] sm:text-[11px] sm:tracking-[0.12em]"
+                  className="home-hero-kicker inline-flex max-w-full items-center gap-2 rounded-2xl border border-[#bce8e1] bg-white px-3.5 py-2 text-center text-[10px] font-bold uppercase tracking-[0.04em] text-[#0d8f82] sm:rounded-full sm:px-4 sm:py-2 sm:text-[11px] sm:tracking-[0.12em]"
                   variants={fadeUpVariants}
                   custom={0}
                 >
@@ -861,7 +861,7 @@ export function HomePage({
                   <img
                     src={agendaMobile}
                     alt="Agenda do Medainer acessada em um celular"
-                    className="home-access-phone pointer-events-none absolute right-[-3%] top-1/2 z-20 h-[92%] w-auto max-w-none -translate-y-1/2 drop-shadow-[0_22px_40px_rgba(12,23,48,0.18)]"
+                    className="home-access-phone pointer-events-none absolute right-0 sm:right-[-3%] top-1/2 z-20 h-[92%] w-auto max-w-none -translate-y-1/2 drop-shadow-[0_22px_40px_rgba(12,23,48,0.18)]"
                     loading="lazy"
                     decoding="async"
                   />
