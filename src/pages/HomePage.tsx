@@ -52,78 +52,78 @@ const CHATGPT_URL = `https://chatgpt.com/?prompt=${encodeURIComponent(CHATGPT_PR
 const HOME_PATH = '/';
 
 const HERO_PROOFS = [
-  'Agenda organizada',
-  'Prontuário digital',
-  'Pré-atendimento automático',
-  'Pós-atendimento automático',
-  'Reativação de pacientes',
+  'Confirmação de consultas no WhatsApp',
+  'Mensagens de cuidado no pós-atendimento',
+  'Redução de faltas e horários vazios',
+  'Agenda e prontuário sem complicação',
+  'Pronto para usar em menos de 2 minutos',
 ] as const;
 
 const PAIN_POINTS = [
   {
     icon: CalendarX,
-    title: 'Pacientes esquecem consultas',
-    text: 'Sem lembretes e confirmação, faltas acontecem e horários ficam vazios.',
-  },
-  {
-    icon: History,
-    title: 'Retornos ficam perdidos',
-    text: 'Conversas antigas no WhatsApp dificultam saber quem precisa voltar.',
-  },
-  {
-    icon: Files,
-    title: 'Prontuários espalhados',
-    text: 'Informações importantes ficam em papéis, planilhas ou mensagens soltas.',
+    title: 'Faltas e buracos na agenda que custam caro',
+    text: 'Sem confirmação ativa no WhatsApp, o paciente desmarca em cima da hora ou não comparece, deixando o horário ocioso.',
   },
   {
     icon: Users,
-    title: 'Recepção sobrecarregada',
-    text: 'A equipe tenta lembrar de tudo manualmente e acaba deixando algo passar.',
+    title: 'Pacientes esquecidos após o tratamento',
+    text: 'Sem uma mensagem de acompanhamento pós-consulta, o paciente não se sente cuidado e demora para voltar.',
+  },
+  {
+    icon: History,
+    title: 'Falta de tempo para mandar mensagens manuais',
+    text: 'Entre um atendimento e outro no mocho, é impossível parar para digitar lembretes um a um no WhatsApp.',
+  },
+  {
+    icon: Files,
+    title: 'Sistemas complexos e cheios de firulas',
+    text: 'Softwares pesados e difíceis que exigem horas de treinamento e mais atrapalham do que ajudam na rotina.',
   },
 ] as const;
 
 const FEATURE_CARDS = [
   {
-    icon: CalendarDays,
-    title: 'Agenda inteligente',
-    subtitle: 'Organize consultas, retornos e horários livres',
-    text: 'Visualize atendimentos, acompanhe status das consultas e reduza esquecimentos na rotina da equipe.',
-    image: medainerHeroSection,
-  },
-  {
-    icon: Files,
-    title: 'Prontuário odontológico',
-    subtitle: 'Histórico do paciente sempre à mão',
-    text: 'Centralize dados, observações, procedimentos, evolução clínica e informações importantes.',
-    image: prontuarioOdontologico,
-  },
-  {
     icon: MessageCircleMore,
-    title: 'Automação WhatsApp',
-    subtitle: 'Prepare o paciente antes da consulta',
-    text: 'Envie confirmações, orientações e lembretes automáticos para diminuir faltas.',
+    title: 'Confirmação de consultas',
+    subtitle: 'Elimine faltas e horários ociosos',
+    text: 'Envie lembretes e confirmações automáticas no WhatsApp para garantir o comparecimento e proteger o faturamento do dia.',
     image: automacaoWhatsapp,
   },
   {
-    icon: Sparkles,
-    title: 'Relacionamento',
-    subtitle: 'Continue presente depois da consulta',
-    text: 'Automatize acompanhamento, retorno, avaliação e cuidado pós-procedimento.',
+    icon: History,
+    title: 'Pós-atendimento automático',
+    subtitle: 'Fidelize e mantenha o paciente por perto',
+    text: 'Envie mensagens de orientação e cuidado após o procedimento sem precisar digitar tudo manualmente todo dia.',
     image: relacionamentoPacientes,
   },
   {
+    icon: Sparkles,
+    title: 'Simplicidade máxima',
+    subtitle: 'Pronto para usar em menos de 2 minutos',
+    text: 'Interface direta e intuitiva, sem telas confusas ou funções desnecessárias. Você domina o sistema no primeiro dia.',
+    image: controleOperacional,
+  },
+  {
+    icon: CalendarDays,
+    title: 'Agenda inteligente',
+    subtitle: 'Visão clara dos atendimentos e horários livres',
+    text: 'Acompanhe status de confirmação em tempo real e saiba exatamente quem vai comparecer em cada horário da semana.',
+    image: medainerHeroSection,
+  },
+  {
     icon: Users,
-    title: 'Recuperação',
-    subtitle: 'Traga pacientes antigos de volta',
-    text: 'Identifique pacientes parados, organize follow-ups e estimule revisões.',
+    title: 'Histórico de pacientes',
+    subtitle: 'Cadastros organizados e fáceis de consultar',
+    text: 'Encontre dados, procedimentos realizados e informações importantes de forma rápida, no celular ou no computador.',
     image: recuperacaoPacientes,
   },
   {
-    icon: ClipboardList,
-    title: 'Controle operacional',
-    subtitle: 'Menos planilhas, mais clareza',
-    text: 'Tenha pacientes, atendimentos, agenda e comunicação em uma estrutura única.',
-    image: controleOperacional,
+    icon: TrendingUp,
+    title: 'Controle financeiro essencial',
+    subtitle: 'Mais previsibilidade para o consultório',
+    text: 'Acompanhe entradas, recebimentos e valores a receber com total clareza, evitando furos no caixa da clínica.',
+    image: galeriaFinanceiro,
   },
 ] as const;
 
@@ -568,21 +568,21 @@ export function HomePage({
                   custom={0}
                 >
                   <ToothIcon className="h-3.5 w-3.5 shrink-0" />
-                  <span className="home-hero-kicker-text">GESTÃO E AUTOMAÇÃO PARA CLÍNICAS ODONTOLÓGICAS</span>
+                  <span className="home-hero-kicker-text">WHATSAPP, PRONTUÁRIO E GESTÃO ODONTOLÓGICA COMPLETA</span>
                 </motion.div>
                 <motion.h1
                   className="mx-auto mt-7 max-w-[640px] text-[2rem] font-semibold leading-[1.06] tracking-[-0.05em] text-[#101c3d] sm:mt-8 sm:text-[3.2rem] lg:mx-0"
                   variants={fadeUpVariants}
                   custom={1}
                 >
-                  Sua clínica organizada. Seus pacientes acompanhados.
+                  Enquanto você atende, o Medainer garante que seus pacientes não esqueçam de voltar.
                 </motion.h1>
                 <motion.p
                   className="mx-auto mt-5 max-w-[600px] text-[0.95rem] leading-6 text-[#5d6c87] sm:mt-6 sm:text-[1.03rem] sm:leading-7 lg:mx-0"
                   variants={fadeUpVariants}
                   custom={2}
                 >
-                  Agenda, prontuário e automações em um só lugar para reduzir faltas e trazer pacientes de volta.
+                  Lembretes de confirmação e retorno no WhatsApp com agenda, prontuário e gestão completa da clínica.
                 </motion.p>
 
                 <motion.div className="mt-10 flex flex-col justify-center gap-4 sm:flex-row lg:justify-start" variants={fadeUpVariants} custom={3}>
@@ -596,7 +596,7 @@ export function HomePage({
                   </PreviewButton>
                 </motion.div>
 
-                <motion.p className="mt-5 text-sm text-[#6d7c95]" variants={fadeUpVariants} custom={4}>Sem fidelidade. Crie sua conta sem cartão de crédito.</motion.p>
+                <motion.p className="mt-5 text-sm text-[#6d7c95]" variants={fadeUpVariants} custom={4}>Sem cartão de crédito • Pronto em menos de 2 minutos • Sem fidelidade</motion.p>
               </motion.div>
             </div>
 
@@ -638,7 +638,7 @@ export function HomePage({
 
         <section className="home-shell home-section">
           <SectionIntro
-            title="Sua clínica pode estar perdendo pacientes por falta de acompanhamento"
+            title="Sua clínica pode estar perdendo receita todos os meses por falta de acompanhamento"
             text=""
           />
 
@@ -669,7 +669,7 @@ export function HomePage({
 
         <section id="recursos" className="home-shell home-section">
           <SectionIntro
-            title="Tecnologia para simplificar a rotina da sua clínica"
+            title="Tudo o que seu consultório precisa, sem a burocracia dos sistemas pesados"
             text=""
           />
 
@@ -746,10 +746,10 @@ export function HomePage({
             <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_360px] lg:items-center">
               <div>
                 <h2 className="max-w-[640px] text-[1.65rem] font-semibold leading-[1.12] tracking-[-0.04em] sm:text-[3rem]">
-                  Automatize o pré e pós-atendimento sem depender da memória da equipe
+                  Automatize o pré e pós-atendimento sem depender de ninguém lembrar
                 </h2>
                 <p className="mt-5 max-w-[600px] text-[0.92rem] leading-6 text-white/82 sm:mt-6 sm:text-[1.02rem] sm:leading-8">
-                  Confirmações, orientações, lembretes, mensagens de retorno e acompanhamento podem ser organizados para que nenhum paciente importante fique esquecido.
+                  Confirmações de consulta antes do atendimento e mensagens de cuidado e acompanhamento depois, direto no WhatsApp. O Medainer cuida da comunicação enquanto você foca no paciente.
                 </p>
 
                 <div className="mt-8">
@@ -768,15 +768,15 @@ export function HomePage({
               <div className="rounded-[28px] bg-white p-5 text-[#0c1730] shadow-[0_18px_40px_rgba(15,23,42,0.16)] sm:p-8">
                 <div className="flex items-center gap-3">
                   <MessageCircleMore className="h-5 w-5 text-[#13b8a6]" />
-                  <h3 className="text-[1.5rem] font-semibold">Fluxo automático</h3>
+                  <h3 className="text-[1.5rem] font-semibold">Fluxo no WhatsApp</h3>
                 </div>
                 <div className="mt-6 space-y-3">
                   {[
-                    'Confirmação de consulta',
+                    'Confirmação de consulta prévia',
                     'Orientação pré-atendimento',
-                    'Mensagem pós-procedimento',
-                    'Pedido de avaliação',
-                    'Reativação de paciente antigo',
+                    'Mensagem de cuidado pós-consulta',
+                    'Pesquisa de satisfação rápida',
+                    'Lembrete de retorno preventivo',
                   ].map((item, index) => (
                     <motion.div
                       key={item}
