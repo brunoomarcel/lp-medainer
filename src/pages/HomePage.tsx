@@ -288,7 +288,21 @@ const slideFromRightVariants: Variants = {
   },
 };
 
-const PLAN_COLUMNS = [
+type PlanFeature = {
+  label: string;
+  included: boolean;
+};
+
+const PLAN_COLUMNS: readonly {
+  name: string;
+  description: string;
+  pricePrefix: string;
+  price: string;
+  priceSuffix: string;
+  featured: boolean;
+  badge: string | null;
+  features: readonly PlanFeature[];
+}[] = [
   {
     name: 'Medainer Solo',
     description: 'Para dentistas que atendem sozinhos e querem organizar agenda, pacientes e prontuário sem depender de planilhas.',
@@ -298,13 +312,17 @@ const PLAN_COLUMNS = [
     featured: false,
     badge: null,
     features: [
-      '1 profissional de saúde ativo',
-      'Até 2 usuários administrativos',
-      'Agenda, pacientes, profissionais e serviços',
-      'WhatsApp com lembretes e automações básicas',
-      'Prontuário essencial sem anexos',
-      'Planos de tratamento, receituários e atestados disponíveis a partir do plano Clínica',
-      'Suporte por chat e e-mail',
+      { label: '1 profissional de saúde ativo', included: true },
+      { label: 'Até 2 usuários administrativos', included: true },
+      { label: 'Agenda, pacientes, profissionais e serviços', included: true },
+      { label: 'WhatsApp com lembretes e automações básicas', included: true },
+      { label: '2 automações', included: true },
+      { label: 'Prontuário essencial sem anexos', included: true },
+      { label: 'Suporte por chat e e-mail', included: true },
+      { label: 'Planos de tratamento, receituários e atestados', included: false },
+      { label: 'Arquivos e imagens no prontuário', included: false },
+      { label: 'Controle financeiro da clínica', included: false },
+      { label: 'Onboarding ao vivo e suporte em horário comercial', included: false },
     ],
   },
   {
@@ -316,14 +334,17 @@ const PLAN_COLUMNS = [
     featured: true,
     badge: 'RECOMENDADO',
     features: [
-      'Tudo do Medainer Solo',
-      'Até 3 profissionais de saúde ativos',
-      'Até 5 usuários administrativos',
-      'Controle financeiro da clínica',
-      'Arquivos e imagens no prontuário (2 GB)',
-      'Planos de tratamento',
-      'Receituários e atestados ilimitados',
-      'Onboarding ao vivo e suporte em horário comercial',
+      { label: 'Tudo do Medainer Solo', included: true },
+      { label: 'Até 3 profissionais de saúde ativos', included: true },
+      { label: 'Até 5 usuários administrativos', included: true },
+      { label: 'Até 8 automações', included: true },
+      { label: 'Controle financeiro da clínica', included: true },
+      { label: 'Arquivos e imagens no prontuário (2 GB)', included: true },
+      { label: 'Planos de tratamento', included: true },
+      { label: 'Receituários e atestados ilimitados', included: true },
+      { label: 'Onboarding ao vivo e suporte em horário comercial', included: true },
+      { label: 'Automações ilimitadas', included: false },
+      { label: 'Suporte preparado para equipes em crescimento', included: false },
     ],
   },
   {
@@ -335,14 +356,15 @@ const PLAN_COLUMNS = [
     featured: false,
     badge: 'MAIOR CAPACIDADE',
     features: [
-      'Tudo do Medainer Clínica',
-      'Até 6 profissionais de saúde ativos',
-      'Até 8 usuários administrativos',
-      'Maior capacidade para lembretes e fluxos automáticos',
-      'Suporte preparado para equipes em crescimento',
+      { label: 'Tudo do Medainer Clínica', included: true },
+      { label: 'Até 6 profissionais de saúde ativos', included: true },
+      { label: 'Até 8 usuários administrativos', included: true },
+      { label: 'Automações ilimitadas', included: true },
+      { label: 'Maior capacidade para lembretes e fluxos automáticos', included: true },
+      { label: 'Suporte preparado para equipes em crescimento', included: true },
     ],
   },
-] as const;
+];
 
 function Logo({ inverted = false }: { inverted?: boolean }) {
   return (
@@ -996,12 +1018,30 @@ export function HomePage({
                   </div>
 
                   <ul className="mt-8 space-y-4">
-                    {plan.features.map((feature) => (
-                      <li key={feature} className={`flex items-start gap-3 text-[0.9rem] leading-6 sm:text-[0.98rem] sm:leading-7 ${plan.featured ? 'text-white/84' : 'text-[#20304b]'}`}>
-                        <Check className={`mt-1 h-4 w-4 shrink-0 ${plan.featured ? 'text-[#56d7c8]' : 'text-[#0d8f82]'}`} />
-                        <span>{feature}</span>
-                      </li>
-                    ))}
+                    {plan.features.map((feature) => {
+                      const FeatureIcon = feature.included ? Check : X;
+                      const textClass = feature.included
+                        ? plan.featured
+                          ? 'text-white/84'
+                          : 'text-[#20304b]'
+                        : plan.featured
+                          ? 'text-white/45'
+                          : 'text-[#9aa7bd]';
+                      const iconClass = feature.included
+                        ? plan.featured
+                          ? 'text-[#56d7c8]'
+                          : 'text-[#0d8f82]'
+                        : plan.featured
+                          ? 'text-white/35'
+                          : 'text-[#c2ccdc]';
+
+                      return (
+                        <li key={feature.label} className={`flex items-start gap-3 text-[0.9rem] leading-6 sm:text-[0.98rem] sm:leading-7 ${textClass}`}>
+                          <FeatureIcon className={`mt-1 h-4 w-4 shrink-0 ${iconClass}`} />
+                          <span>{feature.label}</span>
+                        </li>
+                      );
+                    })}
                   </ul>
 
                   <div className="absolute inset-x-6 bottom-6 sm:inset-x-8 sm:bottom-8 [&>a]:w-full">
