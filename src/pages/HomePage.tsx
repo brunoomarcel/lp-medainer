@@ -597,14 +597,14 @@ export function HomePage({
                   variants={fadeUpVariants}
                   custom={1}
                 >
-                  Enquanto você atende, o Medainer garante que seus pacientes não esqueçam de voltar.
+                  Reduza faltas e traga mais pacientes de volta para sua clínica.
                 </motion.h1>
                 <motion.p
                   className="mx-auto mt-5 max-w-[600px] text-[0.95rem] leading-6 text-[#5d6c87] sm:mt-6 sm:text-[1.03rem] sm:leading-7 lg:mx-0"
                   variants={fadeUpVariants}
                   custom={2}
                 >
-                  Lembretes de confirmação e retorno no WhatsApp com agenda, prontuário e gestão completa da clínica.
+                  O Medainer envia confirmações e lembretes de retorno pelo WhatsApp automaticamente, enquanto você cuida dos seus pacientes.
                 </motion.p>
 
                 <motion.div className="mt-10 flex flex-col justify-center gap-4 sm:flex-row lg:justify-start" variants={fadeUpVariants} custom={3}>
